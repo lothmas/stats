@@ -1,23 +1,34 @@
 package com.material.components.activity.bottomnavigation;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.material.components.R;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
@@ -25,14 +36,23 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private ActionBar actionBar;
     private NestedScrollView nested_scroll_view;
     private CardView trendingCardView;
-    private LinearLayout trendingOutter1;
-    private LinearLayout trendingOutter2;
-    
-    private View spacesBetweenCardView;
+    private LinearLayout outter1;
+    private LinearLayout outter2;
+    private LinearLayout outter3;
+    private LinearLayout outter4;
+    private LinearLayout outter5;
 
-    private CardView cardView;
+    private TextView textView2;
+    private ImageView imageView1;
+    private TextView textView3;
+
+    private CircularImageView circularImageView;
+private  ImageButton ImageButtonSRC;;
 
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +60,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         initToolbar();
         initComponent();
-        trendingCardView();
+       trendingCardView();
     }
 
     private void initToolbar() {
@@ -141,14 +161,80 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @SuppressLint("ResourceAsColor")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void trendingCardView(){
-//        trendingOutter1= (LinearLayout) findViewById(R.id.trending_layout_outter1);
-//        LinearLayout.LayoutParams trendingLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        outter1= (LinearLayout) findViewById(R.id.outter1);
+        CardView cardView = null;
+
+        LinearLayout.LayoutParams cardViewConfig = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardViewConfig.setMargins(10, 0, 10, 0);
+        //cardView.setLayoutParams(cardViewConfig);
+        cardView.setVisibility(View.VISIBLE);
+        cardView.setRadius(0);
+        cardView.setElevation(4);
+
+        outter2.setLayoutParams(cardViewConfig);
+        outter2.setOrientation(LinearLayout.VERTICAL);
+        cardView.addView(outter2);
+
 //        trendingOutter1.setLayoutParams(trendingLayoutParams);
 //        trendingOutter1.setOrientation(LinearLayout.HORIZONTAL);
 //        trendingOutter1.setDescendantFocusability(LinearLayout.FOCUS_BLOCK_DESCENDANTS);
 
+        LinearLayout.LayoutParams outter3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardViewConfig.setMargins(15, 15, 15, 5);
+        outter3.setLayoutParams(cardViewConfig);
+        outter3.setGravity(Gravity.CENTER_VERTICAL);
+        outter3.setOrientation(LinearLayout.HORIZONTAL);
+        outter2.addView(outter3);
+
+        LinearLayout.LayoutParams circularImageViewConfig = new LinearLayout.LayoutParams(R.dimen.spacing_xxlarge, R.dimen.spacing_xxlarge);
+        circularImageView.setLayoutParams(circularImageViewConfig);
+        circularImageView.setBackgroundResource(R.drawable.fifa);
+//        app:civ_border="false" />
+        outter3.addView(circularImageView);
+
+
+
+        LinearLayout.LayoutParams outter4Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        outter4.setLayoutParams(outter4Config);
+        outter4.setOrientation(LinearLayout.VERTICAL);
+        outter3.addView(outter4);
+
+
+        LinearLayout.LayoutParams textView2Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        textView2.setLayoutParams(textView2Config);
+        textView2.setText("2018 FIFA World Cup Russia™");
+        textView2.setTextColor(R.color.grey_90);
+        textView2.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
+        textView2.setGravity(Gravity.CENTER_VERTICAL);
+        outter4.addView(textView2);
+
+        LinearLayout.LayoutParams imageView1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        imageView1.setLayoutParams(imageView1Config);
+        imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView1.setBackgroundResource(R.drawable.ronaldo);
+
+        LinearLayout.LayoutParams textView3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        textView3.setLayoutParams(textView2Config);
+      //  textView3.setBackground(R.color.grey_5);
+//        android:layout_marginTop="@dimen/spacing_medium"
+
+
+
+
+        LinearLayout.LayoutParams outter5Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, R.dimen.spacing_xxlarge);
+        outter5.setLayoutParams(outter5Config);
+        outter5.setOrientation(LinearLayout.HORIZONTAL);
+        outter5.setGravity(Gravity.CENTER_VERTICAL);
+        outter5.setPadding(R.dimen.spacing_large,0,R.dimen.spacing_large,0);
+
+
+
 
 
     }
+
 }
