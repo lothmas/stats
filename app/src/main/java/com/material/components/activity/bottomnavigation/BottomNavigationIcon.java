@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,8 @@ import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import static android.support.v7.widget.CardView.*;
+
 public class BottomNavigationIcon extends AppCompatActivity {
 
     private TabLayout tab_layout;
@@ -37,16 +40,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private NestedScrollView nested_scroll_view;
     private CardView trendingCardView;
     private LinearLayout outter1;
-    private LinearLayout outter2;
-    private LinearLayout outter3;
-    private LinearLayout outter4;
-    private LinearLayout outter5;
 
-    private TextView textView2;
-    private ImageView imageView1;
-    private TextView textView3;
 
-    private CircularImageView circularImageView;
 private  ImageButton ImageButtonSRC;;
 
 
@@ -60,7 +55,7 @@ private  ImageButton ImageButtonSRC;;
 
         initToolbar();
         initComponent();
-       trendingCardView();
+      trendingCardView();
     }
 
     private void initToolbar() {
@@ -165,73 +160,126 @@ private  ImageButton ImageButtonSRC;;
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void trendingCardView(){
+//        outter1= (LinearLayout) findViewById(R.id.outter1);
+//        CardView cardView = null;
+//
+//        LinearLayout.LayoutParams cardViewConfig = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        cardViewConfig.setMargins(10, 0, 10, 0);
+//        //cardView.setLayoutParams(cardViewConfig);
+//        cardView.setVisibility(View.VISIBLE);
+//        cardView.setRadius(0);
+//        cardView.setElevation(4);
+//
+//        outter2.setLayoutParams(cardViewConfig);
+//        outter2.setOrientation(LinearLayout.VERTICAL);
+//        cardView.addView(outter2);
+//
+////        trendingOutter1.setLayoutParams(trendingLayoutParams);
+////        trendingOutter1.setOrientation(LinearLayout.HORIZONTAL);
+////        trendingOutter1.setDescendantFocusability(LinearLayout.FOCUS_BLOCK_DESCENDANTS);
+//
+//        LinearLayout.LayoutParams outter3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        cardViewConfig.setMargins(15, 15, 15, 5);
+//        outter3.setLayoutParams(cardViewConfig);
+//        outter3.setGravity(Gravity.CENTER_VERTICAL);
+//        outter3.setOrientation(LinearLayout.HORIZONTAL);
+//        outter2.addView(outter3);
+//
+//        LinearLayout.LayoutParams circularImageViewConfig = new LinearLayout.LayoutParams(R.dimen.spacing_xxlarge, R.dimen.spacing_xxlarge);
+//        circularImageView.setLayoutParams(circularImageViewConfig);
+//        circularImageView.setBackgroundResource(R.drawable.fifa);
+////        app:civ_border="false" />
+//        outter3.addView(circularImageView);
+//
+//
+//
+//        LinearLayout.LayoutParams outter4Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        outter4.setLayoutParams(outter4Config);
+//        outter4.setOrientation(LinearLayout.VERTICAL);
+//        outter3.addView(outter4);
+//
+//
+//        LinearLayout.LayoutParams textView2Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        textView2.setLayoutParams(textView2Config);
+//        textView2.setText("2018 FIFA World Cup Russia™");
+//        textView2.setTextColor(R.color.grey_90);
+//        textView2.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
+//        textView2.setGravity(Gravity.CENTER_VERTICAL);
+//        outter4.addView(textView2);
+//
+//        LinearLayout.LayoutParams imageView1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        imageView1.setLayoutParams(imageView1Config);
+//        imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        imageView1.setBackgroundResource(R.drawable.ronaldo);
+//
+//        LinearLayout.LayoutParams textView3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        textView3.setLayoutParams(textView2Config);
+//      //  textView3.setBackground(R.color.grey_5);
+////        android:layout_marginTop="@dimen/spacing_medium"
+//
+//
+//
+//
+//        LinearLayout.LayoutParams outter5Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, R.dimen.spacing_xxlarge);
+//        outter5.setLayoutParams(outter5Config);
+//        outter5.setOrientation(LinearLayout.HORIZONTAL);
+//        outter5.setGravity(Gravity.CENTER_VERTICAL);
+//        outter5.setPadding(R.dimen.spacing_large,0,R.dimen.spacing_large,0);
+
+////////////////////////////////////////////////////////////////////////
+
         outter1= (LinearLayout) findViewById(R.id.outter1);
-        CardView cardView = null;
 
-        LinearLayout.LayoutParams cardViewConfig = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        cardViewConfig.setMargins(10, 0, 10, 0);
-        //cardView.setLayoutParams(cardViewConfig);
-        cardView.setVisibility(View.VISIBLE);
-        cardView.setRadius(0);
-        cardView.setElevation(4);
 
-        outter2.setLayoutParams(cardViewConfig);
-        outter2.setOrientation(LinearLayout.VERTICAL);
-        cardView.addView(outter2);
+        CardView cardView1 = new CardView(getApplicationContext());
+        CardView.LayoutParams cardView1Config=new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
+        cardView1Config.setMargins(10, 10, 0, 0);
+        cardView1.setLayoutParams(cardView1Config);
+        cardView1.setVisibility(View.VISIBLE);
+        cardView1.setRadius(0);
+        cardView1.setElevation(4);
+        outter1.addView(cardView1);
 
-//        trendingOutter1.setLayoutParams(trendingLayoutParams);
-//        trendingOutter1.setOrientation(LinearLayout.HORIZONTAL);
-//        trendingOutter1.setDescendantFocusability(LinearLayout.FOCUS_BLOCK_DESCENDANTS);
+        LinearLayout.LayoutParams innerLayout1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout innerLayout1=new LinearLayout(this);
+        innerLayout1.setOrientation(LinearLayout.VERTICAL);
+        innerLayout1.setLayoutParams(innerLayout1Config);
 
-        LinearLayout.LayoutParams outter3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        cardViewConfig.setMargins(15, 15, 15, 5);
-        outter3.setLayoutParams(cardViewConfig);
-        outter3.setGravity(Gravity.CENTER_VERTICAL);
-        outter3.setOrientation(LinearLayout.HORIZONTAL);
-        outter2.addView(outter3);
+        cardView1.addView(innerLayout1);
+
+
+        LinearLayout.LayoutParams innerLayout2Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        innerLayout2Config.setMargins(R.dimen.spacing_large, R.dimen.spacing_large, R.dimen.spacing_large, R.dimen.spacing_medium);
+        LinearLayout innerLayout2=new LinearLayout(this);
+        innerLayout2.setGravity(Gravity.CENTER_VERTICAL);
+        innerLayout2.setOrientation(LinearLayout.HORIZONTAL);
+        innerLayout2.setLayoutParams(innerLayout2Config);
+        innerLayout1.addView(innerLayout2);
+
 
         LinearLayout.LayoutParams circularImageViewConfig = new LinearLayout.LayoutParams(R.dimen.spacing_xxlarge, R.dimen.spacing_xxlarge);
-        circularImageView.setLayoutParams(circularImageViewConfig);
+        CircularImageView circularImageView=new CircularImageView(this);
         circularImageView.setBackgroundResource(R.drawable.fifa);
 //        app:civ_border="false" />
-        outter3.addView(circularImageView);
+        circularImageView.setLayoutParams(circularImageViewConfig);
+
+        innerLayout2.addView(circularImageView);
+
+        LinearLayout.LayoutParams innerLayout3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout innerLayout3=new LinearLayout(this);
+        innerLayout3.setOrientation(LinearLayout.VERTICAL);
+        innerLayout3.setLayoutParams(innerLayout3Config);
+        innerLayout2.addView(innerLayout3);
 
 
-
-        LinearLayout.LayoutParams outter4Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        outter4.setLayoutParams(outter4Config);
-        outter4.setOrientation(LinearLayout.VERTICAL);
-        outter3.addView(outter4);
-
-
-        LinearLayout.LayoutParams textView2Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        textView2.setLayoutParams(textView2Config);
-        textView2.setText("2018 FIFA World Cup Russia™");
-        textView2.setTextColor(R.color.grey_90);
-        textView2.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
-        textView2.setGravity(Gravity.CENTER_VERTICAL);
-        outter4.addView(textView2);
-
-        LinearLayout.LayoutParams imageView1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        imageView1.setLayoutParams(imageView1Config);
-        imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView1.setBackgroundResource(R.drawable.ronaldo);
-
-        LinearLayout.LayoutParams textView3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        textView3.setLayoutParams(textView2Config);
-      //  textView3.setBackground(R.color.grey_5);
-//        android:layout_marginTop="@dimen/spacing_medium"
-
-
-
-
-        LinearLayout.LayoutParams outter5Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, R.dimen.spacing_xxlarge);
-        outter5.setLayoutParams(outter5Config);
-        outter5.setOrientation(LinearLayout.HORIZONTAL);
-        outter5.setGravity(Gravity.CENTER_VERTICAL);
-        outter5.setPadding(R.dimen.spacing_large,0,R.dimen.spacing_large,0);
-
-
+        LinearLayout.LayoutParams textView1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView textView1=new TextView(this);
+        textView1.setText("Programmatically Set Title");
+        textView1.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
+        textView1.setTextColor(R.color.grey_90);
+        textView1.setGravity(Gravity.CENTER_VERTICAL);
+        textView1.setLayoutParams(textView1Config);
+        innerLayout3.addView(textView1);
 
 
 
