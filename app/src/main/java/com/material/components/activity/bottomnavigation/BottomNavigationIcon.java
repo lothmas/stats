@@ -245,61 +245,60 @@ public class BottomNavigationIcon extends AppCompatActivity {
         outter1 = findViewById(R.id.outter1);
 
 
-//        CardView cardView1 = new CardView(new ContextThemeWrapper(this, R.style.card_view_style), null, 0);
-//        CardView.LayoutParams cardView1Config = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.WRAP_CONTENT);
-//        cardView1.setRadius(R.dimen.cardview_card_corner_radius);
-//        cardView1.setElevation(R.dimen.cardview_card_elevation);
-//        cardView1.setLayoutParams(cardView1Config);
-//
-//
-//        LinearLayout.LayoutParams innerLayout1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        LinearLayout innerLayout1 = new LinearLayout(this);
-//        innerLayout1.setOrientation(LinearLayout.VERTICAL);
-//        innerLayout1.setLayoutParams(innerLayout1Config);
-//
-//
-//
-//        LinearLayout.LayoutParams innerLayout2Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        innerLayout2Config.setMargins(R.dimen.spacing_large, R.dimen.spacing_large, R.dimen.spacing_large, R.dimen.spacing_medium);
-//        LinearLayout innerLayout2 = new LinearLayout(this);
-//        innerLayout2.setGravity(Gravity.CENTER_VERTICAL);
-//        innerLayout2.setOrientation(LinearLayout.HORIZONTAL);
-//        innerLayout2.setLayoutParams(innerLayout2Config);
-//
-//
-//        LinearLayout.LayoutParams circularImageViewConfig = new LinearLayout.LayoutParams(R.dimen.spacing_xxlarge, R.dimen.spacing_xxlarge);
-//        CircularImageView circularImageView = new CircularImageView(this);
-//        circularImageView.setImageResource(R.drawable.fifa);
-//        circularImageView.setForeground(new ColorDrawable(getResources().getColor(R.color.overlay_light_20)));
-////        app:civ_border="false" />
-//        circularImageView.setLayoutParams(circularImageViewConfig);
-//
-//
-//        LinearLayout.LayoutParams innerLayout3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        LinearLayout innerLayout3 = new LinearLayout(this);
-//        innerLayout3.setOrientation(LinearLayout.VERTICAL);
-//        innerLayout3.setLayoutParams(innerLayout3Config);
-//
-//
-//
-//        LinearLayout.LayoutParams textView1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        TextView textView1 = new TextView(this);
-//        textView1.setText("Programmatically Set Title");
-//        textView1.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
-//        textView1.setTextColor(R.color.grey_90);
-//        textView1.setGravity(Gravity.CENTER_VERTICAL);
-//        textView1.setLayoutParams(textView1Config);
-//
-//        innerLayout3.addView(textView1);
-//
-//        innerLayout2.addView(innerLayout3);
-//
-//        innerLayout2.addView(circularImageView);
-//
-//
-//        innerLayout1.addView(innerLayout2);
-//
-//        cardView1.addView(innerLayout1);
+        CardView cardView1 = new CardView(new ContextThemeWrapper(this, R.style.card_view_style), null, 0);
+        cardView1.setRadius(R.dimen.cardview_card_corner_radius);
+        cardView1.setElevation(R.dimen.cardview_card_elevation);
+
+
+
+        LinearLayout.LayoutParams innerLayout1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout innerLayout1 = new LinearLayout(this);
+        innerLayout1.setOrientation(LinearLayout.VERTICAL);
+        innerLayout1.setLayoutParams(innerLayout1Config);
+
+
+
+        LinearLayout.LayoutParams innerLayout2Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        innerLayout2Config.setMargins(R.dimen.spacing_large, R.dimen.spacing_large, R.dimen.spacing_large, R.dimen.spacing_medium);
+        LinearLayout innerLayout2 = new LinearLayout(this);
+        innerLayout2.setGravity(Gravity.CENTER_VERTICAL);
+        innerLayout2.setOrientation(LinearLayout.HORIZONTAL);
+        innerLayout2.setLayoutParams(innerLayout2Config);
+
+
+        LinearLayout.LayoutParams circularImageViewConfig = new LinearLayout.LayoutParams(R.dimen.spacing_xxlarge, R.dimen.spacing_xxlarge);
+        CircularImageView circularImageView = new CircularImageView(this);
+        circularImageView.setImageResource(R.drawable.fifa);
+        circularImageView.setForeground(new ColorDrawable(getResources().getColor(R.color.overlay_light_20)));
+//        app:civ_border="false" />
+        circularImageView.setLayoutParams(circularImageViewConfig);
+
+
+        LinearLayout.LayoutParams innerLayout3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout innerLayout3 = new LinearLayout(this);
+        innerLayout3.setOrientation(LinearLayout.VERTICAL);
+        innerLayout3.setLayoutParams(innerLayout3Config);
+
+
+
+        LinearLayout.LayoutParams textView1Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView textView1 = new TextView(this);
+        textView1.setText("Programmatically Set Title");
+        textView1.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead);
+        textView1.setTextColor(R.color.grey_90);
+        textView1.setGravity(Gravity.CENTER_VERTICAL);
+        textView1.setLayoutParams(textView1Config);
+
+        innerLayout3.addView(textView1);
+
+        innerLayout2.addView(innerLayout3);
+
+        innerLayout2.addView(circularImageView);
+
+
+        innerLayout1.addView(innerLayout2);
+
+        cardView1.addView(innerLayout1);
 //
 //        outter1.addView(cardView1);
 //
@@ -325,13 +324,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //        LinearLayout.LayoutParams innerLdayout3Config = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for(int a=0;a<3;a++) {
+        for(int a=0;a<1;a++) {
             CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
 //            outter1.addView(childLayout);
             outter1.addView(cardView);
 
         }
 
+        outter1.addView(cardView1);
 
 
 
