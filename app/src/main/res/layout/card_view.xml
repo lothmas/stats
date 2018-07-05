@@ -3,16 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/activity_bottom_navigation_icon"
-
     app:cardCornerRadius="0dp"
     app:cardElevation="4dp"
     style="@style/cardViewStyle">
 
+    <!--layout1-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!--layout2-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,40 +28,47 @@
                 android:layout_width="@dimen/spacing_xxlarge"
                 android:layout_height="@dimen/spacing_xxlarge"
                 android:foreground="@color/overlay_light_20"
-                android:src="@drawable/fifa"
                 app:civ_border="false" />
 
             <View
                 android:layout_width="@dimen/spacing_large"
                 android:layout_height="0dp" />
 
+
+
+
+            <!--layout3-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:text="2018 FIFA World Cup Russia™"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
-                <!--android:textColor="@color/grey_90" />-->
+                <!--TextView1-->
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Title Header"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/grey_90" />
 
+                <!--layout4-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:orientation="horizontal">
 
+                    <!--TextView2-->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="owner "
+                        android:text="@string/owner_title"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textColor="@color/grey_40" />
 
+                    <!--TextView3-->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -76,6 +84,7 @@
 
         </LinearLayout>
 
+        <!--TextView4-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,11 +94,12 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/grey_60" />
 
+        <!--Image1  MainPic-->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ronaldo" />
+            />
 
         <View
             android:layout_width="match_parent"
@@ -97,6 +107,7 @@
             android:layout_marginTop="@dimen/spacing_medium"
             android:background="@color/grey_5" />
 
+        <!--layout5-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_xxlarge"
@@ -105,20 +116,22 @@
             android:paddingLeft="@dimen/spacing_large"
             android:paddingRight="@dimen/spacing_large">
 
+            <!--layout6-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <!--ImageButton1  voteImage-->
                 <ImageView
                     android:layout_width="@dimen/spacing_mlarge"
                     android:layout_height="@dimen/spacing_mlarge"
                     android:layout_marginEnd="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
-                    android:tint="@color/light_green_300"
-                    app:srcCompat="@drawable/ic_thumb_up" />
+                    app:srcCompat="@drawable/cast1" />
 
+                <!--TextView5-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,7 +143,7 @@
             </LinearLayout>
 
             <View
-                android:layout_width="@dimen/spacing_large"
+                android:layout_width="@dimen/spacing_xlarge"
                 android:layout_height="0dp" />
 
             <LinearLayout
@@ -158,13 +171,41 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="end|right"
-                android:text="3h ago"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/grey_40" />
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="@dimen/spacing_mlarge"
+                    android:layout_height="@dimen/spacing_mlarge"
+                    android:layout_marginEnd="@dimen/spacing_middle"
+                    android:layout_marginRight="@dimen/spacing_middle"
+                    android:tint="@color/light_blue_400"
+                    app:srcCompat="@drawable/ic_textsms" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="4 Comments"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/grey_40" />
+
+            </LinearLayout>
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end|right"
+            android:text="3h ago"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/grey_40" />
+
 
         </LinearLayout>
 

@@ -60,9 +60,7 @@
                 android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/spacing_middle" />
+                <!--<include layout="@layout/view_spacer" />-->
 
                 <!--<include layout="@layout/card_view" />-->
 
