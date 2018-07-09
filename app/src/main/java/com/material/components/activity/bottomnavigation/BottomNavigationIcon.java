@@ -2,11 +2,14 @@ package com.material.components.activity.bottomnavigation;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -18,6 +21,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,9 +34,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.material.components.R;
 import com.material.components.utils.Tools;
@@ -52,8 +58,10 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private CardView cardView1;
     private CircularImageView circularImageView1;
     private View view;
-
-
+    private MediaController mediaControls;
+    private int position = 0;
+    private ProgressDialog progressDialog;
+    VideoView videoView;
     private ImageButton ImageButtonSRC;
     ;
 
@@ -176,7 +184,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         outter1 = findViewById(R.id.outter1);
         LinearLayout.LayoutParams linearLayout16_LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 10);
-        for (int a = 0; a < 6; a++) {
+       int loopNumbers=5;
+        for (int a = 0; a < loopNumbers; a++) {
 
 
             CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
@@ -206,7 +215,73 @@ public class BottomNavigationIcon extends AppCompatActivity {
             Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
             image1.setImageDrawable(mainPic);
 
+//            videoView = (VideoView) layout1.getChildAt(2);
+//            videoView.setVideoPath("/BMWvsMercedes2.mp4");
+//
+//
+//            //set the media controller buttons
+//            if (mediaControls == null) {
+//                mediaControls = new MediaController(this);
+//            }
+//
+//
+//
+//            // create a progress bar while the video file is loading
+//            progressDialog = new ProgressDialog(this);
+//            // set a title for the progress bar
+//            progressDialog.setTitle("JavaCodeGeeks Android Video View Example");
+//            // set a message for the progress bar
+//            progressDialog.setMessage("Loading...");
+//            //set the progress bar not cancelable on users' touch
+//            progressDialog.setCancelable(false);
+//            // show the progress bar
+//          //  progressDialog.show();
+//
+//            try {
+//                //set the media controller in the VideoView
+//                videoView.setMediaController(mediaControls);
+//
+//                //set the uri of the video to be played
+//                String videoLocation ="android.resource://BMWvsMercedes1.3";
+////                myVideoView.setVideoURI(Uri.parse("" + getPackageName() + "/" + R.raw.kitkat));
+//                videoView.setVideoURI(Uri.parse(videoLocation));
+//
+//            } catch (Exception e) {
+//                Log.e("Error", e.getMessage());
+//                e.printStackTrace();
+//            }
+//
+//            videoView.requestFocus();
+//            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+//            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//
+//                public void onPrepared(MediaPlayer mediaPlayer) {
+//                    // close the progress bar and play the video
+//                    progressDialog.dismiss();
+//                    //if we have a position on savedInstanceState, the video playback should start from here
+//                    videoView.seekTo(position);
+//                    if (position == 0) {
+//                        videoView.start();
+//                    } else {
+//                        //if we come from a resumed activity, video playback will be paused
+//                        videoView.pause();
+//                    }
+//                }
+//            });
+
+
+            LinearLayout.LayoutParams btwnViewConfig =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
+            LinearLayout.LayoutParams endViewConfig =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+
             LinearLayout layout5= (LinearLayout) layout1.getChildAt(4);
+            View endView=(View) layout1.getChildAt(5);
+            if(loopNumbers-1==a){
+                endView.setLayoutParams(endViewConfig);
+
+            }else {
+                endView.setLayoutParams(btwnViewConfig);
+            }
+
             LinearLayout layout6= (LinearLayout) layout5.getChildAt(0);
 
 
@@ -223,5 +298,21 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        //we use onSaveInstanceState in order to store the video playback position for orientation change
+//        savedInstanceState.putInt("Position", videoView.getCurrentPosition());
+   //     videoView.pause();
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+     //   super.onRestoreInstanceState(savedInstanceState);
+        //we use onRestoreInstanceState in order to play the video playback from the stored position
+      //  position = savedInstanceState.getInt("Position");
+      //  videoView.seekTo(position);
     }
 }
