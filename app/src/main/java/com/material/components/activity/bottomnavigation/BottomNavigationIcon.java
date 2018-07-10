@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,15 +30,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
+import com.material.trending.Trending;
+import com.material.trending.TrendingMasterObject;
 import com.material.utility.JsonMessageSender;
+import com.material.utility.JsonObjectConversion;
 import com.material.utility.SetConnection;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -44,7 +51,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.util.Base64;
+import java.util.List;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
@@ -62,11 +72,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private ProgressDialog progressDialog;
     VideoView videoView;
     private ImageButton ImageButtonSRC;
-    SetConnection setConnection=new SetConnection();
-    JsonMessageSender jsonMessageSender=new JsonMessageSender();
+    SetConnection setConnection = new SetConnection();
+    JsonMessageSender jsonMessageSender = new JsonMessageSender();
+    LayoutInflater inflater;
+    LayoutInflater inflater1;
 
     private RequestQueue queue;
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -181,114 +192,113 @@ public class BottomNavigationIcon extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void trendingCardView() {
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LayoutInflater inflater1 = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+         inflater1 = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         outter1 = findViewById(R.id.outter1);
-        LinearLayout.LayoutParams linearLayout16_LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 10);
-//        String toUrl="http://localhost:8080/trending";
-//        HttpURLConnection conn = null;
-//        try {
-//            conn = setConnection.requestGenericConfigurations(toUrl,"POST");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        String jsonString = jsonMessageSender.sendDataMessage(conn,"{ \"memberID\":\"John\"}");
+        fetchResults();
 
 
-
-       int loopNumbers=5;
-        for (int a = 0; a < loopNumbers; a++) {
-
-
-            CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
-            LinearLayout layout1= (LinearLayout) cardView.getChildAt(0);
-            LinearLayout layout2= (LinearLayout) layout1.getChildAt(0);
-
-            CircularImageView circularImageView= (CircularImageView) layout2.getChildAt(0);
-            Drawable profilePic = getResources().getDrawable(R.drawable.fifa);
-            circularImageView.setImageDrawable(profilePic);
-
-            LinearLayout layout3= (LinearLayout) layout2.getChildAt(2);
-
-            TextView textView1= (TextView) layout3.getChildAt(0);
-            textView1.setText("New Defination"+a);
-
-            LinearLayout layout4= (LinearLayout) layout3.getChildAt(1);
-            TextView textView2= (TextView) layout4.getChildAt(0);
-            textView2.setText(R.string.owner_title);
-
-            TextView textView3= (TextView) layout4.getChildAt(1);
-            textView3.setText(" "+"Owner Name");
-
-            TextView textView4= (TextView) layout1.getChildAt(1);
-            textView4.setText("Message Brief Discription, Narrative Statement. Who Will Win 2018 FIFA World Cup Russia™?.");
-
-            ImageView image1= (ImageView) layout1.getChildAt(2);
-            Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
-            image1.setImageDrawable(mainPic);
-
-            LinearLayout.LayoutParams btwnViewConfig =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
-            LinearLayout.LayoutParams endViewConfig =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
-
-            LinearLayout layout5= (LinearLayout) layout1.getChildAt(4);
-            View endView=(View) layout1.getChildAt(5);
-            if(loopNumbers-1==a){
-                endView.setLayoutParams(endViewConfig);
-
-            }else {
-                endView.setLayoutParams(btwnViewConfig);
-            }
-
-            LinearLayout layout6= (LinearLayout) layout5.getChildAt(0);
-
-
-
-            outter1.addView(cardView);
-
-            View view = (View) inflater1.inflate(R.layout.view_spacer, null);
-            outter1.addView(view);
-
-//            View view =outter1.getChildAt(0);
-//            view.setLayoutParams(linearLayout16_LayoutParams);
-//            outter1.removeViewAt(0);
-//            outter1.addView(view);
-
-            queue = Volley.newRequestQueue(this);
-            fetchResults();
-
-        }
 
     }
 
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
         String requestUrl = "http://192.168.250.1:8080/trending";
-        JsonArrayRequest request = new JsonArrayRequest(
-                requestUrl, successListener, failListener);
+//        JsonArrayRequest request = new JsonArrayRequest(
+//                requestUrl, successListener, failListener);
+//
+//        // Queue the request to do the sending and receiving
+//        queue.add(request);
 
-        // Queue the request to do the sending and receiving
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                requestUrl,
+                listener,
+                errorListener);
+        queue = Volley.newRequestQueue(this);
+
         queue.add(request);
     }
 
-    final Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+
+    Response.Listener<String> listener = new Response.Listener<String>() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        public void onResponse(JSONArray response) {
-            try {
-                String query = response.getString(0);
+        public void onResponse(String response) {
 
-            } catch (JSONException e) {
+            JsonObjectConversion jsonConversion = new JsonObjectConversion();
+            TrendingMasterObject trendingMasterObject = (TrendingMasterObject) jsonConversion.jsonToObject(response, TrendingMasterObject.class);
+            List<Trending> trendingList=trendingMasterObject.getTrendingList();
+            int a = 0;
+            for (Trending trending : trendingList) {
 
-                e.printStackTrace();
+                CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
+                LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
+                LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
+
+//                CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
+//                try {
+//                    byte[] decodedString = Base64.getDecoder().decode(new String(trending.getProfilePic().getBytes()).getBytes("UTF-8"));
+//                    Drawable profilePic = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+//                    circularImageView.setImageDrawable(profilePic);
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+
+
+                LinearLayout layout3 = (LinearLayout) layout2.getChildAt(2);
+
+                TextView textView1 = (TextView) layout3.getChildAt(0);
+                textView1.setText(trending.getTitle());
+
+                LinearLayout layout4 = (LinearLayout) layout3.getChildAt(1);
+                TextView textView2 = (TextView) layout4.getChildAt(0);
+                textView2.setText(R.string.owner_title);
+
+                TextView textView3 = (TextView) layout4.getChildAt(1);
+                textView3.setText("  " + trending.getOwner().toLowerCase());
+
+                TextView textView4 = (TextView) layout1.getChildAt(1);
+                textView4.setText(trending.getDescription());
+
+                ImageView image1 = (ImageView) layout1.getChildAt(2);
+                Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
+                image1.setImageDrawable(mainPic);
+
+                LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
+                LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+
+                LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
+                View endView = (View) layout1.getChildAt(5);
+                if (trendingList.size() - 1 == a) {
+                    endView.setLayoutParams(endViewConfig);
+
+                } else {
+                    endView.setLayoutParams(btwnViewConfig);
+                }
+
+                LinearLayout layout6 = (LinearLayout) layout5.getChildAt(0);
+
+
+                outter1.addView(cardView);
+
+                View view = (View) inflater1.inflate(R.layout.view_spacer, null);
+                outter1.addView(view);
+
+                a++;
             }
         }
     };
 
-    final Response.ErrorListener failListener = new Response.ErrorListener() {
+    Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            error.printStackTrace();
+            if (error.networkResponse != null) {
+                System.out.print("Error Response code: " + error.networkResponse.statusCode);
+            }
+
         }
     };
 
@@ -297,14 +307,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         //we use onSaveInstanceState in order to store the video playback position for orientation change
 //        savedInstanceState.putInt("Position", videoView.getCurrentPosition());
-   //     videoView.pause();
+        //     videoView.pause();
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-     //   super.onRestoreInstanceState(savedInstanceState);
+        //   super.onRestoreInstanceState(savedInstanceState);
         //we use onRestoreInstanceState in order to play the video playback from the stored position
-      //  position = savedInstanceState.getInt("Position");
-      //  videoView.seekTo(position);
+        //  position = savedInstanceState.getInt("Position");
+        //  videoView.seekTo(position);
     }
 }
