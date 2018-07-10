@@ -4,48 +4,47 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.material.components.R;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
+import com.material.utility.JsonMessageSender;
+import com.material.utility.SetConnection;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import static android.support.v7.widget.CardView.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
@@ -63,7 +62,11 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private ProgressDialog progressDialog;
     VideoView videoView;
     private ImageButton ImageButtonSRC;
-    ;
+    SetConnection setConnection=new SetConnection();
+    JsonMessageSender jsonMessageSender=new JsonMessageSender();
+
+    private RequestQueue queue;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -178,12 +181,23 @@ public class BottomNavigationIcon extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void trendingCardView() {
-
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LayoutInflater inflater1 = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         outter1 = findViewById(R.id.outter1);
         LinearLayout.LayoutParams linearLayout16_LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, 10);
+//        String toUrl="http://localhost:8080/trending";
+//        HttpURLConnection conn = null;
+//        try {
+//            conn = setConnection.requestGenericConfigurations(toUrl,"POST");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String jsonString = jsonMessageSender.sendDataMessage(conn,"{ \"memberID\":\"John\"}");
+
+
+
        int loopNumbers=5;
         for (int a = 0; a < loopNumbers; a++) {
 
@@ -215,61 +229,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
             Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
             image1.setImageDrawable(mainPic);
 
-//            videoView = (VideoView) layout1.getChildAt(2);
-//            videoView.setVideoPath("/BMWvsMercedes2.mp4");
-//
-//
-//            //set the media controller buttons
-//            if (mediaControls == null) {
-//                mediaControls = new MediaController(this);
-//            }
-//
-//
-//
-//            // create a progress bar while the video file is loading
-//            progressDialog = new ProgressDialog(this);
-//            // set a title for the progress bar
-//            progressDialog.setTitle("JavaCodeGeeks Android Video View Example");
-//            // set a message for the progress bar
-//            progressDialog.setMessage("Loading...");
-//            //set the progress bar not cancelable on users' touch
-//            progressDialog.setCancelable(false);
-//            // show the progress bar
-//          //  progressDialog.show();
-//
-//            try {
-//                //set the media controller in the VideoView
-//                videoView.setMediaController(mediaControls);
-//
-//                //set the uri of the video to be played
-//                String videoLocation ="android.resource://BMWvsMercedes1.3";
-////                myVideoView.setVideoURI(Uri.parse("" + getPackageName() + "/" + R.raw.kitkat));
-//                videoView.setVideoURI(Uri.parse(videoLocation));
-//
-//            } catch (Exception e) {
-//                Log.e("Error", e.getMessage());
-//                e.printStackTrace();
-//            }
-//
-//            videoView.requestFocus();
-//            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
-//            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//
-//                public void onPrepared(MediaPlayer mediaPlayer) {
-//                    // close the progress bar and play the video
-//                    progressDialog.dismiss();
-//                    //if we have a position on savedInstanceState, the video playback should start from here
-//                    videoView.seekTo(position);
-//                    if (position == 0) {
-//                        videoView.start();
-//                    } else {
-//                        //if we come from a resumed activity, video playback will be paused
-//                        videoView.pause();
-//                    }
-//                }
-//            });
-
-
             LinearLayout.LayoutParams btwnViewConfig =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
             LinearLayout.LayoutParams endViewConfig =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
 
@@ -296,9 +255,42 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //            outter1.removeViewAt(0);
 //            outter1.addView(view);
 
+            queue = Volley.newRequestQueue(this);
+            fetchResults();
+
         }
 
     }
+
+    public void fetchResults() {
+        // Create a Request to get information from the provided URL.
+        String requestUrl = "http://192.168.250.1:8080/trending";
+        JsonArrayRequest request = new JsonArrayRequest(
+                requestUrl, successListener, failListener);
+
+        // Queue the request to do the sending and receiving
+        queue.add(request);
+    }
+
+    final Response.Listener<JSONArray> successListener = new Response.Listener<JSONArray>() {
+        @Override
+        public void onResponse(JSONArray response) {
+            try {
+                String query = response.getString(0);
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+    };
+
+    final Response.ErrorListener failListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            error.printStackTrace();
+        }
+    };
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

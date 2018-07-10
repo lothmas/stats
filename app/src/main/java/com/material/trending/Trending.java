@@ -1,4 +1,4 @@
-package com.trending;
+package com.material.trending;
 
 public class Trending {
     private String profilePic;
