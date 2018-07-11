@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -46,6 +49,7 @@ import com.material.utility.SetConnection;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,7 +80,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
     LayoutInflater inflater;
     LayoutInflater inflater1;
 
-    private RequestQueue queue;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -88,6 +91,27 @@ public class BottomNavigationIcon extends AppCompatActivity {
         initToolbar();
         initComponent();
         trendingCardView();
+
+
+
+//        Thread thread = new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                try  {
+//                    //Your code goes here
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        thread.start();
+
+
+
+
+
     }
 
     private void initToolbar() {
@@ -187,9 +211,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @SuppressLint("ResourceAsColor")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private void trendingCardView() {
          inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
          inflater1 = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -203,21 +225,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
-        String requestUrl = "http://192.168.1.40:8080/trending";
-//        JsonArrayRequest request = new JsonArrayRequest(
-//                requestUrl, successListener, failListener);
-//
-//        // Queue the request to do the sending and receiving
-//        queue.add(request);
-
-
+        String requestUrl = "http://192.168.88.223:8080/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
                 listener,
                 errorListener);
-        queue = Volley.newRequestQueue(this);
-
+        RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
     }
 
@@ -226,12 +240,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onResponse(String response) {
-            //StrictMode.setThreadPolicy(policy);
+          //
 
             JsonObjectConversion jsonConversion = new JsonObjectConversion();
             TrendingMasterObject trendingMasterObject = (TrendingMasterObject) jsonConversion.jsonToObject(response, TrendingMasterObject.class);
             List<Trending> trendingList=trendingMasterObject.getTrendingList();
             int a = 0;
+            StrictMode.setThreadPolicy(policy);
             for (Trending trending : trendingList) {
 
                 CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
@@ -330,5 +345,30 @@ public class BottomNavigationIcon extends AppCompatActivity {
         //we use onRestoreInstanceState in order to play the video playback from the stored position
         //  position = savedInstanceState.getInt("Position");
         //  videoView.seekTo(position);
+    }
+
+
+
+    public class AsyncTaskLoadImage  extends AsyncTask<String, String, Bitmap> {
+        private final static String TAG = "AsyncTaskLoadImage";
+        private ImageView imageView;
+        public AsyncTaskLoadImage(ImageView imageView) {
+            this.imageView = imageView;
+        }
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap bitmap = null;
+            try {
+                URL url = new URL(params[0]);
+                bitmap = BitmapFactory.decodeStream((InputStream)url.getContent());
+            } catch (IOException e) {
+            //    Log.e(TAG, e.getMessage());
+            }
+            return bitmap;
+        }
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
+        }
     }
 }
