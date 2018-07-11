@@ -4,12 +4,11 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -34,7 +33,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
@@ -47,16 +45,17 @@ import com.material.utility.JsonObjectConversion;
 import com.material.utility.SetConnection;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.util.Base64;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class BottomNavigationIcon extends AppCompatActivity {
+
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    // @TODO remove non-thread network-connection;
+
 
     private TabLayout tab_layout;
     private ActionBar actionBar;
@@ -204,7 +203,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
-        String requestUrl = "http://192.168.250.1:8080/trending";
+        String requestUrl = "http://192.168.1.40:8080/trending";
 //        JsonArrayRequest request = new JsonArrayRequest(
 //                requestUrl, successListener, failListener);
 //
@@ -227,6 +226,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onResponse(String response) {
+            //StrictMode.setThreadPolicy(policy);
 
             JsonObjectConversion jsonConversion = new JsonObjectConversion();
             TrendingMasterObject trendingMasterObject = (TrendingMasterObject) jsonConversion.jsonToObject(response, TrendingMasterObject.class);
@@ -238,14 +238,19 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
                 LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
 
-//                CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
-//                try {
-//                    byte[] decodedString = Base64.getDecoder().decode(new String(trending.getProfilePic().getBytes()).getBytes("UTF-8"));
-//                    Drawable profilePic = new BitmapDrawable(getResources(), BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
-//                    circularImageView.setImageDrawable(profilePic);
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
+                CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
+
+                try {
+                    URL profilePicPath = new URL(trending.getProfilePic());
+                    Drawable profilePic = Drawable.createFromStream(profilePicPath.openStream(), "src");
+                    circularImageView.setImageDrawable(profilePic);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
                 LinearLayout layout3 = (LinearLayout) layout2.getChildAt(2);
@@ -264,8 +269,17 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 textView4.setText(trending.getDescription());
 
                 ImageView image1 = (ImageView) layout1.getChildAt(2);
-                Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
-                image1.setImageDrawable(mainPic);
+                try {
+                    URL thumb_u = new URL(trending.getMainDisplay());
+                    Drawable mainPic = Drawable.createFromStream(thumb_u.openStream(), "src");
+//                    Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
+                    image1.setImageDrawable(mainPic);
+
+                }
+                catch (Exception e) {
+                    String test="sds";
+                    // handle it
+                }
 
                 LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
                 LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
