@@ -29,7 +29,6 @@
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:layout_width="@dimen/spacing_xxlarge"
                 android:layout_height="@dimen/spacing_xxlarge"
-                android:foreground="@color/overlay_light_20"
                 app:civ_border="false" />
 
             <View
@@ -48,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:textStyle="normal|bold"
                     android:text="Title Header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_90" />
@@ -95,7 +95,7 @@
             android:textColor="@color/grey_60" />
 
         <!--Image1  MainPic-->
-        <ImageView
+        <VideoView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

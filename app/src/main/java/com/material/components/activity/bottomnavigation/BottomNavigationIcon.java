@@ -8,11 +8,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
@@ -67,14 +70,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private NestedScrollView nested_scroll_view;
     private CardView trendingCardView;
     private LinearLayout outter1;
-    private LinearLayout outter2;
+    private CoordinatorLayout profile;
     private CardView cardView1;
     private CircularImageView circularImageView1;
     private View view;
     private MediaController mediaControls;
     private int position = 0;
     private ProgressDialog progressDialog;
-    VideoView videoView;
     private ImageButton ImageButtonSRC;
     SetConnection setConnection = new SetConnection();
     JsonMessageSender jsonMessageSender = new JsonMessageSender();
@@ -84,12 +86,17 @@ public class BottomNavigationIcon extends AppCompatActivity {
     RequestQueue queue2;
 
 
+   // MediaController mediaController;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation_icon);
+
+        outter1 = findViewById(R.id.outter1);
+        profile = findViewById(R.id.profile);
 
         initToolbar();
         initComponent();
@@ -123,6 +130,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
+        profile.setVisibility(View.INVISIBLE);
         actionBar.setTitle("Trending");
         actionBar.setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.grey_20);
@@ -150,21 +158,37 @@ public class BottomNavigationIcon extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tab.getIcon().setColorFilter(getResources().getColor(R.color.deep_orange_500), PorterDuff.Mode.SRC_IN);
+
                 switch (tab.getPosition()) {
                     case 0:
                         actionBar.setTitle("Trending");
+                        outter1.setVisibility(View.VISIBLE);
+                        profile.setVisibility(View.INVISIBLE);
+
                         break;
                     case 1:
                         actionBar.setTitle("Explore");
+                        outter1.setVisibility(View.GONE);
+                        profile.setVisibility(View.INVISIBLE);
+
                         break;
                     case 2:
                         actionBar.setTitle("Post Vote");
+                        outter1.setVisibility(View.GONE);
+                        profile.setVisibility(View.INVISIBLE);
+
                         break;
                     case 3:
                         actionBar.setTitle("History");
+                        outter1.setVisibility(View.GONE);
+                        profile.setVisibility(View.INVISIBLE);
+
                         break;
                     case 4:
                         actionBar.setTitle("Profile");
+                        outter1.setVisibility(View.INVISIBLE);
+                        profile.setVisibility(View.VISIBLE);
+
                         break;
                 }
 
@@ -219,7 +243,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
          inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
          inflater1 = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        outter1 = findViewById(R.id.outter1);
         fetchResults();
 
 
@@ -296,32 +319,46 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 TextView textView4 = (TextView) layout1.getChildAt(1);
                 textView4.setText(trending.getDescription());
 
-                final ImageView image1 = (ImageView) layout1.getChildAt(2);
-                try {
 
-                    ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
-                            new Response.Listener<Bitmap>() {
-                                @Override
-                                public void onResponse(Bitmap bitmap) {
-                                    image1.setImageBitmap(bitmap);
-                                }
-                            }, 0, 0, null,
-                            new Response.ErrorListener() {
-                                public void onErrorResponse(VolleyError error) {
-                                    image1.setImageResource(R.drawable.cast3);
-                                }
-                            });
-                    queue1.add(threadMainPic);
+                if(trending.getDescriptionType()==1 || trending.getDescriptionType()==2) {
 
+                    final ImageView image1 = (ImageView) layout1.getChildAt(2);
+                    try {
+
+                        ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
+                                new Response.Listener<Bitmap>() {
+                                    @Override
+                                    public void onResponse(Bitmap bitmap) {
+                                        image1.setImageBitmap(bitmap);
+                                    }
+                                }, 0, 0, null,
+                                new Response.ErrorListener() {
+                                    public void onErrorResponse(VolleyError error) {
+                                        //@TODO load error message or image
+                                        image1.setImageResource(R.drawable.cast3);
+                                    }
+                                });
+                        queue1.add(threadMainPic);
+
+                    } catch (Exception e) {
+                        image1.setImageResource(R.drawable.cast3);
+                    }
                 }
-                catch (Exception e) {
-                    image1.setImageResource(R.drawable.cast3);
-                }
+//                if(trending.getDescriptionType()==2) {
+//                    VideoView videoView = (VideoView) layout1.getChildAt(3);
+//                    String path="http://www.ted.com/talks/download/video/8584/talk/761";
+//                    String path1=trending.getMainDisplay();
+//
+//                    Uri uri=Uri.parse(path1);
+//
+//                    videoView.setVideoURI(uri);
+//                    videoView.start();
+//                }
 
-                LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
+                    LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
                 LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
 
-                LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
+                LinearLayout layout5 = (LinearLayout) layout1.getChildAt(5);
                 View endView = (View) layout1.getChildAt(5);
                 if (trendingList.size() - 1 == a) {
                     endView.setLayoutParams(endViewConfig);
