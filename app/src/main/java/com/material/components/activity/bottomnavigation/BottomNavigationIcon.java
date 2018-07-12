@@ -36,6 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
@@ -79,6 +80,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
     JsonMessageSender jsonMessageSender = new JsonMessageSender();
     LayoutInflater inflater;
     LayoutInflater inflater1;
+    RequestQueue queue1;
+    RequestQueue queue2;
 
 
 
@@ -225,13 +228,15 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
-        String requestUrl = "http://192.168.88.223:8080/trending";
+        String requestUrl = "http://192.168.1.40:8080/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
                 listener,
                 errorListener);
         RequestQueue queue = Volley.newRequestQueue(this);
+        queue1=Volley.newRequestQueue(this);
+        queue2=Volley.newRequestQueue(this);
         queue.add(request);
     }
 
@@ -246,25 +251,33 @@ public class BottomNavigationIcon extends AppCompatActivity {
             TrendingMasterObject trendingMasterObject = (TrendingMasterObject) jsonConversion.jsonToObject(response, TrendingMasterObject.class);
             List<Trending> trendingList=trendingMasterObject.getTrendingList();
             int a = 0;
-            StrictMode.setThreadPolicy(policy);
             for (Trending trending : trendingList) {
 
                 CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
                 LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
                 LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
 
-                CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
+                final CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
 
                 try {
-                    URL profilePicPath = new URL(trending.getProfilePic());
-                    Drawable profilePic = Drawable.createFromStream(profilePicPath.openStream(), "src");
-                    circularImageView.setImageDrawable(profilePic);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+// Retrieves an image specified by the URL, displays it in the UI.
+                    ImageRequest threadProfilePic = new ImageRequest(trending.getProfilePic(),
+                            new Response.Listener<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap bitmap) {
+                                    circularImageView.setImageBitmap(bitmap);
+                                }
+                            }, 0, 0, null,
+                            new Response.ErrorListener() {
+                                public void onErrorResponse(VolleyError error) {
+                                    circularImageView.setImageResource(R.drawable.cast3);
+                                }
+                            });
+// Access the RequestQueue through your singleton class.
+                    queue1.add(threadProfilePic);
+                }  catch (Exception e) {
+                    circularImageView.setImageResource(R.drawable.cast3);
                 }
 
 
@@ -283,17 +296,26 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 TextView textView4 = (TextView) layout1.getChildAt(1);
                 textView4.setText(trending.getDescription());
 
-                ImageView image1 = (ImageView) layout1.getChildAt(2);
+                final ImageView image1 = (ImageView) layout1.getChildAt(2);
                 try {
-                    URL thumb_u = new URL(trending.getMainDisplay());
-                    Drawable mainPic = Drawable.createFromStream(thumb_u.openStream(), "src");
-//                    Drawable mainPic = getResources().getDrawable(R.drawable.ronaldo);
-                    image1.setImageDrawable(mainPic);
+
+                    ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
+                            new Response.Listener<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap bitmap) {
+                                    image1.setImageBitmap(bitmap);
+                                }
+                            }, 0, 0, null,
+                            new Response.ErrorListener() {
+                                public void onErrorResponse(VolleyError error) {
+                                    image1.setImageResource(R.drawable.cast3);
+                                }
+                            });
+                    queue1.add(threadMainPic);
 
                 }
                 catch (Exception e) {
-                    String test="sds";
-                    // handle it
+                    image1.setImageResource(R.drawable.cast3);
                 }
 
                 LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
