@@ -7,7 +7,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,10 +29,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -43,6 +48,7 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
+import com.material.components.activity.FullScreenMediaController;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
 import com.material.trending.Trending;
@@ -84,6 +90,15 @@ public class BottomNavigationIcon extends AppCompatActivity {
     LayoutInflater inflater1;
     RequestQueue queue1;
     RequestQueue queue2;
+    private MediaController mediaController;
+
+
+    private Button btnonce, btncontinuously, btnstop, btnplay;
+    private VideoView vv;
+    private MediaController mediacontroller;
+    private Uri uri;
+    private boolean isContinuously = false;
+    private ProgressBar progressBar;
 
 
    // MediaController mediaController;
@@ -97,6 +112,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         outter1 = findViewById(R.id.outter1);
         profile = findViewById(R.id.profile);
+        progressDialog = new ProgressDialog(this);
 
         initToolbar();
         initComponent();
@@ -251,7 +267,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
-        String requestUrl = "http://192.168.1.40:8080/trending";
+        String requestUrl = "http://192.168.1.40:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -274,10 +290,10 @@ public class BottomNavigationIcon extends AppCompatActivity {
             TrendingMasterObject trendingMasterObject = (TrendingMasterObject) jsonConversion.jsonToObject(response, TrendingMasterObject.class);
             List<Trending> trendingList=trendingMasterObject.getTrendingList();
             int a = 0;
-            for (Trending trending : trendingList) {
+            for (final Trending trending : trendingList) {
 
                 CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
-                LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
+                final LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
                 LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
 
                 final CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
@@ -318,47 +334,101 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
                 TextView textView4 = (TextView) layout1.getChildAt(1);
                 textView4.setText(trending.getDescription());
+                final VideoView videoView = (VideoView) layout1.getChildAt(2);
 
 
-                if(trending.getDescriptionType()==1 || trending.getDescriptionType()==2) {
+                if(trending.getDescriptionType()==1) {
 
-                    final ImageView image1 = (ImageView) layout1.getChildAt(2);
                     try {
 
                         ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
                                 new Response.Listener<Bitmap>() {
                                     @Override
                                     public void onResponse(Bitmap bitmap) {
-                                        image1.setImageBitmap(bitmap);
+//                                        image1.setImageBitmap(bitmap);
+                                        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                                        int sdk = android.os.Build.VERSION.SDK_INT;
+                                        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                            videoView.setBackgroundDrawable(drawable);
+                                        } else {
+                                            videoView.setBackground(drawable);
+                                        }
                                     }
                                 }, 0, 0, null,
                                 new Response.ErrorListener() {
                                     public void onErrorResponse(VolleyError error) {
                                         //@TODO load error message or image
-                                        image1.setImageResource(R.drawable.cast3);
+                                     //   image1.setImageResource(R.drawable.cast3);
                                     }
                                 });
                         queue1.add(threadMainPic);
 
                     } catch (Exception e) {
-                        image1.setImageResource(R.drawable.cast3);
+                      //  image1.setImageResource(R.drawable.cast3);
                     }
                 }
-//                if(trending.getDescriptionType()==2) {
-//                    VideoView videoView = (VideoView) layout1.getChildAt(3);
-//                    String path="http://www.ted.com/talks/download/video/8584/talk/761";
-//                    String path1=trending.getMainDisplay();
-//
-//                    Uri uri=Uri.parse(path1);
-//
-//                    videoView.setVideoURI(uri);
-//                    videoView.start();
-//                }
+
+
+                if(trending.getDescriptionType()==2) {
+
+                            Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                try  {
+                    String fullScreen =  getIntent().getStringExtra("fullScreenInd");
+                    if("y".equals(fullScreen)){
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                        getSupportActionBar().hide();
+                    }
+
+                    Uri videoUri = Uri.parse(trending.getMainDisplay());
+
+                    videoView.setVideoURI(videoUri);
+
+                    mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
+                    mediaController.setAnchorView(videoView);
+                    videoView.setMediaController(mediaController);
+
+
+                    videoView.requestFocus();
+                    //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            // close the progress bar and play the video
+                            progressDialog.dismiss();
+                            //if we have a position on savedInstanceState, the video playback should start from here
+                            videoView.seekTo(position);
+                            if (position == 0) {
+                            } else {
+                                //if we come from a resumed activity, video playback will be paused
+                                videoView.pause();
+                            }
+                        }
+                    });
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+        thread.start();
+
+                }
+
+
 
                     LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
                 LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
 
-                LinearLayout layout5 = (LinearLayout) layout1.getChildAt(5);
+                LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
                 View endView = (View) layout1.getChildAt(5);
                 if (trendingList.size() - 1 == a) {
                     endView.setLayoutParams(endViewConfig);
