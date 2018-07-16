@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_vote"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_bottom_navigation_icon">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+
+        <ImageButton
+            android:id="@+id/bt_close"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@color/grey_40"
+            app:srcCompat="@drawable/ic_close" />
+
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutDots"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:gravity="center|top"
+        android:orientation="horizontal" />
+    <!--<include layout="@layout/select_stats_to_pull" />-->
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        style="@style/RippleStyleBlack"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:background="@color/mdtp_white"
+        android:orientation="vertical">
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_next"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:background="@color/blue_200"-->
+            <!--android:text="@string/NEXT"-->
+            <!--android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textStyle="bold" />-->
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            android:layout_width="233dp"
+            android:layout_height="45dp"
+            android:layout_margin="@dimen/spacing_medium"
+            android:background="@drawable/btn_rounded_accent"
+            android:gravity="center"
+            android:text="@string/NEXT"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white" />
+
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+</LinearLayout>
