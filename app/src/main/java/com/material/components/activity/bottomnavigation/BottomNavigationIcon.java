@@ -41,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -74,7 +75,9 @@ import java.util.List;
 public class BottomNavigationIcon extends AppCompatActivity {
 
     private static final int MAX_STEP = 4;
+    LinearLayout stepper;
 
+    //    RelativeLayout stepper_linear_layour[];
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private Button btnNext;
@@ -96,6 +99,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
             R.drawable.img_wizard_2,
             R.drawable.wizard1
     };
+
+    private LinearLayout stepper_linear_layour[]={
+            stepper
+
+    };
+
 
     private TabLayout tab_layout;
     private ActionBar actionBar;
@@ -134,6 +143,10 @@ private LinearLayout createVote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.select_stats_to_pull);
+        stepper= findViewById(R.id.select_stats_to_pull);
+
 
         setContentView(R.layout.activity_bottom_navigation_icon);
 
@@ -606,6 +619,7 @@ private LinearLayout createVote;
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_stepper_wizard, container, false);
+            ((LinearLayout) view.findViewById(R.id.stepperLayout)).addView(stepper_linear_layour[position]);
             ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
             ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
             ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);
