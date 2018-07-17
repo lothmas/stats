@@ -80,7 +80,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     //    RelativeLayout stepper_linear_layour[];
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
-    private Button btnNext;
+    private TextView btnNext;
     private String about_title_array[] = {
             "Welcome To Stats",
             "Cast Votes",
@@ -143,10 +143,13 @@ private LinearLayout createVote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    //    setContentView(R.layout.activity_bottom_navigation_icon);
 
         setContentView(R.layout.select_stats_to_pull);
         stepper= findViewById(R.id.select_stats_to_pull);
 
+        setContentView(R.layout.item_stepper_wizard);
+        btnNext = (TextView) findViewById(R.id.btn_next);
 
         setContentView(R.layout.activity_bottom_navigation_icon);
 
@@ -199,10 +202,10 @@ private LinearLayout createVote;
     private void initComponent() {
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        btnNext = (Button) findViewById(R.id.btn_next);
+      //  btnNext = (Button) findViewById(R.id.btn_next);
 
         // adding bottom dots
-        bottomProgressDots(0);
+       // bottomProgressDots(0);
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -558,34 +561,34 @@ private LinearLayout createVote;
     }
 
 
-    private void bottomProgressDots(int current_index) {
-        LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        ImageView[] dots = new ImageView[MAX_STEP];
-
-        dotsLayout.removeAllViews();
-        for (int i = 0; i < dots.length; i++) {
-            dots[i] = new ImageView(this);
-            int width_height = 15;
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(width_height, width_height));
-            params.setMargins(10, 10, 10, 10);
-            dots[i].setLayoutParams(params);
-            dots[i].setImageResource(R.drawable.shape_circle);
-            dots[i].setColorFilter(getResources().getColor(R.color.grey_20), PorterDuff.Mode.SRC_IN);
-            dotsLayout.addView(dots[i]);
-        }
-
-        if (dots.length > 0) {
-            dots[current_index].setImageResource(R.drawable.shape_circle);
-            dots[current_index].setColorFilter(getResources().getColor(R.color.orange_400), PorterDuff.Mode.SRC_IN);
-        }
-    }
+//    private void bottomProgressDots(int current_index) {
+//        LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
+//        ImageView[] dots = new ImageView[MAX_STEP];
+//
+//        dotsLayout.removeAllViews();
+//        for (int i = 0; i < dots.length; i++) {
+//            dots[i] = new ImageView(this);
+//            int width_height = 15;
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(width_height, width_height));
+//            params.setMargins(10, 10, 10, 10);
+//            dots[i].setLayoutParams(params);
+//            dots[i].setImageResource(R.drawable.shape_circle);
+//            dots[i].setColorFilter(getResources().getColor(R.color.grey_20), PorterDuff.Mode.SRC_IN);
+//            dotsLayout.addView(dots[i]);
+//        }
+//
+//        if (dots.length > 0) {
+//            dots[current_index].setImageResource(R.drawable.shape_circle);
+//            dots[current_index].setColorFilter(getResources().getColor(R.color.orange_400), PorterDuff.Mode.SRC_IN);
+//        }
+//    }
 
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(final int position) {
-            bottomProgressDots(position);
+         //   bottomProgressDots(position);
 
             if (position == about_title_array.length - 1) {
                 btnNext.setText(getString(R.string.GOT_IT));
@@ -619,10 +622,10 @@ private LinearLayout createVote;
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_stepper_wizard, container, false);
-            ((LinearLayout) view.findViewById(R.id.stepperLayout)).addView(stepper_linear_layour[position]);
-            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
-            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
-            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);
+         //   ((Button) view.findViewById(R.id.pop)).setText(about_title_array[position]);
+//            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
+//            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
+//            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);
 
 
 
@@ -646,6 +649,13 @@ private LinearLayout createVote;
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
             container.removeView(view);
+        }
+    }
+
+    public void genreClick(View view) {
+        if (view instanceof Button) {
+            Button b = (Button) view;
+            b.setSelected(!b.isSelected());
         }
     }
 

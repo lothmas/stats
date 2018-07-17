@@ -32,20 +32,12 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutDots"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:gravity="center|top"
-        android:orientation="horizontal" />
     <!--<include layout="@layout/select_stats_to_pull" />-->
 
     <com.balysv.materialripple.MaterialRippleLayout
         style="@style/RippleStyleBlack"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="0dp"
         android:background="@color/mdtp_white"
         android:orientation="vertical">
 
