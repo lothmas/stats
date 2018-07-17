@@ -88,16 +88,16 @@ public class BottomNavigationIcon extends AppCompatActivity {
             "Get Stats"
     };
     private String about_description_array[] = {
-            "Separate Facts From Fiction, by Compiling Submitted Data and providing factual Statistics.",
-            "Make A Decision Or Express an Opinion",
-            "Use App To Make Suggestion of Someone Or something",
-            "Users Contribute We Provide Statistical Facts & You Make Informed Decisions",
+            "swipe right",
+            "left | swipe | right",
+            "left | swipe | right",
+            "done",
     };
     private int about_images_array[] = {
-            R.drawable.wizard12,
-            R.drawable.img_no_feed,
-            R.drawable.img_wizard_2,
-            R.drawable.wizard1
+            R.drawable.swipe_right,
+            R.drawable.swipe,
+            R.drawable.swipe,
+            R.drawable.swipe_done
     };
 
     private LinearLayout stepper_linear_layour[]={
@@ -349,7 +349,8 @@ private LinearLayout createVote;
 
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
-        String requestUrl = "http://192.168.1.40:8090/trending";
+        //home 192.168.88.223 , work 192.168.1.40
+        String requestUrl = "http://192.168.88.223:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -624,8 +625,8 @@ private LinearLayout createVote;
             View view = layoutInflater.inflate(R.layout.item_stepper_wizard, container, false);
          //   ((Button) view.findViewById(R.id.pop)).setText(about_title_array[position]);
 //            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
-//            ((TextView) view.findViewById(R.id.description)).setText(about_description_array[position]);
-//            ((ImageView) view.findViewById(R.id.image)).setImageResource(about_images_array[position]);
+            ((TextView) view.findViewById(R.id.btn_next)).setText(about_description_array[position]);
+            ((ImageView) view.findViewById(R.id.swipe_image)).setImageResource(about_images_array[position]);
 
 
 
@@ -655,6 +656,11 @@ private LinearLayout createVote;
     public void genreClick(View view) {
         if (view instanceof Button) {
             Button b = (Button) view;
+            if (b.isSelected()) {
+                b.setTextColor(getResources().getColor(R.color.orange_500));
+            } else {
+                b.setTextColor(Color.WHITE);
+            }
             b.setSelected(!b.isSelected());
         }
     }

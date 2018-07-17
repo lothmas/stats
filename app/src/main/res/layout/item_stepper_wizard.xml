@@ -3,251 +3,228 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/lyt_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/indigo_500"
-    >
+    android:layout_height="match_parent">
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="246dp"-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/indigo_700"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentInsetStartWithNavigation="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/flex_box"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="select statistics you like to gather"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+            android:textColor="@color/indigo_700" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can change these later"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="@color/grey_40" />
+
+    </LinearLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flex_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/spacing_large"
+        app:flexWrap="wrap"
+        app:justifyContent="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="race"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="age"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="gender"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="rating"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="likes"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="dis-likes"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="viewers"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="comments"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="location"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="profession"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="job class"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_orange_outline"
+            android:onClick="genreClick"
+            android:text="education"
+            android:textAllCaps="false"
+            android:textColor="@color/orange_500" />
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="@dimen/spacing_large"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:orientation="vertical">-->
+            <!--android:background="@drawable/btn_rounded_orange_outline"-->
+            <!--android:onClick="genreClick"-->
+            <!--android:text="New wave"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@color/orange_500" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/btn_rounded_orange_outline"-->
+            <!--android:onClick="genreClick"-->
+            <!--android:text="Folk"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@color/orange_500" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/btn_rounded_orange_outline"-->
+            <!--android:onClick="genreClick"-->
+            <!--android:text="Acoustic"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@color/orange_500" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/btn_rounded_orange_outline"-->
+            <!--android:onClick="genreClick"-->
+            <!--android:text="EDM"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="@color/orange_500" />-->
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="53dp"
+        android:background="@color/white_transparency"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="swipe right"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="#040404"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/swipe_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/swipe_right" />
 
 
-
-        <!--</LinearLayout>-->
-
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/flex_box"
-            android:layout_width="match_parent"
-            android:layout_height="538dp"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/spacing_xlarge"
-            app:flexWrap="wrap"
-            app:justifyContent="center">
-
-                <TextView
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:text="Select Statistics You Want To Gather"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-                    android:textColor="@android:color/white" />
-
-                <!--<TextView-->
-                <!--android:layout_width="300dp"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:text="Select Statistics You Want To Gather"-->
-                <!--android:textAlignment="center"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"-->
-                <!--android:textColor="@color/grey_10" />-->
-
-                <Button
-                    android:id="@+id/pop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="ethnicity"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_20" />
-
-                <Button
-                    android:id="@+id/age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="age"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="gender"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="rating"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="likes"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="dis-likes"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="viewers"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="comments"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="location"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="proffession"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="job classification"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_rounded_deep_orange"
-                    android:onClick="genreClick"
-                    android:text="education level"
-                    android:textAllCaps="false"
-                    android:textColor="@color/grey_10" />
-
-
-                <!--<GridView-->
-                <!--android:id="@+id/gridView1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:horizontalSpacing="10dp"-->
-                <!--android:numColumns="auto_fit"-->
-                <!--android:verticalSpacing="30dp" />-->
-
-
-                <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/btn_rounded_deep_orange"-->
-                <!--android:onClick="genreClick"-->
-                <!--android:text="Folk"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:textColor="@color/grey_10" />-->
-
-                <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/btn_rounded_deep_orange"-->
-                <!--android:onClick="genreClick"-->
-                <!--android:text="Acoustic"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:textColor="@color/grey_10" />-->
-
-                <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/btn_rounded_deep_orange"-->
-                <!--android:onClick="genreClick"-->
-                <!--android:text="EDM"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:textColor="@color/grey_10" />-->
-
-
-                <!--<ImageView-->
-                <!--android:id="@+id/image"-->
-                <!--android:layout_width="250dp"-->
-                <!--android:layout_height="250dp"-->
-                <!--android:padding="@dimen/spacing_xlarge"-->
-                <!--android:src="@drawable/img_wizard_1" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/title"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Ready to Travel"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
-                <!--android:textColor="@color/grey_80"-->
-                <!--android:textStyle="bold" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/description"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="@dimen/spacing_middle"-->
-                <!--android:text="Find Featured and Premium \nItem From Our Store"-->
-                <!--android:textAlignment="center"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
-                <!--android:textColor="@color/grey_60" />-->
-                <GridView
-                    android:id="@+id/gridView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:horizontalSpacing="10dp"
-                    android:numColumns="auto_fit"
-                    android:verticalSpacing="30dp" />
-        </com.google.android.flexbox.FlexboxLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="62dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="53dp"
-            android:background="@color/overlay_dark_10"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_alignParentLeft="true">
-
-                <TextView
-                    android:id="@+id/btn_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/NEXT"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@android:color/white" />
-
-        </LinearLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>
