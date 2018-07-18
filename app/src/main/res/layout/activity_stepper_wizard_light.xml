@@ -29,14 +29,14 @@
 
     <!--</RelativeLayout>-->
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/layoutDots"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:gravity="center|top"-->
-        <!--android:orientation="horizontal" />-->
+    <LinearLayout
+        android:id="@+id/layoutDots"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:gravity="center|top"
+        android:orientation="horizontal" />
 
     <!--<com.balysv.materialripple.MaterialRippleLayout-->
         <!--style="@style/RippleStyleBlack"-->

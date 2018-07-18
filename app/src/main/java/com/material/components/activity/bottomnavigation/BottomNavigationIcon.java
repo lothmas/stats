@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -26,6 +27,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -74,6 +76,11 @@ import java.util.List;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
+    private ProgressBar progress_bar;
+    private LinearLayout lyt_no_connection;
+    private AppCompatButton bt_retry;
+
+
     private static final int MAX_STEP = 4;
     LinearLayout stepper;
 
@@ -100,12 +107,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
             R.drawable.swipe_done
     };
 
-    private LinearLayout stepper_linear_layour[]={
+    private LinearLayout stepper_linear_layour[] = {
             stepper
 
     };
 
-
+    private boolean noConnection;
     private TabLayout tab_layout;
     private ActionBar actionBar;
     private NestedScrollView nested_scroll_view;
@@ -134,7 +141,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private Uri uri;
     private boolean isContinuously = false;
     private ProgressBar progressBar;
-private LinearLayout createVote;
+    private LinearLayout createVote;
+    private LinearLayout noInternet;
 
     // MediaController mediaController;
 
@@ -143,10 +151,10 @@ private LinearLayout createVote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //    setContentView(R.layout.activity_bottom_navigation_icon);
+        //    setContentView(R.layout.activity_bottom_navigation_icon);
 
         setContentView(R.layout.select_stats_to_pull);
-        stepper= findViewById(R.id.select_stats_to_pull);
+        stepper = findViewById(R.id.select_stats_to_pull);
 
         setContentView(R.layout.item_stepper_wizard);
         btnNext = (TextView) findViewById(R.id.btn_next);
@@ -155,8 +163,19 @@ private LinearLayout createVote;
 
         outter1 = findViewById(R.id.outter1);
         profile = findViewById(R.id.profile);
-        createVote=findViewById(R.id.create_vote);
+        createVote = findViewById(R.id.create_vote);
+        noInternet = findViewById(R.id.no_internet);
         progressDialog = new ProgressDialog(this);
+
+        //////////////////////////////
+        progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
+        lyt_no_connection = (LinearLayout) findViewById(R.id.lyt_no_connection);
+        bt_retry = (AppCompatButton) findViewById(R.id.bt_retry);
+
+        progress_bar.setVisibility(View.GONE);
+        lyt_no_connection.setVisibility(View.VISIBLE);
+        ////////////////////////
+
 
         Tools.setSystemBarColor(this, R.color.grey_5);
         Tools.setSystemBarLight(this);
@@ -192,6 +211,8 @@ private LinearLayout createVote;
         actionBar = getSupportActionBar();
         profile.setVisibility(View.INVISIBLE);
         createVote.setVisibility(View.INVISIBLE);
+        noInternet.setVisibility(View.INVISIBLE);
+
         actionBar.setTitle("Trending");
         actionBar.setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.grey_20);
@@ -202,10 +223,10 @@ private LinearLayout createVote;
     private void initComponent() {
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-      //  btnNext = (Button) findViewById(R.id.btn_next);
+        //  btnNext = (Button) findViewById(R.id.btn_next);
 
         // adding bottom dots
-       // bottomProgressDots(0);
+        // bottomProgressDots(0);
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -255,18 +276,25 @@ private LinearLayout createVote;
             public void onTabSelected(TabLayout.Tab tab) {
                 tab.getIcon().setColorFilter(getResources().getColor(R.color.deep_orange_500), PorterDuff.Mode.SRC_IN);
 
+                if (!noConnection) {
+                    noInternet.setVisibility(View.VISIBLE);
+                }
+
                 switch (tab.getPosition()) {
                     case 0:
                         actionBar.setTitle("Trending");
                         outter1.setVisibility(View.VISIBLE);
                         profile.setVisibility(View.INVISIBLE);
                         createVote.setVisibility(View.INVISIBLE);
+                        // noInternet.setVisibility(View.INVISIBLE);
+
                         break;
                     case 1:
                         actionBar.setTitle("Explore");
                         outter1.setVisibility(View.GONE);
                         profile.setVisibility(View.INVISIBLE);
                         createVote.setVisibility(View.INVISIBLE);
+                        noInternet.setVisibility(View.INVISIBLE);
 
                         break;
                     case 2:
@@ -274,6 +302,7 @@ private LinearLayout createVote;
                         outter1.setVisibility(View.GONE);
                         profile.setVisibility(View.INVISIBLE);
                         createVote.setVisibility(View.VISIBLE);
+                        noInternet.setVisibility(View.INVISIBLE);
 
                         break;
                     case 3:
@@ -281,6 +310,7 @@ private LinearLayout createVote;
                         outter1.setVisibility(View.GONE);
                         profile.setVisibility(View.INVISIBLE);
                         createVote.setVisibility(View.INVISIBLE);
+                        noInternet.setVisibility(View.INVISIBLE);
 
                         break;
                     case 4:
@@ -288,6 +318,7 @@ private LinearLayout createVote;
                         outter1.setVisibility(View.INVISIBLE);
                         profile.setVisibility(View.VISIBLE);
                         createVote.setVisibility(View.INVISIBLE);
+                        noInternet.setVisibility(View.INVISIBLE);
 
                         break;
                 }
@@ -317,6 +348,24 @@ private LinearLayout createVote;
 
         Tools.setSystemBarColor(this, R.color.grey_5);
         Tools.setSystemBarLight(this);
+
+
+        bt_retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                progress_bar.setVisibility(View.VISIBLE);
+                lyt_no_connection.setVisibility(View.GONE);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progress_bar.setVisibility(View.GONE);
+                        lyt_no_connection.setVisibility(View.VISIBLE);
+                        trendingCardView();
+                    }
+                }, 1000);
+            }
+        });
     }
 
 
@@ -350,7 +399,7 @@ private LinearLayout createVote;
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
         //home 192.168.88.223 , work 192.168.1.40
-        String requestUrl = "http://192.168.88.223:8090/trending";
+        String requestUrl = "http://192.168.1.40:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -461,7 +510,6 @@ private LinearLayout createVote;
 
                             try {
 
-                                
 
                                 String fullScreen = getIntent().getStringExtra("fullScreenInd");
                                 if ("y".equals(fullScreen)) {
@@ -475,7 +523,7 @@ private LinearLayout createVote;
                                 videoView.setVideoURI(videoUri);
 
                                 mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
-                               // mediaController.show();
+                                // mediaController.show();
                                 mediaController.setAnchorView(videoView);
                                 videoView.setMediaController(mediaController);
 
@@ -506,7 +554,9 @@ private LinearLayout createVote;
 
 
                     thread.start();
-
+                    noInternet.setVisibility(View.INVISIBLE);
+                    outter1.setVisibility(View.VISIBLE);
+                    noConnection=true;
                 }
 
 
@@ -540,6 +590,14 @@ private LinearLayout createVote;
         public void onErrorResponse(VolleyError error) {
             if (error.networkResponse != null) {
                 System.out.print("Error Response code: " + error.networkResponse.statusCode);
+            }
+            if (error.networkResponse == null) {
+                outter1.setVisibility(View.INVISIBLE);
+                profile.setVisibility(View.INVISIBLE);
+                createVote.setVisibility(View.INVISIBLE);
+                noInternet.setVisibility(View.VISIBLE);
+
+
             }
 
         }
@@ -589,7 +647,7 @@ private LinearLayout createVote;
 
         @Override
         public void onPageSelected(final int position) {
-         //   bottomProgressDots(position);
+            //   bottomProgressDots(position);
 
             if (position == about_title_array.length - 1) {
                 btnNext.setText(getString(R.string.GOT_IT));
@@ -623,11 +681,10 @@ private LinearLayout createVote;
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_stepper_wizard, container, false);
-         //   ((Button) view.findViewById(R.id.pop)).setText(about_title_array[position]);
+            //   ((Button) view.findViewById(R.id.pop)).setText(about_title_array[position]);
 //            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
             ((TextView) view.findViewById(R.id.btn_next)).setText(about_description_array[position]);
             ((ImageView) view.findViewById(R.id.swipe_image)).setImageResource(about_images_array[position]);
-
 
 
             container.addView(view);
@@ -664,5 +721,6 @@ private LinearLayout createVote;
             b.setSelected(!b.isSelected());
         }
     }
+
 
 }

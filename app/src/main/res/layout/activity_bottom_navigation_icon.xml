@@ -80,6 +80,7 @@
 
     <include layout="@layout/create_vote" />
 
+    <include layout="@layout/activity_no_item_internet_image" />
 
 
 
