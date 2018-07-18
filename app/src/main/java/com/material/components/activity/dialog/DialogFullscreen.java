@@ -77,8 +77,8 @@ public class DialogFullscreen extends AppCompatActivity {
     }
 
     private void displayDataResult(Event event) {
-        ((TextView) findViewById(R.id.tv_email)).setText(event.email);
-        ((TextView) findViewById(R.id.tv_name)).setText(event.name);
+        //((TextView) findViewById(R.id.tv_email)).setText(event.email);
+        //((TextView) findViewById(R.id.tv_name)).setText(event.name);
         ((TextView) findViewById(R.id.tv_location)).setText(event.location);
         ((TextView) findViewById(R.id.tv_from)).setText(event.from);
         ((TextView) findViewById(R.id.tv_to)).setText(event.to);

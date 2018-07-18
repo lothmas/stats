@@ -2,6 +2,7 @@ package com.material.components.activity.bottomnavigation;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -35,8 +38,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,6 +65,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.material.components.R;
 import com.material.components.activity.FullScreenMediaController;
 import com.material.components.activity.stepper.StepperWizardLight;
+import com.material.components.model.Event;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
 import com.material.trending.Trending;
@@ -133,6 +140,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     LayoutInflater inflater1;
     RequestQueue queue1;
     RequestQueue queue2;
+    RequestQueue queue3;
     private MediaController mediaController;
 
 
@@ -145,6 +153,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private LinearLayout createVote;
     private LinearLayout noInternet;
     private CoordinatorLayout coordinatorLayout;
+    private VideoView placeHolderImage;
     // MediaController mediaController;
     FlexboxLayout flexboxLayout;
 
@@ -154,16 +163,32 @@ public class BottomNavigationIcon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //    setContentView(R.layout.activity_bottom_navigation_icon);
 
+
+
+
+        /////////////////////////
+
         setContentView(R.layout.activity_setting_profile);
         coordinatorLayout = ((CoordinatorLayout) findViewById(R.id.create_vote_attribute));
+        placeHolderImage=((VideoView) findViewById(R.id.create_vote_image_place_holder));
 
+        ((AppCompatButton) findViewById(R.id.custom_dialog)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomDialog();
+            }
+        });
+
+/////////////////////////////////
         setContentView(R.layout.select_stats_to_pull);
         stepper = findViewById(R.id.select_stats_to_pull);
 
+        //////////////////////////
         setContentView(R.layout.item_stepper_wizard);
         btnNext = (TextView) findViewById(R.id.btn_next);
         flexboxLayout = ((FlexboxLayout) findViewById(R.id.flex_box));
 
+        //////////////////////////
         setContentView(R.layout.activity_bottom_navigation_icon);
 
         outter1 = findViewById(R.id.outter1);
@@ -191,19 +216,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         trendingCardView();
 
 
-//        Thread thread = new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                try  {
-//                    //Your code goes here
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//        thread.start();
+
 
 
     }
@@ -404,7 +417,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
         //home 192.168.88.223 , work 192.168.1.40
-        String requestUrl = "http://192.168.1.40:8090/trending";
+        String requestUrl = "http://192.168.88.223:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -697,7 +710,34 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
                 relativeLayout.addView(coordinatorLayout);
                 flexboxLayout.setVisibility(View.INVISIBLE);
+                try {
+                    queue3 = Volley.newRequestQueue(BottomNavigationIcon.this);
 
+                    ImageRequest threadMainPic1 = new ImageRequest("http://ajaxuploader.com/images/drag-drop-file-upload.png",
+                            new Response.Listener<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap bitmap) {
+//                                        image1.setImageBitmap(bitmap);
+                                    Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                                    int sdk = android.os.Build.VERSION.SDK_INT;
+                                    if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                        placeHolderImage.setBackgroundDrawable(drawable);
+                                    } else {
+                                        placeHolderImage.setBackground(drawable);
+                                    }
+                                }
+                            }, 0, 0, null,
+                            new Response.ErrorListener() {
+                                public void onErrorResponse(VolleyError error) {
+                                    //@TODO load error message or image
+                                    //   image1.setImageResource(R.drawable.cast3);
+                                }
+                            });
+                    queue3.add(threadMainPic1);
+
+                } catch (Exception e) {
+                    //  image1.setImageResource(R.drawable.cast3);
+                }
             }
             container.addView(view);
 
@@ -734,5 +774,71 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
+///////////////
+    private void displayDataResult(Event event) {
+        ((TextView) findViewById(R.id.create_vote_title)).setText(event.title);
+        ((TextView) findViewById(R.id.create_vote_description)).setText(event.description);
+        ((TextView) findViewById(R.id.tv_location)).setText(event.location);
+        ((TextView) findViewById(R.id.tv_from)).setText(event.from);
+        ((TextView) findViewById(R.id.tv_to)).setText(event.to);
+        ((TextView) findViewById(R.id.tv_allday)).setText(event.is_allday.toString());
+        ((TextView) findViewById(R.id.tv_timezone)).setText(event.timezone);
+    }
 
+
+    private void showCustomDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_event);
+        dialog.setCancelable(true);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        final Button spn_from_date = (Button) dialog.findViewById(R.id.spn_from_date);
+        final Button spn_from_time = (Button) dialog.findViewById(R.id.spn_from_time);
+        final Button spn_to_date = (Button) dialog.findViewById(R.id.spn_to_date);
+        final Button spn_to_time = (Button) dialog.findViewById(R.id.spn_to_time);
+        final TextView title = (TextView) dialog.findViewById(R.id.title);
+        final EditText description = (EditText) dialog.findViewById(R.id.description);
+        final EditText et_location = (EditText) dialog.findViewById(R.id.et_location);
+        final AppCompatCheckBox cb_allday = (AppCompatCheckBox) dialog.findViewById(R.id.cb_allday);
+        final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
+
+        String[] timezones = getResources().getStringArray(R.array.timezone);
+        ArrayAdapter<String> array = new ArrayAdapter<>(this, R.layout.simple_spinner_item, timezones);
+        array.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spn_timezone.setAdapter(array);
+        spn_timezone.setSelection(0);
+
+        ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        ((Button) dialog.findViewById(R.id.bt_save)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Event event = new Event();
+                event.title = title.getText().toString();
+                event.description = description.getText().toString();
+                event.location = et_location.getText().toString();
+                event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
+                event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
+                event.is_allday = cb_allday.isChecked();
+                event.timezone = spn_timezone.getSelectedItem().toString();
+                displayDataResult(event);
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
+    }
+
+///////////////////////////
 }

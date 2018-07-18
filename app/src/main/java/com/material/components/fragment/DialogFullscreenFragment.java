@@ -109,8 +109,8 @@ public class DialogFullscreenFragment extends DialogFragment {
 
     private void sendDataResult() {
         Event event = new Event();
-        event.email = tv_email.getText().toString();
-        event.name = et_name.getText().toString();
+       // event.email = tv_email.getText().toString();
+      //  event.name = et_name.getText().toString();
         event.location = et_location.getText().toString();
         event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
         event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";

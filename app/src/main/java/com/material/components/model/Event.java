@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Event implements Serializable {
 
-    public String email;
-    public String name;
+    public String title;
+    public String description;
     public String location;
     public String from;
     public String to;

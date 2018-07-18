@@ -48,8 +48,8 @@ public class DialogCustom extends AppCompatActivity {
     }
 
     private void displayDataResult(Event event) {
-        ((TextView) findViewById(R.id.tv_email)).setText(event.email);
-        ((TextView) findViewById(R.id.tv_name)).setText(event.name);
+      //  ((TextView) findViewById(R.id.tv_email)).setText(event.email);
+      //  ((TextView) findViewById(R.id.tv_name)).setText(event.name);
         ((TextView) findViewById(R.id.tv_location)).setText(event.location);
         ((TextView) findViewById(R.id.tv_from)).setText(event.from);
         ((TextView) findViewById(R.id.tv_to)).setText(event.to);
@@ -110,8 +110,8 @@ public class DialogCustom extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Event event = new Event();
-                event.email = tv_email.getText().toString();
-                event.name = et_name.getText().toString();
+           //     event.email = tv_email.getText().toString();
+           //     event.name = et_name.getText().toString();
                 event.location = et_location.getText().toString();
                 event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
                 event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
