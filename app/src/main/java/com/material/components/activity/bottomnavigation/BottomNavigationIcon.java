@@ -693,7 +693,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
             if(position==1) {
                 RelativeLayout relativeLayout = ((RelativeLayout) view.findViewById(R.id.lyt_parent));
-                relativeLayout.removeView(view.findViewById(R.id.flex_box));
+                relativeLayout.removeAllViews();
 
                 relativeLayout.addView(coordinatorLayout);
                 flexboxLayout.setVisibility(View.INVISIBLE);
