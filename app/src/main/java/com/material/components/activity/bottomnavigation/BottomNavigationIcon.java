@@ -55,6 +55,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.flexbox.FlexboxLayout;
 import com.material.components.R;
 import com.material.components.activity.FullScreenMediaController;
 import com.material.components.activity.stepper.StepperWizardLight;
@@ -143,9 +144,9 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private ProgressBar progressBar;
     private LinearLayout createVote;
     private LinearLayout noInternet;
-
+    private CoordinatorLayout coordinatorLayout;
     // MediaController mediaController;
-
+    FlexboxLayout flexboxLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -153,11 +154,15 @@ public class BottomNavigationIcon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //    setContentView(R.layout.activity_bottom_navigation_icon);
 
+        setContentView(R.layout.activity_setting_profile);
+        coordinatorLayout = ((CoordinatorLayout) findViewById(R.id.create_vote_attribute));
+
         setContentView(R.layout.select_stats_to_pull);
         stepper = findViewById(R.id.select_stats_to_pull);
 
         setContentView(R.layout.item_stepper_wizard);
         btnNext = (TextView) findViewById(R.id.btn_next);
+        flexboxLayout = ((FlexboxLayout) findViewById(R.id.flex_box));
 
         setContentView(R.layout.activity_bottom_navigation_icon);
 
@@ -686,7 +691,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
             ((TextView) view.findViewById(R.id.btn_next)).setText(about_description_array[position]);
             ((ImageView) view.findViewById(R.id.swipe_image)).setImageResource(about_images_array[position]);
 
+            if(position==1) {
+                RelativeLayout relativeLayout = ((RelativeLayout) view.findViewById(R.id.lyt_parent));
+                relativeLayout.removeView(view.findViewById(R.id.flex_box));
 
+                relativeLayout.addView(coordinatorLayout);
+                flexboxLayout.setVisibility(View.INVISIBLE);
+
+            }
             container.addView(view);
 
             return view;
