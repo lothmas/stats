@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="New Post"
+                android:text="New Vote"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@android:color/white" />
 
@@ -81,11 +81,12 @@
                 <EditText
                     android:id="@+id/title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:hint="Title"
                     android:minHeight="@dimen/spacing_xxlarge"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColorHint="@color/grey_40" />
+                    android:textColorHint="@color/grey_40"
+                    android:textSize="12sp" />
 
                 <ImageButton
                     android:layout_width="?attr/actionBarSize"
@@ -113,7 +114,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Description"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
-                    android:textColorHint="@color/grey_40" />
+                    android:textColorHint="@color/grey_40"
+                    android:textSize="12sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -126,7 +128,8 @@
                     android:hint="Location"
                     android:minHeight="@dimen/spacing_xxlarge"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColorHint="@color/grey_40" />
+                    android:textColorHint="@color/grey_40"
+                    android:textSize="12sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -138,7 +141,8 @@
                     android:layout_marginLeft="@dimen/spacing_xsmall"
                     android:text="From"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60" />
+                    android:textColor="@color/grey_60"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -153,7 +157,8 @@
                         android:layout_weight="2"
                         android:text="Fry, May 12 2017"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/grey_80" />
+                        android:textColor="@color/grey_80"
+                        android:textSize="12sp" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -169,7 +174,8 @@
                         android:spinnerMode="dialog"
                         android:text="4:30 PM"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/grey_80" />
+                        android:textColor="@color/grey_80"
+                        android:textSize="12sp" />
 
 
                 </LinearLayout>
@@ -184,7 +190,8 @@
                     android:layout_marginLeft="@dimen/spacing_xsmall"
                     android:text="To"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60" />
+                    android:textColor="@color/grey_60"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -199,7 +206,8 @@
                         android:layout_weight="2"
                         android:text="Fry, May 12 2017"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/grey_80" />
+                        android:textColor="@color/grey_80"
+                        android:textSize="12sp" />
 
                     <View
                         android:layout_width="@dimen/spacing_large"
@@ -215,7 +223,8 @@
                         android:spinnerMode="dialog"
                         android:text="5:30 PM"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/grey_80" />
+                        android:textColor="@color/grey_80"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -229,7 +238,8 @@
                     android:layout_height="wrap_content"
                     android:text="All day"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60" />
+                    android:textColor="@color/grey_60"
+                    android:textSize="12sp" />
 
                 <View
                     android:layout_width="match_parent"

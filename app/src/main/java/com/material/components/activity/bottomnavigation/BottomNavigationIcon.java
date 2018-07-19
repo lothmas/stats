@@ -65,6 +65,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.material.components.R;
 import com.material.components.activity.FullScreenMediaController;
 import com.material.components.activity.stepper.StepperWizardLight;
+import com.material.components.activity.verification.VerificationPhone;
 import com.material.components.model.Event;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
@@ -119,6 +120,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
             stepper
 
     };
+    static int count;
 
     private boolean noConnection;
     private TabLayout tab_layout;
@@ -164,13 +166,11 @@ public class BottomNavigationIcon extends AppCompatActivity {
         //    setContentView(R.layout.activity_bottom_navigation_icon);
 
 
-
-
         /////////////////////////
 
         setContentView(R.layout.activity_setting_profile);
         coordinatorLayout = ((CoordinatorLayout) findViewById(R.id.create_vote_attribute));
-        placeHolderImage=((VideoView) findViewById(R.id.create_vote_image_place_holder));
+        placeHolderImage = ((VideoView) findViewById(R.id.create_vote_image_place_holder));
 
         ((AppCompatButton) findViewById(R.id.custom_dialog)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,9 +216,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
         trendingCardView();
 
 
-
-
-
     }
 
     private void initToolbar() {
@@ -235,7 +232,28 @@ public class BottomNavigationIcon extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.grey_20);
 
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int current = viewPager.getCurrentItem() + 1;
+                if (current < MAX_STEP) {
+                    // move to next screen
+                    viewPager.setCurrentItem(current);
+                } else {
+//                    finish();
+                    startActivity(new Intent(getApplicationContext(), BottomNavigationIcon.class));
 
+
+                }
+            }
+        });
+
+        ((ImageButton)findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), BottomNavigationIcon.class));
+            }
+        });
     }
 
     private void initComponent() {
@@ -417,7 +435,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
         //home 192.168.88.223 , work 192.168.1.40
-        String requestUrl = "http://192.168.88.223:8090/trending";
+        String requestUrl = "http://192.168.1.40:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -574,7 +592,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                     thread.start();
                     noInternet.setVisibility(View.INVISIBLE);
                     outter1.setVisibility(View.VISIBLE);
-                    noConnection=true;
+                    noConnection = true;
                 }
 
 
@@ -703,12 +721,17 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
             ((TextView) view.findViewById(R.id.btn_next)).setText(about_description_array[position]);
             ((ImageView) view.findViewById(R.id.swipe_image)).setImageResource(about_images_array[position]);
-
-            if(position==1) {
+            if (position == 0 ) {
                 RelativeLayout relativeLayout = ((RelativeLayout) view.findViewById(R.id.lyt_parent));
                 relativeLayout.removeAllViews();
 
-                relativeLayout.addView(coordinatorLayout);
+                try {
+                    relativeLayout.addView(coordinatorLayout);
+                } catch (Exception exp) {
+                    coordinatorLayout.removeAllViews();
+                    relativeLayout.addView(coordinatorLayout);
+
+                }
                 flexboxLayout.setVisibility(View.INVISIBLE);
                 try {
                     queue3 = Volley.newRequestQueue(BottomNavigationIcon.this);
@@ -774,7 +797,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
-///////////////
+    ///////////////
     private void displayDataResult(Event event) {
         ((TextView) findViewById(R.id.create_vote_title)).setText(event.title);
         ((TextView) findViewById(R.id.create_vote_description)).setText(event.description);
@@ -839,6 +862,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
         dialog.show();
         dialog.getWindow().setAttributes(lp);
     }
+
+
 
 ///////////////////////////
 }

@@ -327,75 +327,15 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/spacing_xxlarge"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Notification and Sound"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_80" />
-
-                    </LinearLayout>
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:background="@color/grey_10" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/spacing_xxlarge"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Privacy and Security"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_80" />
-
-                    </LinearLayout>
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:background="@color/grey_10" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/spacing_xxlarge"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Data and Storage"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_80" />
-
-                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
@@ -418,9 +358,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Enable Animation"
+                            android:text="Make Results Public"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_90" />
+                            android:textColor="@color/grey_90"
+                            android:textSize="14sp" />
 
                         <View
                             android:layout_width="@dimen/spacing_middle"
@@ -443,6 +384,8 @@
                         android:layout_height="1px"
                         android:background="@color/grey_10" />
 
+
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -459,68 +402,38 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Theme"
+                            android:text="Open To Everyone"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_90" />
+                            android:textColor="@color/grey_90"
+                            android:textSize="14sp" />
 
                         <View
                             android:layout_width="@dimen/spacing_middle"
                             android:layout_height="wrap_content" />
 
-                        <TextView
+                        <android.support.v7.widget.SwitchCompat
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Default"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                            android:textColor="@color/colorPrimary" />
+                            android:checked="true"
+                            app:thumbTint="@color/switch_color_primary" />
 
                         <View
                             android:layout_width="@dimen/spacing_middle"
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:background="@color/grey_10" />
 
-                    <LinearLayout
+
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/spacing_xxlarge"
-                        android:orientation="horizontal"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large">
-
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Language"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/grey_90" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_middle"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="English"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                            android:textColor="@color/colorPrimary" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_middle"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
+                        android:layout_height="1px"
+                        android:background="@color/grey_10" />
 
                 </LinearLayout>
 
@@ -634,19 +547,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="vertical"-->
+                <!--android:padding="@dimen/spacing_middle">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="sw"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Caption"-->
+                    <!--android:textColor="@color/grey_40" />-->
+
+            <!--</LinearLayout>-->
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_middle">
 
                 <TextView
+                    android:id="@+id/btn_next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Build Version 2.0.5"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/grey_40" />
+                    android:text="swipe right"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:textColor="#040404"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/swipe_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/swipe_right" />
+
 
             </LinearLayout>
 
