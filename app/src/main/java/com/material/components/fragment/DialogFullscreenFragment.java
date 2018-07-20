@@ -54,7 +54,7 @@ public class DialogFullscreenFragment extends DialogFragment {
         et_name = (EditText) root_view.findViewById(R.id.et_name);
         et_location = (EditText) root_view.findViewById(R.id.et_location);
         cb_allday = (AppCompatCheckBox) root_view.findViewById(R.id.cb_allday);
-        spn_timezone = (AppCompatSpinner) root_view.findViewById(R.id.spn_timezone);
+     //   spn_timezone = (AppCompatSpinner) root_view.findViewById(R.id.spn_timezone);
 
         ((ImageButton) root_view.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override

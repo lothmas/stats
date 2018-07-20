@@ -75,12 +75,15 @@ import com.material.utility.JsonMessageSender;
 import com.material.utility.JsonObjectConversion;
 import com.material.utility.SetConnection;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.List;
 
 public class BottomNavigationIcon extends AppCompatActivity {
@@ -165,6 +168,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //    setContentView(R.layout.activity_bottom_navigation_icon);
 
+//        setContentView(R.layout.dialog_event);
+//        ((Button) findViewById(R.id.spn_from_time)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialogDatePickerLight((Button) view);
+//            }
+//        });
 
         /////////////////////////
 
@@ -178,6 +188,35 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 showCustomDialog();
             }
         });
+
+        ((Button) findViewById(R.id.spn_from_date)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogDatePickerLight((Button) view);
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_to_date)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogDatePickerLight((Button) view);
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_from_time)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogTimePickerLight((Button) view);
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_to_time)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogTimePickerLight((Button) view);
+            }
+        });
+
 
 /////////////////////////////////
         setContentView(R.layout.select_stats_to_pull);
@@ -214,6 +253,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
         initToolbar();
         initComponent();
         trendingCardView();
+
+
 
 
     }
@@ -257,6 +298,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
     private void initComponent() {
+
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         //  btnNext = (Button) findViewById(R.id.btn_next);
@@ -802,9 +844,9 @@ public class BottomNavigationIcon extends AppCompatActivity {
         ((TextView) findViewById(R.id.create_vote_title)).setText(event.title);
         ((TextView) findViewById(R.id.create_vote_description)).setText(event.description);
         ((TextView) findViewById(R.id.tv_location)).setText(event.location);
-        ((TextView) findViewById(R.id.tv_from)).setText(event.from);
-        ((TextView) findViewById(R.id.tv_to)).setText(event.to);
-        ((TextView) findViewById(R.id.tv_allday)).setText(event.is_allday.toString());
+//        ((TextView) findViewById(R.id.tv_from)).setText(event.from);
+ //       ((TextView) findViewById(R.id.tv_to)).setText(event.to);
+ //       ((TextView) findViewById(R.id.tv_allday)).setText(event.is_allday.toString());
         ((TextView) findViewById(R.id.tv_timezone)).setText(event.timezone);
     }
 
@@ -828,13 +870,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
         final EditText description = (EditText) dialog.findViewById(R.id.description);
         final EditText et_location = (EditText) dialog.findViewById(R.id.et_location);
         final AppCompatCheckBox cb_allday = (AppCompatCheckBox) dialog.findViewById(R.id.cb_allday);
-        final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
+      //  final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
 
         String[] timezones = getResources().getStringArray(R.array.timezone);
         ArrayAdapter<String> array = new ArrayAdapter<>(this, R.layout.simple_spinner_item, timezones);
         array.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        spn_timezone.setAdapter(array);
-        spn_timezone.setSelection(0);
+       // spn_timezone.setAdapter(array);
+    //    spn_timezone.setSelection(0);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -849,10 +891,10 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 event.title = title.getText().toString();
                 event.description = description.getText().toString();
                 event.location = et_location.getText().toString();
-                event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
-                event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
-                event.is_allday = cb_allday.isChecked();
-                event.timezone = spn_timezone.getSelectedItem().toString();
+//                event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
+ //               event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
+ //               event.is_allday = cb_allday.isChecked();
+          //      event.timezone = spn_timezone.getSelectedItem().toString();
                 displayDataResult(event);
 
                 dialog.dismiss();
@@ -864,6 +906,52 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
+    private void dialogDatePickerLight(final Button bt) {
+        Calendar cur_calender = Calendar.getInstance();
+        DatePickerDialog datePicker = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        long date_ship_millis = calendar.getTimeInMillis();
+                        if(bt.getId()==R.id.spn_from_date) {
+                            ((TextView) findViewById(R.id.spn_from_date)).setText(Tools.getFormattedDateSimple(date_ship_millis));
+                        }
+                        else if(bt.getId()==R.id.spn_to_date) {
+                            ((TextView) findViewById(R.id.spn_to_date)).setText(Tools.getFormattedDateSimple(date_ship_millis));
+                        }
+                    }
+                },
+                cur_calender.get(Calendar.YEAR),
+                cur_calender.get(Calendar.MONTH),
+                cur_calender.get(Calendar.DAY_OF_MONTH)
+        );
+        //set dark light
+        datePicker.setThemeDark(false);
+        datePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        datePicker.setMinDate(cur_calender);
+        datePicker.show(getFragmentManager(), "Datepickerdialog");
+    }
 
-///////////////////////////
+    private void dialogTimePickerLight(final Button bt) {
+        Calendar cur_calender = Calendar.getInstance();
+        TimePickerDialog datePicker = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+                if(bt.getId()==R.id.spn_from_time) {
+                    ((TextView) findViewById(R.id.spn_from_time)).setText(hourOfDay + " : " + minute);
+                }
+                else if(bt.getId()==R.id.spn_to_time) {
+                    ((TextView) findViewById(R.id.spn_to_time)).setText(hourOfDay + " : " + minute);
+                }
+            }
+        }, cur_calender.get(Calendar.HOUR_OF_DAY), cur_calender.get(Calendar.MINUTE), true);
+        //set dark light
+        datePicker.setThemeDark(false);
+        datePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        datePicker.show(getFragmentManager(), "Timepickerdialog");
+    }
 }

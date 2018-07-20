@@ -21,6 +21,10 @@ import android.widget.Toast;
 
 import com.material.components.R;
 import com.material.components.model.Event;
+import com.material.components.utils.Tools;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 
 public class DialogCustom extends AppCompatActivity {
 
@@ -92,13 +96,13 @@ public class DialogCustom extends AppCompatActivity {
         final EditText et_name = (EditText) dialog.findViewById(R.id.et_name);
         final EditText et_location = (EditText) dialog.findViewById(R.id.et_location);
         final AppCompatCheckBox cb_allday = (AppCompatCheckBox) dialog.findViewById(R.id.cb_allday);
-        final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
+       // final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
 
         String[] timezones = getResources().getStringArray(R.array.timezone);
         ArrayAdapter<String> array = new ArrayAdapter<>(this, R.layout.simple_spinner_item, timezones);
         array.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        spn_timezone.setAdapter(array);
-        spn_timezone.setSelection(0);
+   //     spn_timezone.setAdapter(array);
+    //    spn_timezone.setSelection(0);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +110,15 @@ public class DialogCustom extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+        ((Button) dialog.findViewById(R.id.spn_from_time)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
         ((Button) dialog.findViewById(R.id.bt_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +129,7 @@ public class DialogCustom extends AppCompatActivity {
                 event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
                 event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
                 event.is_allday = cb_allday.isChecked();
-                event.timezone = spn_timezone.getSelectedItem().toString();
+              //  event.timezone = spn_timezone.getSelectedItem().toString();
                 displayDataResult(event);
 
                 dialog.dismiss();
@@ -125,5 +138,30 @@ public class DialogCustom extends AppCompatActivity {
 
         dialog.show();
         dialog.getWindow().setAttributes(lp);
+    }
+
+    private void dialogDatePickerLight(final Button bt) {
+        Calendar cur_calender = Calendar.getInstance();
+        DatePickerDialog datePicker = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        long date_ship_millis = calendar.getTimeInMillis();
+                        ((TextView) findViewById(R.id.result)).setText(Tools.getFormattedDateSimple(date_ship_millis));
+                    }
+                },
+                cur_calender.get(Calendar.YEAR),
+                cur_calender.get(Calendar.MONTH),
+                cur_calender.get(Calendar.DAY_OF_MONTH)
+        );
+        //set dark light
+        datePicker.setThemeDark(false);
+        datePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        datePicker.setMinDate(cur_calender);
+        datePicker.show(getFragmentManager(), "Datepickerdialog");
     }
 }
