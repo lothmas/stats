@@ -2,10 +2,13 @@ package com.material.components.activity.bottomnavigation;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,8 +23,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -78,6 +83,10 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -146,6 +155,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
     RequestQueue queue1;
     RequestQueue queue2;
     RequestQueue queue3;
+    RequestQueue queue4;
+
     private MediaController mediaController;
 
 
@@ -217,6 +228,15 @@ public class BottomNavigationIcon extends AppCompatActivity {
             }
         });
 
+
+        ((FloatingActionButton) findViewById(R.id.fab1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/* video/*");
+                startActivityForResult(photoPickerIntent, 1);
+            }
+        });
 
 /////////////////////////////////
         setContentView(R.layout.select_stats_to_pull);
@@ -477,7 +497,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
         //home 192.168.88.223 , work 192.168.1.40
-        String requestUrl = "http://192.168.1.40:8090/trending";
+        String requestUrl = "http://192.168.88.223:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -954,4 +974,56 @@ public class BottomNavigationIcon extends AppCompatActivity {
         datePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
         datePicker.show(getFragmentManager(), "Timepickerdialog");
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1)
+            if (resultCode == Activity.RESULT_OK) {
+                Uri selectedImage = data.getData();
+
+                String filePath = getPath(selectedImage);
+                String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
+                File imgFile = new  File(filePath);
+                if(imgFile.exists()){
+
+
+                    if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("gif") || file_extn.equals("png")|| file_extn.equals("mp4")|| file_extn.equals("3gp")) {
+                        //FINE
+
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        Drawable d = new BitmapDrawable(getResources(), myBitmap);
+
+                        int sdk = android.os.Build.VERSION.SDK_INT;
+                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            placeHolderImage.setBackgroundDrawable(d);
+                        } else {
+                            placeHolderImage.setBackground(d);
+                        }
+
+
+                    } else {
+                        //NOT IN REQUIRED FORMAT
+                    }
+
+
+                }
+
+            }
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        String imagePath = cursor.getString(column_index);
+
+        return cursor.getString(column_index);
+    }
+
+
 }
