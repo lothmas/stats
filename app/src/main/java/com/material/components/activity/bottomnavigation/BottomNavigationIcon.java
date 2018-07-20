@@ -870,13 +870,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
         final EditText description = (EditText) dialog.findViewById(R.id.description);
         final EditText et_location = (EditText) dialog.findViewById(R.id.et_location);
         final AppCompatCheckBox cb_allday = (AppCompatCheckBox) dialog.findViewById(R.id.cb_allday);
-      //  final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
+        final AppCompatSpinner spn_timezone = (AppCompatSpinner) dialog.findViewById(R.id.spn_timezone);
 
         String[] timezones = getResources().getStringArray(R.array.timezone);
         ArrayAdapter<String> array = new ArrayAdapter<>(this, R.layout.simple_spinner_item, timezones);
         array.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-       // spn_timezone.setAdapter(array);
-    //    spn_timezone.setSelection(0);
+        spn_timezone.setAdapter(array);
+        spn_timezone.setSelection(0);
 
         ((ImageButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -894,7 +894,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //                event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
  //               event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
  //               event.is_allday = cb_allday.isChecked();
-          //      event.timezone = spn_timezone.getSelectedItem().toString();
+                event.timezone = spn_timezone.getSelectedItem().toString();
                 displayDataResult(event);
 
                 dialog.dismiss();

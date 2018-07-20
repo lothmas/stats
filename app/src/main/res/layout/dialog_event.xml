@@ -131,6 +131,13 @@
                     android:textColorHint="@color/grey_40"
                     android:textSize="12sp" />
 
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/spn_timezone"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:spinnerMode="dialog" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_large" />
