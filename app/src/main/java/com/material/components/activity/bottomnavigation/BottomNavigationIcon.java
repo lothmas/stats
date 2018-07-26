@@ -1032,7 +1032,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             public void onPrepared(MediaPlayer mediaPlayer) {
                                 // close the progress bar and play the video
                                 progressDialog.dismiss();
-                                placeHolderImage.getLayoutParams().width=3000;
+                                placeHolderImage.getLayoutParams().width=1080;
                                 placeHolderImage.getLayoutParams().height=840;
                                 //if we have a position on savedInstanceState, the video playback should start from here
                                 placeHolderImage.seekTo(position);
