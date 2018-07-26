@@ -497,7 +497,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     public void fetchResults() {
         // Create a Request to get information from the provided URL.
         //home 192.168.88.223 , work 192.168.1.40
-        String requestUrl = "http://192.168.88.223:8090/trending";
+        String requestUrl = "http://192.168.1.40:8090/trending";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
@@ -989,8 +989,15 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 File imgFile = new  File(filePath);
                 if(imgFile.exists()){
 
+                    placeHolderImage.setZOrderOnTop(false);
+                    placeHolderImage.setZOrderOnTop(true);
+                    placeHolderImage.setZOrderMediaOverlay(true);
+                    Toast.makeText(getApplicationContext(),"onPrepared",3500).show();
+                    placeHolderImage.setZOrderOnTop(false);
+                    placeHolderImage.setBackgroundColor(Color.TRANSPARENT);
 
-                    if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("gif") || file_extn.equals("png")|| file_extn.equals("mp4")|| file_extn.equals("3gp")) {
+
+                    if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("gif") || file_extn.equals("png")) {
                         //FINE
 
                         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -1001,11 +1008,41 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             placeHolderImage.setBackgroundDrawable(d);
                         } else {
                             placeHolderImage.setBackground(d);
+                            placeHolderImage.getLayoutParams().width=1080;
+                            placeHolderImage.getLayoutParams().height=840;
                         }
 
 
-                    } else {
-                        //NOT IN REQUIRED FORMAT
+                    }  if ( file_extn.equals("mp4")|| file_extn.equals("3gp")) {
+                        Uri videoUri = Uri.parse(imgFile.getAbsolutePath());
+
+                        placeHolderImage.setVideoURI(videoUri);
+
+                        mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
+                        // mediaController.show();
+                        mediaController.setAnchorView(placeHolderImage);
+                        placeHolderImage.setMediaController(mediaController);
+
+
+                        placeHolderImage.requestFocus();
+                        //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+                        placeHolderImage.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                            @SuppressLint("WrongConstant")
+                            public void onPrepared(MediaPlayer mediaPlayer) {
+                                // close the progress bar and play the video
+                                progressDialog.dismiss();
+                                placeHolderImage.getLayoutParams().width=3000;
+                                placeHolderImage.getLayoutParams().height=840;
+                                //if we have a position on savedInstanceState, the video playback should start from here
+                                placeHolderImage.seekTo(position);
+                                if (position == 0) {
+                                } else {
+                                    //if we come from a resumed activity, video playback will be paused
+                                    placeHolderImage.pause();
+                                }
+                            }
+                        });
                     }
 
 

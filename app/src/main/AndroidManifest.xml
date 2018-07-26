@@ -5,12 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
     <application
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:icon="@drawable/cast1"
         android:label="@string/app_name"
@@ -586,6 +586,9 @@
         <activity
             android:name=".activity.dashboard.DashboardFlight"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
