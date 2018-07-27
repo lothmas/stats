@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -84,6 +86,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -94,6 +97,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.provider.DocumentsContract.getDocumentId;
+import static android.provider.DocumentsContract.isDocumentUri;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
@@ -235,6 +241,17 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/* video/*");
                 startActivityForResult(photoPickerIntent, 1);
+            }
+        });
+
+        ((FloatingActionButton) findViewById(R.id.fab)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                Intent chooserIntent = Intent.createChooser(takePictureIntent, "Capture Image or Video");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takeVideoIntent});
+                startActivityForResult(chooserIntent, 1);
             }
         });
 
@@ -976,6 +993,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
+    @SuppressLint("WrongConstant")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -983,8 +1001,17 @@ public class BottomNavigationIcon extends AppCompatActivity {
         if (requestCode == 1)
             if (resultCode == Activity.RESULT_OK) {
                 Uri selectedImage = data.getData();
+                String filePath = null;
+               try {
+                    filePath = getPath(selectedImage);
 
-                String filePath = getPath(selectedImage);
+               }
+               catch (Exception ex){
+                   Bundle extras = data.getExtras();
+                   Bitmap imageBitmap = (Bitmap) extras.get("data");
+                   selectedImage = getImageUri(getApplicationContext(), imageBitmap);
+                   filePath = getPath(selectedImage);
+               }
                 String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
                 File imgFile = new  File(filePath);
                 if(imgFile.exists()){
@@ -1032,7 +1059,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             public void onPrepared(MediaPlayer mediaPlayer) {
                                 // close the progress bar and play the video
                                 progressDialog.dismiss();
-                                placeHolderImage.getLayoutParams().width=1080;
+                                placeHolderImage.getLayoutParams().width=3000;
                                 placeHolderImage.getLayoutParams().height=840;
                                 //if we have a position on savedInstanceState, the video playback should start from here
                                 placeHolderImage.seekTo(position);
@@ -1060,6 +1087,32 @@ public class BottomNavigationIcon extends AppCompatActivity {
         String imagePath = cursor.getString(column_index);
 
         return cursor.getString(column_index);
+    }
+
+
+    private boolean hasCamera() {
+        if (getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA_FRONT)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 
 
