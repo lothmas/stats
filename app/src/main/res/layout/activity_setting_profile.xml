@@ -23,7 +23,7 @@
                 android:id="@+id/create_vote_image_place_holder"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
-                android:layout_gravity="top"
+                android:layout_gravity="center_horizontal"
                 android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -252,8 +252,8 @@
 
                     <android.support.v7.widget.AppCompatButton
                         android:id="@+id/custom_dialog"
-                        android:layout_width="93dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="86dp"
+                        android:layout_height="38dp"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"

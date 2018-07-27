@@ -1016,10 +1016,11 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 File imgFile = new  File(filePath);
                 if(imgFile.exists()){
 
-                    placeHolderImage.setZOrderOnTop(false);
-                    placeHolderImage.setZOrderOnTop(true);
-                    placeHolderImage.setZOrderMediaOverlay(true);
-                    Toast.makeText(getApplicationContext(),"onPrepared",3500).show();
+//                    placeHolderImage.setZOrderOnTop(false);
+//                    placeHolderImage.setZOrderOnTop(true);
+//                    placeHolderImage.setZOrderMediaOverlay(true);
+                    //Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+
                     placeHolderImage.setZOrderOnTop(false);
                     placeHolderImage.setBackgroundColor(Color.TRANSPARENT);
 
@@ -1028,6 +1029,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         //FINE
 
                         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                  //      resizeBitmap(myBitmap,1080,840);
                         Drawable d = new BitmapDrawable(getResources(), myBitmap);
 
                         int sdk = android.os.Build.VERSION.SDK_INT;
@@ -1035,8 +1037,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             placeHolderImage.setBackgroundDrawable(d);
                         } else {
                             placeHolderImage.setBackground(d);
-                            placeHolderImage.getLayoutParams().width=1080;
-                            placeHolderImage.getLayoutParams().height=840;
+//                            placeHolderImage.getLayoutParams().width=1080;
+//                            placeHolderImage.getLayoutParams().height=840;
                         }
 
 
@@ -1059,8 +1061,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             public void onPrepared(MediaPlayer mediaPlayer) {
                                 // close the progress bar and play the video
                                 progressDialog.dismiss();
-                                placeHolderImage.getLayoutParams().width=3000;
-                                placeHolderImage.getLayoutParams().height=840;
+//                                placeHolderImage.getLayoutParams().width=3000;
+//                                placeHolderImage.getLayoutParams().height=840;
                                 //if we have a position on savedInstanceState, the video playback should start from here
                                 placeHolderImage.seekTo(position);
                                 if (position == 0) {
@@ -1115,5 +1117,24 @@ public class BottomNavigationIcon extends AppCompatActivity {
         return cursor.getString(idx);
     }
 
+    private static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
 
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
+    }
 }
