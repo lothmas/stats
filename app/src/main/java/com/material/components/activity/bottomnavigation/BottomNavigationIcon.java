@@ -815,7 +815,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 try {
                     queue3 = Volley.newRequestQueue(BottomNavigationIcon.this);
 
-                    ImageRequest threadMainPic1 = new ImageRequest("http://ajaxuploader.com/images/drag-drop-file-upload.png",
+                    ImageRequest threadMainPic1 = new ImageRequest("https://cdn.macrumors.com/article-new/2012/06/iphotoaperture.jpg",
                             new Response.Listener<Bitmap>() {
                                 @Override
                                 public void onResponse(Bitmap bitmap) {
