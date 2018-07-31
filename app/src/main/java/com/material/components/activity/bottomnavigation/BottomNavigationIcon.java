@@ -1,11 +1,9 @@
 package com.material.components.activity.bottomnavigation;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,13 +16,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -71,8 +65,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.flexbox.FlexboxLayout;
 import com.material.components.R;
 import com.material.components.activity.FullScreenMediaController;
-import com.material.components.activity.stepper.StepperWizardLight;
-import com.material.components.activity.verification.VerificationPhone;
 import com.material.components.model.Event;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
@@ -85,21 +77,10 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
-
-import static android.provider.DocumentsContract.getDocumentId;
-import static android.provider.DocumentsContract.isDocumentUri;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
@@ -139,7 +120,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     };
     static int count;
-
     private boolean noConnection;
     private TabLayout tab_layout;
     private ActionBar actionBar;
@@ -161,11 +141,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     RequestQueue queue1;
     RequestQueue queue2;
     RequestQueue queue3;
-    RequestQueue queue4;
-
     private MediaController mediaController;
-
-
     private Button btnonce, btncontinuously, btnstop, btnplay;
     private VideoView vv;
     private MediaController mediacontroller;
@@ -176,7 +152,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private LinearLayout noInternet;
     private CoordinatorLayout coordinatorLayout;
     private VideoView placeHolderImage;
-    // MediaController mediaController;
     FlexboxLayout flexboxLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -228,63 +203,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
         Tools.setSystemBarLight(this);
     }
 
-    private void listerners() {
-        ((AppCompatButton) findViewById(R.id.custom_dialog)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCustomDialog();
-            }
-        });
-
-        ((Button) findViewById(R.id.spn_from_date)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogDatePickerLight((Button) view);
-            }
-        });
-
-        ((Button) findViewById(R.id.spn_to_date)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogDatePickerLight((Button) view);
-            }
-        });
-
-        ((Button) findViewById(R.id.spn_from_time)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogTimePickerLight((Button) view);
-            }
-        });
-
-        ((Button) findViewById(R.id.spn_to_time)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogTimePickerLight((Button) view);
-            }
-        });
-
-
-        ((FloatingActionButton) findViewById(R.id.fab1)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/* video/*");
-                startActivityForResult(photoPickerIntent, 1);
-            }
-        });
-
-        ((FloatingActionButton) findViewById(R.id.fab)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                Intent chooserIntent = Intent.createChooser(takePictureIntent, "Capture Image or Video");
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takeVideoIntent});
-                startActivityForResult(chooserIntent, 1);
-            }
-        });
-    }
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -326,13 +244,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     private void initComponent() {
 
-
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        //  btnNext = (Button) findViewById(R.id.btn_next);
-
-        // adding bottom dots
-        // bottomProgressDots(0);
-
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
@@ -352,12 +264,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
             }
         });
 
-//        ((ImageButton)findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getApplicationContext(), BottomNavigationIcon.class));
-//            }
-//        });
 
         nested_scroll_view = (NestedScrollView) findViewById(R.id.nested_scroll_view);
         tab_layout = (TabLayout) findViewById(R.id.tab_layout);
@@ -385,48 +291,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                     noInternet.setVisibility(View.VISIBLE);
                 }
 
-                switch (tab.getPosition()) {
-                    case 0:
-                        actionBar.setTitle("Trending");
-                        outter1.setVisibility(View.VISIBLE);
-                        profile.setVisibility(View.INVISIBLE);
-                        createVote.setVisibility(View.INVISIBLE);
-                        // noInternet.setVisibility(View.INVISIBLE);
-
-                        break;
-                    case 1:
-                        actionBar.setTitle("Explore");
-                        outter1.setVisibility(View.GONE);
-                        profile.setVisibility(View.INVISIBLE);
-                        createVote.setVisibility(View.INVISIBLE);
-                        noInternet.setVisibility(View.INVISIBLE);
-
-                        break;
-                    case 2:
-                        actionBar.setTitle("Post Vote");
-                        outter1.setVisibility(View.GONE);
-                        profile.setVisibility(View.INVISIBLE);
-                        createVote.setVisibility(View.VISIBLE);
-                        noInternet.setVisibility(View.INVISIBLE);
-
-                        break;
-                    case 3:
-                        actionBar.setTitle("History");
-                        outter1.setVisibility(View.GONE);
-                        profile.setVisibility(View.INVISIBLE);
-                        createVote.setVisibility(View.INVISIBLE);
-                        noInternet.setVisibility(View.INVISIBLE);
-
-                        break;
-                    case 4:
-                        actionBar.setTitle("Profile");
-                        outter1.setVisibility(View.INVISIBLE);
-                        profile.setVisibility(View.VISIBLE);
-                        createVote.setVisibility(View.INVISIBLE);
-                        noInternet.setVisibility(View.INVISIBLE);
-
-                        break;
-                }
+                settingMainTabs(tab);
 
                 ViewAnimation.fadeOutIn(nested_scroll_view);
             }
@@ -473,6 +338,51 @@ public class BottomNavigationIcon extends AppCompatActivity {
         });
     }
 
+    private void settingMainTabs(TabLayout.Tab tab) {
+        switch (tab.getPosition()) {
+            case 0:
+                actionBar.setTitle("Trending");
+                outter1.setVisibility(View.VISIBLE);
+                profile.setVisibility(View.INVISIBLE);
+                createVote.setVisibility(View.INVISIBLE);
+                // noInternet.setVisibility(View.INVISIBLE);
+
+                break;
+            case 1:
+                actionBar.setTitle("Explore");
+                outter1.setVisibility(View.GONE);
+                profile.setVisibility(View.INVISIBLE);
+                createVote.setVisibility(View.INVISIBLE);
+                noInternet.setVisibility(View.INVISIBLE);
+
+                break;
+            case 2:
+                actionBar.setTitle("Post Vote");
+                outter1.setVisibility(View.GONE);
+                profile.setVisibility(View.INVISIBLE);
+                createVote.setVisibility(View.VISIBLE);
+                noInternet.setVisibility(View.INVISIBLE);
+
+                break;
+            case 3:
+                actionBar.setTitle("History");
+                outter1.setVisibility(View.GONE);
+                profile.setVisibility(View.INVISIBLE);
+                createVote.setVisibility(View.INVISIBLE);
+                noInternet.setVisibility(View.INVISIBLE);
+
+                break;
+            case 4:
+                actionBar.setTitle("Profile");
+                outter1.setVisibility(View.INVISIBLE);
+                profile.setVisibility(View.VISIBLE);
+                createVote.setVisibility(View.INVISIBLE);
+                noInternet.setVisibility(View.INVISIBLE);
+
+                break;
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -495,10 +405,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private void trendingCardView() {
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater1 = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         fetchResults();
-
-
     }
 
     public void fetchResults() {
@@ -508,7 +415,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 requestUrl,
-                listener,
+                trendingGetData,
                 errorListener);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue1 = Volley.newRequestQueue(this);
@@ -517,7 +424,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
-    Response.Listener<String> listener = new Response.Listener<String>() {
+    Response.Listener<String> trendingGetData = new Response.Listener<String>() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onResponse(String response) {
@@ -527,168 +434,173 @@ public class BottomNavigationIcon extends AppCompatActivity {
             TrendingMasterObject trendingMasterObject = (TrendingMasterObject) jsonConversion.jsonToObject(response, TrendingMasterObject.class);
             List<Trending> trendingList = trendingMasterObject.getTrendingList();
             int a = 0;
-            for (final Trending trending : trendingList) {
-
-                CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
-                final LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
-                LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
-
-                final CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
-
-                try {
-
-// Retrieves an image specified by the URL, displays it in the UI.
-                    ImageRequest threadProfilePic = new ImageRequest(trending.getProfilePic(),
-                            new Response.Listener<Bitmap>() {
-                                @Override
-                                public void onResponse(Bitmap bitmap) {
-                                    circularImageView.setImageBitmap(bitmap);
-                                }
-                            }, 0, 0, null,
-                            new Response.ErrorListener() {
-                                public void onErrorResponse(VolleyError error) {
-                                    circularImageView.setImageResource(R.drawable.cast3);
-                                }
-                            });
-// Access the RequestQueue through your singleton class.
-                    queue1.add(threadProfilePic);
-                } catch (Exception e) {
-                    circularImageView.setImageResource(R.drawable.cast3);
-                }
-
-
-                LinearLayout layout3 = (LinearLayout) layout2.getChildAt(2);
-
-                TextView textView1 = (TextView) layout3.getChildAt(0);
-                textView1.setText(trending.getTitle());
-
-                LinearLayout layout4 = (LinearLayout) layout3.getChildAt(1);
-                TextView textView2 = (TextView) layout4.getChildAt(0);
-                textView2.setText(R.string.owner_title);
-
-                TextView textView3 = (TextView) layout4.getChildAt(1);
-                textView3.setText("  " + trending.getOwner().toLowerCase());
-
-                TextView textView4 = (TextView) layout1.getChildAt(1);
-                textView4.setText(trending.getDescription());
-                final VideoView videoView = (VideoView) layout1.getChildAt(2);
-
-
-                if (trending.getDescriptionType() == 1) {
-
-                    try {
-
-                        ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
-                                new Response.Listener<Bitmap>() {
-                                    @Override
-                                    public void onResponse(Bitmap bitmap) {
-//                                        image1.setImageBitmap(bitmap);
-                                        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
-                                        int sdk = android.os.Build.VERSION.SDK_INT;
-                                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                                            videoView.setBackgroundDrawable(drawable);
-                                        } else {
-                                            videoView.setBackground(drawable);
-                                        }
-                                    }
-                                }, 0, 0, null,
-                                new Response.ErrorListener() {
-                                    public void onErrorResponse(VolleyError error) {
-                                        //@TODO load error message or image
-                                        //   image1.setImageResource(R.drawable.cast3);
-                                    }
-                                });
-                        queue1.add(threadMainPic);
-
-                    } catch (Exception e) {
-                        //  image1.setImageResource(R.drawable.cast3);
-                    }
-                }
-
-
-                if (trending.getDescriptionType() == 2) {
-
-                    Thread thread = new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-
-                            try {
-
-
-                                String fullScreen = getIntent().getStringExtra("fullScreenInd");
-                                if ("y".equals(fullScreen)) {
-                                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                                    getSupportActionBar().hide();
-                                }
-
-                                Uri videoUri = Uri.parse(trending.getMainDisplay());
-
-                                videoView.setVideoURI(videoUri);
-
-                                mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
-                                // mediaController.show();
-                                mediaController.setAnchorView(videoView);
-                                videoView.setMediaController(mediaController);
-
-
-                                videoView.requestFocus();
-                                //we also set an setOnPreparedListener in order to know when the video file is ready for playback
-                                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                                    public void onPrepared(MediaPlayer mediaPlayer) {
-                                        // close the progress bar and play the video
-                                        progressDialog.dismiss();
-                                        //if we have a position on savedInstanceState, the video playback should start from here
-                                        videoView.seekTo(position);
-                                        if (position == 0) {
-                                        } else {
-                                            //if we come from a resumed activity, video playback will be paused
-                                            videoView.pause();
-                                        }
-                                    }
-                                });
-
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-
-                    thread.start();
-                    noInternet.setVisibility(View.INVISIBLE);
-                    outter1.setVisibility(View.VISIBLE);
-                    noConnection = true;
-                }
-
-
-                LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
-                LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
-
-                LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
-                View endView = (View) layout1.getChildAt(5);
-                if (trendingList.size() - 1 == a) {
-                    endView.setLayoutParams(endViewConfig);
-
-                } else {
-                    endView.setLayoutParams(btwnViewConfig);
-                }
-
-                LinearLayout layout6 = (LinearLayout) layout5.getChildAt(0);
-
-
-                outter1.addView(cardView);
-
-                View view = (View) inflater1.inflate(R.layout.view_spacer, null);
-                outter1.addView(view);
-
-                a++;
-            }
+            mappingTrendngXMLtoCollectedData(trendingList, a);
         }
     };
+
+    private void mappingTrendngXMLtoCollectedData(List<Trending> trendingList, int a) {
+        for (final Trending trending : trendingList) {
+
+            CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
+            final LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
+            LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
+
+            final CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
+
+            try {
+
+// Retrieves an image specified by the URL, displays it in the UI.
+                ImageRequest threadProfilePic = new ImageRequest(trending.getProfilePic(),
+                        new Response.Listener<Bitmap>() {
+                            @Override
+                            public void onResponse(Bitmap bitmap) {
+                                circularImageView.setImageBitmap(bitmap);
+                            }
+                        }, 0, 0, null,
+                        new Response.ErrorListener() {
+                            public void onErrorResponse(VolleyError error) {
+                                circularImageView.setImageResource(R.drawable.cast3);
+                            }
+                        });
+// Access the RequestQueue through your singleton class.
+                queue1.add(threadProfilePic);
+            } catch (Exception e) {
+                circularImageView.setImageResource(R.drawable.cast3);
+            }
+
+
+            LinearLayout layout3 = (LinearLayout) layout2.getChildAt(2);
+
+            TextView textView1 = (TextView) layout3.getChildAt(0);
+            textView1.setText(trending.getTitle());
+
+            LinearLayout layout4 = (LinearLayout) layout3.getChildAt(1);
+            TextView textView2 = (TextView) layout4.getChildAt(0);
+            textView2.setText(R.string.owner_title);
+
+            TextView textView3 = (TextView) layout4.getChildAt(1);
+            textView3.setText("  " + trending.getOwner().toLowerCase());
+
+            TextView textView4 = (TextView) layout1.getChildAt(1);
+            textView4.setText(trending.getDescription());
+            final VideoView videoView = (VideoView) layout1.getChildAt(2);
+
+
+            trendingDisplayMedia(trending, videoView);
+
+
+            LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
+            LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+
+            LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
+            View endView = (View) layout1.getChildAt(5);
+            if (trendingList.size() - 1 == a) {
+                endView.setLayoutParams(endViewConfig);
+
+            } else {
+                endView.setLayoutParams(btwnViewConfig);
+            }
+
+            LinearLayout layout6 = (LinearLayout) layout5.getChildAt(0);
+
+
+            outter1.addView(cardView);
+
+            View view = (View) inflater1.inflate(R.layout.view_spacer, null);
+            outter1.addView(view);
+
+            a++;
+        }
+    }
+
+    private void trendingDisplayMedia(final Trending trending, final VideoView videoView) {
+        if (trending.getDescriptionType() == 1) {
+
+            try {
+
+                ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
+                        new Response.Listener<Bitmap>() {
+                            @Override
+                            public void onResponse(Bitmap bitmap) {
+                                Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+                                int sdk = Build.VERSION.SDK_INT;
+                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                                    videoView.setBackgroundDrawable(drawable);
+                                } else {
+                                    videoView.setBackground(drawable);
+                                }
+                            }
+                        }, 0, 0, null,
+                        new Response.ErrorListener() {
+                            public void onErrorResponse(VolleyError error) {
+                                //@TODO load error message or image
+                                //   image1.setImageResource(R.drawable.cast3);
+                            }
+                        });
+                queue1.add(threadMainPic);
+
+            } catch (Exception e) {
+                //  image1.setImageResource(R.drawable.cast3);
+            }
+        }
+
+
+        if (trending.getDescriptionType() == 2) {
+
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    try {
+                        String fullScreen = getIntent().getStringExtra("fullScreenInd");
+                        if ("y".equals(fullScreen)) {
+                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                            getSupportActionBar().hide();
+                        }
+
+                        Uri videoUri = Uri.parse(trending.getMainDisplay());
+
+                        videoView.setVideoURI(videoUri);
+
+                        mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
+                        // mediaController.show();
+                        mediaController.setAnchorView(videoView);
+                        videoView.setMediaController(mediaController);
+
+
+                        videoView.requestFocus();
+                        //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+                        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                            public void onPrepared(MediaPlayer mediaPlayer) {
+                                // close the progress bar and play the video
+                                progressDialog.dismiss();
+                                //if we have a position on savedInstanceState, the video playback should start from here
+                                videoView.seekTo(position);
+                                if (position == 0) {
+                                } else {
+                                    //if we come from a resumed activity, video playback will be paused
+                                    videoView.pause();
+                                }
+                            }
+                        });
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            thread.start();
+            noInternet.setVisibility(View.INVISIBLE);
+            outter1.setVisibility(View.VISIBLE);
+            noConnection = true;
+        }
+    }
 
     Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
@@ -708,46 +620,22 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        //we use onSaveInstanceState in order to store the video playback position for orientation change
-//        savedInstanceState.putInt("Position", videoView.getCurrentPosition());
-        //     videoView.pause();
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        //   super.onRestoreInstanceState(savedInstanceState);
-        //we use onRestoreInstanceState in order to play the video playback from the stored position
-        //  position = savedInstanceState.getInt("Position");
-        //  videoView.seekTo(position);
-    }
-
-
-//    private void bottomProgressDots(int current_index) {
-//        LinearLayout dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-//        ImageView[] dots = new ImageView[MAX_STEP];
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
+//        //we use onSaveInstanceState in order to store the video playback position for orientation change
+////        savedInstanceState.putInt("Position", videoView.getCurrentPosition());
+//        //     videoView.pause();
+//    }
 //
-//        dotsLayout.removeAllViews();
-//        for (int i = 0; i < dots.length; i++) {
-//            dots[i] = new ImageView(this);
-//            int width_height = 15;
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(width_height, width_height));
-//            params.setMargins(10, 10, 10, 10);
-//            dots[i].setLayoutParams(params);
-//            dots[i].setImageResource(R.drawable.shape_circle);
-//            dots[i].setColorFilter(getResources().getColor(R.color.grey_20), PorterDuff.Mode.SRC_IN);
-//            dotsLayout.addView(dots[i]);
-//        }
-//
-//        if (dots.length > 0) {
-//            dots[current_index].setImageResource(R.drawable.shape_circle);
-//            dots[current_index].setColorFilter(getResources().getColor(R.color.orange_400), PorterDuff.Mode.SRC_IN);
-//        }
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        //   super.onRestoreInstanceState(savedInstanceState);
+//        //we use onRestoreInstanceState in order to play the video playback from the stored position
+//        //  position = savedInstanceState.getInt("Position");
+//        //  videoView.seekTo(position);
 //    }
 
-    //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -1123,5 +1011,64 @@ public class BottomNavigationIcon extends AppCompatActivity {
         } else {
             return image;
         }
+    }
+
+
+    private void listerners() {
+        ((AppCompatButton) findViewById(R.id.custom_dialog)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomDialog();
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_from_date)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogDatePickerLight((Button) view);
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_to_date)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogDatePickerLight((Button) view);
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_from_time)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogTimePickerLight((Button) view);
+            }
+        });
+
+        ((Button) findViewById(R.id.spn_to_time)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogTimePickerLight((Button) view);
+            }
+        });
+
+
+        ((FloatingActionButton) findViewById(R.id.fab1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/* video/*");
+                startActivityForResult(photoPickerIntent, 1);
+            }
+        });
+
+        ((FloatingActionButton) findViewById(R.id.fab)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                Intent chooserIntent = Intent.createChooser(takePictureIntent, "Capture Image or Video");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takeVideoIntent});
+                startActivityForResult(chooserIntent, 1);
+            }
+        });
     }
 }
