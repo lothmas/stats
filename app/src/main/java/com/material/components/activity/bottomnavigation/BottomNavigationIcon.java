@@ -183,22 +183,52 @@ public class BottomNavigationIcon extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //    setContentView(R.layout.activity_bottom_navigation_icon);
+        setOnCreateVariables();
+        initToolbar();
+        initComponent();
+        trendingCardView();
+    }
 
-//        setContentView(R.layout.dialog_event);
-//        ((Button) findViewById(R.id.spn_from_time)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialogDatePickerLight((Button) view);
-//            }
-//        });
-
-        /////////////////////////
-
+    private void setOnCreateVariables() {
         setContentView(R.layout.activity_setting_profile);
         coordinatorLayout = ((CoordinatorLayout) findViewById(R.id.create_vote_attribute));
         placeHolderImage = ((VideoView) findViewById(R.id.create_vote_image_place_holder));
 
+        listerners();
+
+        /////////////////////////////////
+        setContentView(R.layout.select_stats_to_pull);
+        stepper = findViewById(R.id.select_stats_to_pull);
+
+        //////////////////////////
+        setContentView(R.layout.item_stepper_wizard);
+        btnNext = (TextView) findViewById(R.id.btn_next);
+        flexboxLayout = ((FlexboxLayout) findViewById(R.id.flex_box));
+
+        //////////////////////////
+        setContentView(R.layout.activity_bottom_navigation_icon);
+
+        outter1 = findViewById(R.id.outter1);
+        profile = findViewById(R.id.profile);
+        createVote = findViewById(R.id.create_vote);
+        noInternet = findViewById(R.id.no_internet);
+        progressDialog = new ProgressDialog(this);
+
+        //////////////////////////////
+        progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
+        lyt_no_connection = (LinearLayout) findViewById(R.id.lyt_no_connection);
+        bt_retry = (AppCompatButton) findViewById(R.id.bt_retry);
+
+        progress_bar.setVisibility(View.GONE);
+        lyt_no_connection.setVisibility(View.VISIBLE);
+        ////////////////////////
+
+
+        Tools.setSystemBarColor(this, R.color.grey_5);
+        Tools.setSystemBarLight(this);
+    }
+
+    private void listerners() {
         ((AppCompatButton) findViewById(R.id.custom_dialog)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,46 +284,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 startActivityForResult(chooserIntent, 1);
             }
         });
-
-/////////////////////////////////
-        setContentView(R.layout.select_stats_to_pull);
-        stepper = findViewById(R.id.select_stats_to_pull);
-
-        //////////////////////////
-        setContentView(R.layout.item_stepper_wizard);
-        btnNext = (TextView) findViewById(R.id.btn_next);
-        flexboxLayout = ((FlexboxLayout) findViewById(R.id.flex_box));
-
-        //////////////////////////
-        setContentView(R.layout.activity_bottom_navigation_icon);
-
-        outter1 = findViewById(R.id.outter1);
-        profile = findViewById(R.id.profile);
-        createVote = findViewById(R.id.create_vote);
-        noInternet = findViewById(R.id.no_internet);
-        progressDialog = new ProgressDialog(this);
-
-        //////////////////////////////
-        progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
-        lyt_no_connection = (LinearLayout) findViewById(R.id.lyt_no_connection);
-        bt_retry = (AppCompatButton) findViewById(R.id.bt_retry);
-
-        progress_bar.setVisibility(View.GONE);
-        lyt_no_connection.setVisibility(View.VISIBLE);
-        ////////////////////////
-
-
-        Tools.setSystemBarColor(this, R.color.grey_5);
-        Tools.setSystemBarLight(this);
-
-
-        initToolbar();
-        initComponent();
-        trendingCardView();
-
-
-
-
     }
 
     private void initToolbar() {
@@ -326,7 +316,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
             }
         });
 
-        ((ImageButton)findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), BottomNavigationIcon.class));
@@ -800,7 +790,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //            ((TextView) view.findViewById(R.id.title)).setText(about_title_array[position]);
             ((TextView) view.findViewById(R.id.btn_next)).setText(about_description_array[position]);
             ((ImageView) view.findViewById(R.id.swipe_image)).setImageResource(about_images_array[position]);
-            if (position == 0 ) {
+            if (position == 0) {
                 RelativeLayout relativeLayout = ((RelativeLayout) view.findViewById(R.id.lyt_parent));
                 relativeLayout.removeAllViews();
 
@@ -882,8 +872,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
         ((TextView) findViewById(R.id.create_vote_description)).setText(event.description);
         ((TextView) findViewById(R.id.tv_location)).setText(event.location);
 //        ((TextView) findViewById(R.id.tv_from)).setText(event.from);
- //       ((TextView) findViewById(R.id.tv_to)).setText(event.to);
- //       ((TextView) findViewById(R.id.tv_allday)).setText(event.is_allday.toString());
+        //       ((TextView) findViewById(R.id.tv_to)).setText(event.to);
+        //       ((TextView) findViewById(R.id.tv_allday)).setText(event.is_allday.toString());
         ((TextView) findViewById(R.id.tv_timezone)).setText(event.timezone);
     }
 
@@ -929,8 +919,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 event.description = description.getText().toString();
                 event.location = et_location.getText().toString();
 //                event.from = spn_from_date.getText().toString() + " (" + spn_from_time.getText().toString() + ")";
- //               event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
- //               event.is_allday = cb_allday.isChecked();
+                //               event.to = spn_to_date.getText().toString() + " (" + spn_to_time.getText().toString() + ")";
+                //               event.is_allday = cb_allday.isChecked();
                 event.timezone = spn_timezone.getSelectedItem().toString();
                 displayDataResult(event);
 
@@ -954,10 +944,9 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         long date_ship_millis = calendar.getTimeInMillis();
-                        if(bt.getId()==R.id.spn_from_date) {
+                        if (bt.getId() == R.id.spn_from_date) {
                             ((TextView) findViewById(R.id.spn_from_date)).setText(Tools.getFormattedDateSimple(date_ship_millis));
-                        }
-                        else if(bt.getId()==R.id.spn_to_date) {
+                        } else if (bt.getId() == R.id.spn_to_date) {
                             ((TextView) findViewById(R.id.spn_to_date)).setText(Tools.getFormattedDateSimple(date_ship_millis));
                         }
                     }
@@ -978,10 +967,9 @@ public class BottomNavigationIcon extends AppCompatActivity {
         TimePickerDialog datePicker = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-                if(bt.getId()==R.id.spn_from_time) {
+                if (bt.getId() == R.id.spn_from_time) {
                     ((TextView) findViewById(R.id.spn_from_time)).setText(hourOfDay + " : " + minute);
-                }
-                else if(bt.getId()==R.id.spn_to_time) {
+                } else if (bt.getId() == R.id.spn_to_time) {
                     ((TextView) findViewById(R.id.spn_to_time)).setText(hourOfDay + " : " + minute);
                 }
             }
@@ -1002,19 +990,18 @@ public class BottomNavigationIcon extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Uri selectedImage = data.getData();
                 String filePath = null;
-               try {
+                try {
                     filePath = getPath(selectedImage);
 
-               }
-               catch (Exception ex){
-                   Bundle extras = data.getExtras();
-                   Bitmap imageBitmap = (Bitmap) extras.get("data");
-                   selectedImage = getImageUri(getApplicationContext(), imageBitmap);
-                   filePath = getPath(selectedImage);
-               }
+                } catch (Exception ex) {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    selectedImage = getImageUri(getApplicationContext(), imageBitmap);
+                    filePath = getPath(selectedImage);
+                }
                 String file_extn = filePath.substring(filePath.lastIndexOf(".") + 1);
-                File imgFile = new  File(filePath);
-                if(imgFile.exists()){
+                File imgFile = new File(filePath);
+                if (imgFile.exists()) {
 
 //                    placeHolderImage.setZOrderOnTop(false);
 //                    placeHolderImage.setZOrderOnTop(true);
@@ -1029,7 +1016,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         //FINE
 
                         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                  //      resizeBitmap(myBitmap,1080,840);
+                        //      resizeBitmap(myBitmap,1080,840);
                         Drawable d = new BitmapDrawable(getResources(), myBitmap);
 
                         int sdk = android.os.Build.VERSION.SDK_INT;
@@ -1042,7 +1029,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         }
 
 
-                    }  if ( file_extn.equals("mp4")|| file_extn.equals("3gp")) {
+                    }
+                    if (file_extn.equals("mp4") || file_extn.equals("3gp")) {
                         Uri videoUri = Uri.parse(imgFile.getAbsolutePath());
 
                         placeHolderImage.setVideoURI(videoUri);
@@ -1094,13 +1082,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
     private boolean hasCamera() {
         if (getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA_FRONT)){
+                PackageManager.FEATURE_CAMERA_FRONT)) {
             return true;
         } else {
             return false;
         }
     }
-
 
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -1127,9 +1114,9 @@ public class BottomNavigationIcon extends AppCompatActivity {
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
             if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
             } else {
-                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
             }
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             return image;
