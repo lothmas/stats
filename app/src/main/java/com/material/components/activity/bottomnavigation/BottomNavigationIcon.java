@@ -566,11 +566,10 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
                         mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
                         // mediaController.show();
-                        mediaController.setAnchorView(videoView);
                         videoView.setMediaController(mediaController);
 
 
-                        videoView.requestFocus();
+                       // videoView.requestFocus();
                         //we also set an setOnPreparedListener in order to know when the video file is ready for playback
                         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
@@ -584,6 +583,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                                     //if we come from a resumed activity, video playback will be paused
                                     videoView.pause();
                                 }
+                                mediaController.setAnchorView(videoView);
                             }
                         });
 
