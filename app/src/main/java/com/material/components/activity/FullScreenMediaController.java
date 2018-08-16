@@ -54,7 +54,7 @@ public class FullScreenMediaController extends MediaController {
                 Intent intent = new Intent(getContext(),BottomNavigationIcon.class);
 
                 if("y".equals(isFullScreen)){
-                    intent.putExtra("fullScreenInd", "");
+                    intent.putExtra("fullScreenInd", "x");
                 }else{
                     intent.putExtra("fullScreenInd", "y");
                 }

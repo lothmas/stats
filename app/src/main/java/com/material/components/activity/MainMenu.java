@@ -214,7 +214,7 @@ public class MainMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(this, BottomNavigationIcon.class));
+       startActivity(new Intent(this, BottomNavigationIcon.class));
 //        setContentView(R.layout.activity_main);
 //        initComponentMenu();
 //        Tools.setSystemBarColor(this, R.color.grey_1000);

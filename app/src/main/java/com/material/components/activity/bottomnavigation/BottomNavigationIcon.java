@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -150,6 +151,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private ProgressBar progressBar;
     private LinearLayout createVote;
     private LinearLayout noInternet;
+    private ConstraintLayout videoViewFullScreen;
+
     private CoordinatorLayout coordinatorLayout;
     private VideoView placeHolderImage;
     FlexboxLayout flexboxLayout;
@@ -188,6 +191,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         createVote = findViewById(R.id.create_vote);
         noInternet = findViewById(R.id.no_internet);
         progressDialog = new ProgressDialog(this);
+        videoViewFullScreen = findViewById(R.id.videoViewFullscreenLayout);
 
         //////////////////////////////
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -213,6 +217,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         profile.setVisibility(View.INVISIBLE);
         createVote.setVisibility(View.INVISIBLE);
         noInternet.setVisibility(View.INVISIBLE);
+        videoViewFullScreen.setVisibility(View.INVISIBLE);
 
         actionBar.setTitle("Trending");
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -345,6 +350,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 outter1.setVisibility(View.VISIBLE);
                 profile.setVisibility(View.INVISIBLE);
                 createVote.setVisibility(View.INVISIBLE);
+                videoViewFullScreen.setVisibility(View.INVISIBLE);
                 // noInternet.setVisibility(View.INVISIBLE);
 
                 break;
@@ -354,6 +360,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 profile.setVisibility(View.INVISIBLE);
                 createVote.setVisibility(View.INVISIBLE);
                 noInternet.setVisibility(View.INVISIBLE);
+                videoViewFullScreen.setVisibility(View.INVISIBLE);
 
                 break;
             case 2:
@@ -362,6 +369,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 profile.setVisibility(View.INVISIBLE);
                 createVote.setVisibility(View.VISIBLE);
                 noInternet.setVisibility(View.INVISIBLE);
+                videoViewFullScreen.setVisibility(View.INVISIBLE);
 
                 break;
             case 3:
@@ -370,6 +378,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 profile.setVisibility(View.INVISIBLE);
                 createVote.setVisibility(View.INVISIBLE);
                 noInternet.setVisibility(View.INVISIBLE);
+                videoViewFullScreen.setVisibility(View.INVISIBLE);
 
                 break;
             case 4:
@@ -378,6 +387,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 profile.setVisibility(View.VISIBLE);
                 createVote.setVisibility(View.INVISIBLE);
                 noInternet.setVisibility(View.INVISIBLE);
+                videoViewFullScreen.setVisibility(View.INVISIBLE);
 
                 break;
         }
@@ -557,7 +567,44 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         if ("y".equals(fullScreen)) {
                             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                            getSupportActionBar().hide();
+                            getSupportActionBar().show();
+
+
+
+                          //  setContentView(R.layout.activity_bottom_navigation_icon);
+                           // outter1.setVisibility(View.INVISIBLE);
+                            profile.setVisibility(View.INVISIBLE);
+                            createVote.setVisibility(View.INVISIBLE);
+                            noInternet.setVisibility(View.INVISIBLE);
+                            videoViewFullScreen.setVisibility(View.VISIBLE);
+
+                            final VideoView videoViewFullScreen = (VideoView) findViewById(R.id.videoViewFullscreen);
+
+                            Uri videoUri = Uri.parse(trending.getMainDisplay());
+
+                            videoViewFullScreen.setVideoURI(videoUri);
+                           // mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
+                            // mediaController.show();
+                           // videoViewFullScreen.setMediaController(mediaController);
+                            videoViewFullScreen.start();
+
+                            // videoView.requestFocus();
+                            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+//                            videoViewFullScreen.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//
+//                                public void onPrepared(MediaPlayer mediaPlayer) {
+//                                    // close the progress bar and play the video
+//                                    progressDialog.dismiss();
+//                                    //if we have a position on savedInstanceState, the video playback should start from here
+//                                    videoViewFullScreen.seekTo(position);
+//                                    if (position == 0) {
+//                                    } else {
+//                                        //if we come from a resumed activity, video playback will be paused
+//
+//                                    }
+//                                   // mediaController.setAnchorView(activity_bottom_navigation_icon);
+//                                }
+//                            });
                         }
 
                         Uri videoUri = Uri.parse(trending.getMainDisplay());
