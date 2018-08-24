@@ -17,7 +17,8 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/cast1"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
 
         <!-- Add Google Map Library -->
         <uses-library android:name="com.google.android.maps" />

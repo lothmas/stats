@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -569,9 +570,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
                                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
                             getSupportActionBar().show();
 
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                          //  actionBar.hide();
 
 
-                          //  setContentView(R.layout.activity_bottom_navigation_icon);
+
+                            //  setContentView(R.layout.activity_bottom_navigation_icon);
                            // outter1.setVisibility(View.INVISIBLE);
                             profile.setVisibility(View.INVISIBLE);
                             createVote.setVisibility(View.INVISIBLE);
