@@ -571,12 +571,11 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             getSupportActionBar().show();
 
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                          //  actionBar.hide();
-
+                            //  actionBar.hide();
 
 
                             //  setContentView(R.layout.activity_bottom_navigation_icon);
-                           // outter1.setVisibility(View.INVISIBLE);
+                            //outter1.setVisibility(View.INVISIBLE);
                             profile.setVisibility(View.INVISIBLE);
                             createVote.setVisibility(View.INVISIBLE);
                             noInternet.setVisibility(View.INVISIBLE);
@@ -587,28 +586,28 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             Uri videoUri = Uri.parse(trending.getMainDisplay());
 
                             videoViewFullScreen.setVideoURI(videoUri);
-                           // mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
-                            // mediaController.show();
-                           // videoViewFullScreen.setMediaController(mediaController);
+                            mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
+                            mediaController.show();
+                            videoViewFullScreen.setMediaController(mediaController);
                             videoViewFullScreen.start();
 
-                            // videoView.requestFocus();
-                            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
-//                            videoViewFullScreen.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//
-//                                public void onPrepared(MediaPlayer mediaPlayer) {
-//                                    // close the progress bar and play the video
-//                                    progressDialog.dismiss();
-//                                    //if we have a position on savedInstanceState, the video playback should start from here
-//                                    videoViewFullScreen.seekTo(position);
-//                                    if (position == 0) {
-//                                    } else {
-//                                        //if we come from a resumed activity, video playback will be paused
-//
-//                                    }
-//                                   // mediaController.setAnchorView(activity_bottom_navigation_icon);
-//                                }
-//                            });
+                            videoView.requestFocus();
+                            //    we also set an setOnPreparedListener in order to know when the video file is ready for playback
+                            videoViewFullScreen.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                                public void onPrepared(MediaPlayer mediaPlayer) {
+                                    // close the progress bar and play the video
+                                    progressDialog.dismiss();
+                                    //if we have a position on savedInstanceState, the video playback should start from here
+                                    videoViewFullScreen.seekTo(position);
+                                    if (position == 0) {
+                                    } else {
+                                        //if we come from a resumed activity, video playback will be paused
+
+                                    }
+                                    // mediaController.setAnchorView(activity_bottom_navigation_icon);
+                                }
+                            });
                         }
 
                         Uri videoUri = Uri.parse(trending.getMainDisplay());
@@ -620,7 +619,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         videoView.setMediaController(mediaController);
 
 
-                       // videoView.requestFocus();
+                        // videoView.requestFocus();
                         //we also set an setOnPreparedListener in order to know when the video file is ready for playback
                         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
