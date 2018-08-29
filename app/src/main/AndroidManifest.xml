@@ -588,6 +588,12 @@
             android:name=".activity.dashboard.DashboardFlight"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.player.PlayerVideoBasic"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.player.PlayerVideoSimple"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"
             android:configChanges="orientation|screenSize"/>
     </application>

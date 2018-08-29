@@ -19,6 +19,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
@@ -33,6 +34,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -68,6 +70,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.material.components.R;
 import com.material.components.activity.FullScreenMediaController;
 import com.material.components.model.Event;
+import com.material.components.utils.MusicUtils;
 import com.material.components.utils.Tools;
 import com.material.components.utils.ViewAnimation;
 import com.material.trending.Trending;
@@ -90,6 +93,22 @@ public class BottomNavigationIcon extends AppCompatActivity {
     private LinearLayout lyt_no_connection;
     private AppCompatButton bt_retry;
 
+
+    ///////////////////
+
+
+    private ImageView image;
+    private TextView tv_duration;
+    private View lyt_progress;
+
+    private CountDownTimer countDownTimer;
+    long millisInFuture = 30000; //30 seconds
+    private MusicUtils musicUtils;
+
+    private boolean state_play = false;
+    private boolean show_action = true;
+
+    /////////////
 
     private static final int MAX_STEP = 4;
     LinearLayout stepper;
@@ -494,25 +513,38 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
             TextView textView4 = (TextView) layout1.getChildAt(1);
             textView4.setText(trending.getDescription());
-            final VideoView videoView = (VideoView) layout1.getChildAt(2);
+//            final VideoView videoView = (VideoView) layout1.getChildAt(2);
+//            trendingDisplayMedia(trending, videoView);
 
 
-            trendingDisplayMedia(trending, videoView);
+
+
+            final RelativeLayout relativeLayout= (RelativeLayout) layout1.getChildAt(2);
+            final VideoView imageView =(VideoView)  relativeLayout.getChildAt(0);
+            final FloatingActionButton floatingActionButton= (FloatingActionButton) relativeLayout.getChildAt(1);
+            final LinearLayout linearLayoutProgressBar=(LinearLayout) relativeLayout.getChildAt(2);
+            final AppCompatSeekBar appCompatSeekBarProgressBar=(AppCompatSeekBar) linearLayoutProgressBar.getChildAt(0);
+            final TextView textViewDuration=(TextView) linearLayoutProgressBar.getChildAt(1);
+
+
+            trendingDisplayMedia(trending, imageView,floatingActionButton,appCompatSeekBarProgressBar,textViewDuration,linearLayoutProgressBar);
+
+
 
 
             LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
             LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
 
-            LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
-            View endView = (View) layout1.getChildAt(5);
-            if (trendingList.size() - 1 == a) {
-                endView.setLayoutParams(endViewConfig);
-
-            } else {
-                endView.setLayoutParams(btwnViewConfig);
-            }
-
-            LinearLayout layout6 = (LinearLayout) layout5.getChildAt(0);
+//            LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
+//            View endView = (View) layout1.getChildAt(5);
+//            if (trendingList.size() - 1 == a) {
+//                endView.setLayoutParams(endViewConfig);
+//
+//            } else {
+//                endView.setLayoutParams(btwnViewConfig);
+//            }
+//
+//            LinearLayout layout6 = (LinearLayout) layout5.getChildAt(0);
 
 
             outter1.addView(cardView);
@@ -524,9 +556,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
-    private void trendingDisplayMedia(final Trending trending, final VideoView videoView) {
+    private void trendingDisplayMedia(final Trending trending, final VideoView videoView, final FloatingActionButton floatingActionButton, final AppCompatSeekBar appCompatSeekBarProgressBar, final TextView textViewDuration, LinearLayout linearLayoutProgressBar) {
         if (trending.getDescriptionType() == 1) {
-
+            floatingActionButton.setVisibility(View.INVISIBLE);
+            appCompatSeekBarProgressBar.setVisibility(View.INVISIBLE);
+            textViewDuration.setVisibility(View.INVISIBLE);
+            linearLayoutProgressBar.setBackgroundColor(Color.TRANSPARENT);
             try {
 
                 ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
@@ -557,7 +592,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
 
         if (trending.getDescriptionType() == 2) {
-
             Thread thread = new Thread(new Runnable() {
 
                 @Override
@@ -565,57 +599,57 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
                     try {
                         String fullScreen = getIntent().getStringExtra("fullScreenInd");
-                        if ("y".equals(fullScreen)) {
-                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                            getSupportActionBar().show();
-
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                            //  actionBar.hide();
-
-
-                            //  setContentView(R.layout.activity_bottom_navigation_icon);
-                            //outter1.setVisibility(View.INVISIBLE);
-                            profile.setVisibility(View.INVISIBLE);
-                            createVote.setVisibility(View.INVISIBLE);
-                            noInternet.setVisibility(View.INVISIBLE);
-                            videoViewFullScreen.setVisibility(View.VISIBLE);
-
-                            final VideoView videoViewFullScreen = (VideoView) findViewById(R.id.videoViewFullscreen);
-
-                            Uri videoUri = Uri.parse(trending.getMainDisplay());
-
-                            videoViewFullScreen.setVideoURI(videoUri);
-                            mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
-                            mediaController.show();
-                            videoViewFullScreen.setMediaController(mediaController);
-                            videoViewFullScreen.start();
-
-                            videoView.requestFocus();
-                            //    we also set an setOnPreparedListener in order to know when the video file is ready for playback
-                            videoViewFullScreen.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                                public void onPrepared(MediaPlayer mediaPlayer) {
-                                    // close the progress bar and play the video
-                                    progressDialog.dismiss();
-                                    //if we have a position on savedInstanceState, the video playback should start from here
-                                    videoViewFullScreen.seekTo(position);
-                                    if (position == 0) {
-                                    } else {
-                                        //if we come from a resumed activity, video playback will be paused
-
-                                    }
-                                    // mediaController.setAnchorView(activity_bottom_navigation_icon);
-                                }
-                            });
-                        }
-
+//                        if ("y".equals(fullScreen)) {
+//                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//                            getSupportActionBar().show();
+//
+//                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//                            //  actionBar.hide();
+//
+//
+//                            //  setContentView(R.layout.activity_bottom_navigation_icon);
+//                            //outter1.setVisibility(View.INVISIBLE);
+//                            profile.setVisibility(View.INVISIBLE);
+//                            createVote.setVisibility(View.INVISIBLE);
+//                            noInternet.setVisibility(View.INVISIBLE);
+//                            videoViewFullScreen.setVisibility(View.VISIBLE);
+//
+//                            final VideoView videoViewFullScreen = (VideoView) findViewById(R.id.videoViewFullscreen);
+//
+//                            Uri videoUri = Uri.parse(trending.getMainDisplay());
+//
+//                            videoViewFullScreen.setVideoURI(videoUri);
+//                            mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
+//                            mediaController.show();
+//                            videoViewFullScreen.setMediaController(mediaController);
+//                            videoViewFullScreen.start();
+//
+//                            videoView.requestFocus();
+//                            //    we also set an setOnPreparedListener in order to know when the video file is ready for playback
+//                            videoViewFullScreen.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//
+//                                public void onPrepared(MediaPlayer mediaPlayer) {
+//                                    // close the progress bar and play the video
+//                                    progressDialog.dismiss();
+//                                    //if we have a position on savedInstanceState, the video playback should start from here
+//                                    videoViewFullScreen.seekTo(position);
+//                                    if (position == 0) {
+//                                    } else {
+//                                        //if we come from a resumed activity, video playback will be paused
+//
+//                                    }
+//                                    // mediaController.setAnchorView(activity_bottom_navigation_icon);
+//                                }
+//                            });
+//                        }
+                        initComponentVideo(videoView,floatingActionButton);
                         Uri videoUri = Uri.parse(trending.getMainDisplay());
 
                         videoView.setVideoURI(videoUri);
 
                         mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
-                        // mediaController.show();
+                        mediaController.hide();
                         videoView.setMediaController(mediaController);
 
 
@@ -633,11 +667,23 @@ public class BottomNavigationIcon extends AppCompatActivity {
                                     //if we come from a resumed activity, video playback will be paused
                                     videoView.pause();
                                 }
-                                mediaController.setAnchorView(videoView);
+//                                mediaController.setAnchorView(videoView);
+
+                                // TODO Auto-generated method stub
+                                int duration=mediaPlayer.getDuration()/1000;
+                                int hours = duration / 3600;
+                                int minutes = (duration / 60) - (hours * 60);
+                                int seconds = duration - (hours * 3600) - (minutes * 60) ;
+                                String formatted = String.format("%02d:%02d", minutes, seconds);
+                                //Toast.makeText(getApplicationContext(), "duration is " + formatted ,  Toast.LENGTH_LONG).show();
+                                textViewDuration.setText(formatted);
+                             //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
+
                             }
+
                         });
 
-
+                        mediaController.setVisibility(View.INVISIBLE);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1120,5 +1166,84 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 startActivityForResult(chooserIntent, 1);
             }
         });
+    }
+
+
+    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play) {
+        musicUtils = new MusicUtils();
+      //  image = (ImageView) findViewById(R.id.image);
+        lyt_progress = (View) findViewById(R.id.lyt_progress);
+        tv_duration = (TextView) findViewById(R.id.tv_duration);
+       // seek_bar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+
+       // seek_bar.setMax(30);
+
+        bt_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleButtonPlay(bt_play,videoView);
+            }
+        });
+
+        videoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleActionView(bt_play);
+            }
+        });
+    }
+
+    private void toggleActionView(FloatingActionButton bt_play) {
+        show_action = !show_action;
+        if (show_action) {
+            bt_play.setVisibility(View.VISIBLE);
+            lyt_progress.setVisibility(View.VISIBLE);
+        } else {
+            bt_play.setVisibility(View.INVISIBLE);
+            lyt_progress.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void toggleButtonPlay(FloatingActionButton bt_play,VideoView videoView) {
+        state_play = !state_play;
+        if (state_play) {
+            bt_play.setImageResource(R.drawable.ic_pause);
+            videoView.start();
+            runCountDownTimer();
+        } else {
+            videoView.pause();
+            bt_play.setImageResource(R.drawable.ic_play_arrow);
+            if (countDownTimer != null) countDownTimer.cancel();
+        }
+    }
+
+    private void runCountDownTimer() {
+        if (countDownTimer != null) countDownTimer.cancel();
+        countDownTimer = new CountDownTimer(millisInFuture, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                millisInFuture = millisUntilFinished;
+//                tv_duration.setText(musicUtils.milliSecondsToTimer(millisUntilFinished));
+ //               Long progress = (30000 - millisUntilFinished) / 1000;
+             //   seek_bar.setProgress(progress.intValue());
+            }
+
+            @Override
+            public void onFinish() {
+             //   bt_play.setImageResource(R.drawable.ic_play_arrow);
+                state_play = false;
+                millisInFuture = 30000;
+               // seek_bar.setProgress(0);
+            }
+        }.start();
+    }
+
+
+    @Override
+    protected void onPause() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        super.onPause();
     }
 }
