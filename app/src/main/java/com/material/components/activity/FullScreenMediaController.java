@@ -61,5 +61,7 @@ public class FullScreenMediaController extends MediaController {
                 (getContext()).startActivity(intent);
             }
         });
+
+
     }
 }
