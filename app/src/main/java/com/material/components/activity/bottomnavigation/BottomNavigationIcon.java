@@ -1262,12 +1262,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         seek_bar.setProgress(player.getCurrentPosition());
                     }
                     catch (Exception ex){
-                        String df="dsf";
+                        //do nothing
                     }
                     double timeRemaining = player.getDuration() - player.getCurrentPosition();
                     timmer.setText(String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining), TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
                     if (TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining) == 0 && TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining) == 0) {
                         bt_play.setImageResource(R.drawable.ic_play_arrow);
+                        smallPlayButton.setImageResource(R.drawable.ic_play_arrow);
+                        bt_play.setVisibility(View.VISIBLE);
                         state_play = false;
                         millisInFuture = player.getDuration();
                         seek_bar.setProgress(0);

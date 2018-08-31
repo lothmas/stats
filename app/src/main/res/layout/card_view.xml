@@ -113,7 +113,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp">
+            android:layout_height="245dp">
 
             <VideoView
                 android:layout_width="match_parent"
