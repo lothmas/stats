@@ -38,6 +38,7 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -526,11 +527,12 @@ public class BottomNavigationIcon extends AppCompatActivity {
             final ImageButton smallPlayButton = (ImageButton) linearLayoutProgressBar.getChildAt(0);
             final AppCompatSeekBar appCompatSeekBarProgressBar = (AppCompatSeekBar) linearLayoutProgressBar.getChildAt(1);
             final TextView textViewDuration = (TextView) linearLayoutProgressBar.getChildAt(2);
+            final ImageButton fullScreen = (ImageButton) linearLayoutProgressBar.getChildAt(4);
 
             final RelativeLayout soundButtonRelative = (RelativeLayout) relativeLayout.getChildAt(3);
             final ImageButton soundButton = (ImageButton) soundButtonRelative.getChildAt(0);
 
-            trendingDisplayMedia(trending, imageView, floatingActionButton, appCompatSeekBarProgressBar, textViewDuration, linearLayoutProgressBar, smallPlayButton, soundButton, soundButtonRelative);
+            trendingDisplayMedia(trending, imageView, floatingActionButton, appCompatSeekBarProgressBar, textViewDuration, linearLayoutProgressBar, smallPlayButton, soundButton, soundButtonRelative, fullScreen);
 
 
             LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
@@ -557,7 +559,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
-    private void trendingDisplayMedia(final Trending trending, final VideoView videoView, final FloatingActionButton floatingActionButton, final AppCompatSeekBar appCompatSeekBarProgressBar, final TextView textViewDuration, LinearLayout linearLayoutProgressBar, final ImageButton smallPlayButton, final ImageButton soundButton, final RelativeLayout soundRelativeLayout) {
+    private void trendingDisplayMedia(final Trending trending, final VideoView videoView, final FloatingActionButton floatingActionButton, final AppCompatSeekBar appCompatSeekBarProgressBar, final TextView textViewDuration, LinearLayout linearLayoutProgressBar, final ImageButton smallPlayButton, final ImageButton soundButton, final RelativeLayout soundRelativeLayout, final ImageButton fullScreenButton) {
         if (trending.getDescriptionType() == 1) {
             floatingActionButton.setVisibility(View.INVISIBLE);
             appCompatSeekBarProgressBar.setVisibility(View.INVISIBLE);
@@ -587,6 +589,19 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             }
                         });
                 queue1.add(threadMainPic);
+                fullScreenButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Intent intent = new Intent();
+                        intent.setAction(android.content.Intent.ACTION_VIEW); intent.setDataAndType(Uri.parse(trending.getMainDisplay()),"image/* video/*");
+
+                        startActivity(intent);
+
+                    }
+                });
+
 
             } catch (Exception e) {
                 //  image1.setImageResource(R.drawable.cast3);
@@ -600,53 +615,11 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 @Override
                 public void run() {
 
+
                     try {
-                        String fullScreen = getIntent().getStringExtra("fullScreenInd");
-//                        if ("y".equals(fullScreen)) {
-//                            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                            getSupportActionBar().show();
-//
-//                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                            //  actionBar.hide();
-//
-//
-//                            //  setContentView(R.layout.activity_bottom_navigation_icon);
-//                            //outter1.setVisibility(View.INVISIBLE);
-//                            profile.setVisibility(View.INVISIBLE);
-//                            createVote.setVisibility(View.INVISIBLE);
-//                            noInternet.setVisibility(View.INVISIBLE);
-//                            videoViewFullScreen.setVisibility(View.VISIBLE);
-//
-//                            final VideoView videoViewFullScreen = (VideoView) findViewById(R.id.videoViewFullscreen);
-//
-//                            Uri videoUri = Uri.parse(trending.getMainDisplay());
-//
-//                            videoViewFullScreen.setVideoURI(videoUri);
-//                            mediaController = new FullScreenMediaController(BottomNavigationIcon.this);
-//                            mediaController.show();
-//                            videoViewFullScreen.setMediaController(mediaController);
-//                            videoViewFullScreen.start();
-//
-//                            videoView.requestFocus();
-//                            //    we also set an setOnPreparedListener in order to know when the video file is ready for playback
-//                            videoViewFullScreen.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//
-//                                public void onPrepared(MediaPlayer mediaPlayer) {
-//                                    // close the progress bar and play the video
-//                                    progressDialog.dismiss();
-//                                    //if we have a position on savedInstanceState, the video playback should start from here
-//                                    videoViewFullScreen.seekTo(position);
-//                                    if (position == 0) {
-//                                    } else {
-//                                        //if we come from a resumed activity, video playback will be paused
-//
-//                                    }
-//                                    // mediaController.setAnchorView(activity_bottom_navigation_icon);
-//                                }
-//                            });
-//                        }
-                        Uri videoUri = Uri.parse(trending.getMainDisplay());
+
+
+                        final Uri videoUri = Uri.parse(trending.getMainDisplay());
 
                         videoView.setVideoURI(videoUri);
 
@@ -679,28 +652,39 @@ public class BottomNavigationIcon extends AppCompatActivity {
                                 String formatted = String.format("%02d:%02d", minutes, seconds);
                                 //Toast.makeText(getApplicationContext(), "duration is " + formatted ,  Toast.LENGTH_LONG).show();
                                 textViewDuration.setText(formatted);
-                                initComponentVideo(videoView, floatingActionButton, appCompatSeekBarProgressBar, (int) java.util.concurrent.TimeUnit.MINUTES.toSeconds(minutes) + seconds, mediaPlayer, textViewDuration, smallPlayButton, soundButton);
+                                initComponentVideo(videoView, floatingActionButton, appCompatSeekBarProgressBar, (int) java.util.concurrent.TimeUnit.MINUTES.toSeconds(minutes) + seconds, mediaPlayer, textViewDuration, smallPlayButton, soundButton, fullScreenButton);
 
                                 //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
 
                             }
 
                         });
-
-
                         mediaController.setVisibility(View.INVISIBLE);
+
+
+
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
 
-
+            fullScreenButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW );
+                    intent.setDataAndType(Uri.parse(String.valueOf(trending.getMainDisplay())), "video/*");
+                    startActivity(intent);
+                }
+            });
             thread.start();
             noInternet.setVisibility(View.INVISIBLE);
             outter1.setVisibility(View.VISIBLE);
             noConnection = true;
         }
+
+
     }
 
     Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -1159,12 +1143,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
-    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play, final AppCompatSeekBar seek_bar, final int duration, final MediaPlayer player, final TextView timmer, final ImageButton smallPlayButton, final ImageButton soundButton) {
+    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play, final AppCompatSeekBar seek_bar, final int duration, final MediaPlayer player, final TextView timmer, final ImageButton smallPlayButton, final ImageButton soundButton, final ImageButton fullScreenButton) {
         musicUtils = new MusicUtils();
         //  image = (ImageView) findViewById(R.id.image);
         lyt_progress = (View) findViewById(R.id.lyt_progress);
         tv_duration = (TextView) findViewById(R.id.tv_duration);
         // seek_bar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+
 
         smallPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1172,6 +1157,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 toggleButtonPlay(bt_play, videoView, seek_bar, duration, player, timmer, smallPlayButton);
             }
         });
+
 
         soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1225,23 +1211,19 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (b)
+                if (b) {
                     player.seekTo(i);
-                //timmer.setText(player.getDuration()-player.getCurrentPosition());
-
+                }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
-//                   Toast.makeText(BottomNavigationIcon.this,
-//                           "Seekbar touch started", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                   Toast.makeText(BottomNavigationIcon.this,
-//                           "Seekbar touch stopped", Toast.LENGTH_SHORT).show();
+
             }
 
 
@@ -1260,8 +1242,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 public void onTick(long millisUntilFinished) {
                     try {
                         seek_bar.setProgress(player.getCurrentPosition());
-                    }
-                    catch (Exception ex){
+                    } catch (Exception ex) {
                         //do nothing
                     }
                     double timeRemaining = player.getDuration() - player.getCurrentPosition();

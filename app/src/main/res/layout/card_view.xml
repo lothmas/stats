@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:elevation="34dp">
+        android:elevation="2000dp">
 
         <!--layout2-->
         <LinearLayout
@@ -112,7 +112,8 @@
 
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:id="@+id/videoViewFullscreenRelative"
+            android:layout_width="fill_parent"
             android:layout_height="245dp">
 
             <VideoView
