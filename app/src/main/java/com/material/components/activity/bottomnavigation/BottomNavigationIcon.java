@@ -673,9 +673,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
             fullScreenButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW );
-                    intent.setDataAndType(Uri.parse(String.valueOf(trending.getMainDisplay())), "video/*");
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(String.valueOf(trending.getMainDisplay())), "video/*");
+                        startActivity(intent);
+                    }
+                    catch (Exception exp){
+                        //do nothing
+                    }
                 }
             });
             thread.start();
