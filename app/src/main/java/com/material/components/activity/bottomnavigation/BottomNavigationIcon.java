@@ -87,6 +87,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class BottomNavigationIcon extends AppCompatActivity {
 
@@ -677,7 +678,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                                 String formatted = String.format("%02d:%02d", minutes, seconds);
                                 //Toast.makeText(getApplicationContext(), "duration is " + formatted ,  Toast.LENGTH_LONG).show();
                                 textViewDuration.setText(formatted);
-                                initComponentVideo(videoView,floatingActionButton,appCompatSeekBarProgressBar, (int) java.util.concurrent.TimeUnit.MINUTES.toSeconds(minutes)+seconds,mediaPlayer);
+                                initComponentVideo(videoView,floatingActionButton,appCompatSeekBarProgressBar, (int) java.util.concurrent.TimeUnit.MINUTES.toSeconds(minutes)+seconds,mediaPlayer,textViewDuration);
 
                                 //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
 
@@ -1172,7 +1173,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
-    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play, final AppCompatSeekBar seek_bar, final int duration, final MediaPlayer player) {
+    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play, final AppCompatSeekBar seek_bar, final int duration, final MediaPlayer player, final TextView timmer) {
         musicUtils = new MusicUtils();
       //  image = (ImageView) findViewById(R.id.image);
         lyt_progress = (View) findViewById(R.id.lyt_progress);
@@ -1183,7 +1184,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         bt_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleButtonPlay(bt_play,videoView,seek_bar,duration,player);
+                toggleButtonPlay(bt_play,videoView,seek_bar,duration,player, timmer);
             }
         });
 
@@ -1193,6 +1194,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 toggleActionView(bt_play);
             }
         });
+
+
     }
 
     private void toggleActionView(FloatingActionButton bt_play) {
@@ -1206,29 +1209,33 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
-    private void toggleButtonPlay(FloatingActionButton bt_play, VideoView videoView, final AppCompatSeekBar seek_bar, int duration, final MediaPlayer player) {
+    private void toggleButtonPlay(final FloatingActionButton bt_play, VideoView videoView, final AppCompatSeekBar seek_bar, int duration, final MediaPlayer player, final TextView timmer) {
 
             seek_bar.setMax(player.getDuration());
             seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
                @Override
                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                   if(player != null && fromUser){
-//                       player.seekTo(player * 1000);
-//                   }
+                   if (b)
+                   player.seekTo(i);
+                   //timmer.setText(player.getDuration()-player.getCurrentPosition());
+
                }
 
                @Override
                public void onStartTrackingTouch(SeekBar seekBar) {
-                   Toast.makeText(BottomNavigationIcon.this,
-                           "Seekbar touch started", Toast.LENGTH_SHORT).show();
+
+//                   Toast.makeText(BottomNavigationIcon.this,
+//                           "Seekbar touch started", Toast.LENGTH_SHORT).show();
                }
 
                @Override
                public void onStopTrackingTouch(SeekBar seekBar) {
-                   Toast.makeText(BottomNavigationIcon.this,
-                           "Seekbar touch stopped", Toast.LENGTH_SHORT).show();
+//                   Toast.makeText(BottomNavigationIcon.this,
+//                           "Seekbar touch stopped", Toast.LENGTH_SHORT).show();
                }
+
+
            });
 
 
@@ -1237,22 +1244,26 @@ public class BottomNavigationIcon extends AppCompatActivity {
             bt_play.setImageResource(R.drawable.ic_pause);
             videoView.start();
 
-            new CountDownTimer(30000, 1000) {
+            new CountDownTimer(player.getDuration(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    if(player != null){
-                        int mCurrentPosition = player.getCurrentPosition() / 1000;
-                        seek_bar.setProgress(mCurrentPosition);
+                    seek_bar.setProgress(player.getCurrentPosition());
+                    double timeRemaining = player.getDuration() - player.getCurrentPosition();
+                    timmer.setText(String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining), TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
+                    if(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining)==0 && TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining)==0){
+                        bt_play.setImageResource(R.drawable.ic_play_arrow);
+                        state_play = false;
+                        millisInFuture = player.getDuration();
+                        seek_bar.setProgress(0);
                     }
-                //    mHandler.postDelayed(this, 1000);
-                    millisInFuture = millisUntilFinished;
-//                    tv_duration.setText(musicUtils.milliSecondsToTimer(millisUntilFinished));
-                    Long progress = (30000 - millisUntilFinished) / 1000;
-                    seek_bar.setProgress(progress.intValue());
+
                 }
 
                 public void onFinish() {
-
+                    bt_play.setImageResource(R.drawable.ic_play_arrow);
+                    state_play = false;
+                    millisInFuture = player.getDuration();
+                    seek_bar.setProgress(0);
                 }
             }.start();
 
@@ -1262,27 +1273,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
             bt_play.setImageResource(R.drawable.ic_play_arrow);
             if (countDownTimer != null) countDownTimer.cancel();
         }
-    }
-
-    private void runCountDownTimer() {
-        if (countDownTimer != null) countDownTimer.cancel();
-        countDownTimer = new CountDownTimer(millisInFuture, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                millisInFuture = millisUntilFinished;
-//                tv_duration.setText(musicUtils.milliSecondsToTimer(millisUntilFinished));
-                Long progress = (30000 - millisUntilFinished) / 1000;
-             //   seek_bar.setProgress(progress.intValue());
-            }
-
-            @Override
-            public void onFinish() {
-             //   bt_play.setImageResource(R.drawable.ic_play_arrow);
-                state_play = false;
-                millisInFuture = 30000;
-               // seek_bar.setProgress(0);
-            }
-        }.start();
     }
 
 
