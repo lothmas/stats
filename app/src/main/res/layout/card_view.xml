@@ -129,32 +129,39 @@
                 android:layout_centerInParent="true"
                 android:clickable="true"
                 android:tint="@android:color/white"
-                app:backgroundTint="@color/overlay_dark_40"
+                app:backgroundTint="@color/red_400"
                 app:elevation="1dp"
                 app:fabSize="mini"
                 app:rippleColor="@android:color/white"
                 app:srcCompat="@drawable/ic_play_arrow" />
 
-            <!--InnerLayout Progress Bar-->
             <LinearLayout
                 android:id="@+id/lyt_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/overlay_dark_40"
+                android:background="@color/overlay_dark_30"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="@dimen/spacing_middle">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@android:color/white"
+                    app:srcCompat="@drawable/ic_play_arrow" />
 
                 <android.support.v7.widget.AppCompatSeekBar
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:progress="1"
+                    android:progress="0"
                     android:progressDrawable="@drawable/seek_progress_white"
                     android:thumb="@drawable/seek_thumb_primary" />
 
                 <TextView
+                    android:id="@+id/tv_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -174,6 +181,26 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/lyt_volume"
+                android:layout_width="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/spacing_medium"
+                android:background="@color/overlay_dark_30"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="@android:color/white"
+                    android:padding="@dimen/spacing_medium"
+                    android:tag="1"
+                    app:srcCompat="@drawable/ic_volume_up" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 

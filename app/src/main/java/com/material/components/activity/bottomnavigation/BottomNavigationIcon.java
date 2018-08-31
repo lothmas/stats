@@ -519,19 +519,18 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //            trendingDisplayMedia(trending, videoView);
 
 
+            final RelativeLayout relativeLayout = (RelativeLayout) layout1.getChildAt(2);
+            final VideoView imageView = (VideoView) relativeLayout.getChildAt(0);
+            final FloatingActionButton floatingActionButton = (FloatingActionButton) relativeLayout.getChildAt(1);
+            final LinearLayout linearLayoutProgressBar = (LinearLayout) relativeLayout.getChildAt(2);
+            final ImageButton smallPlayButton = (ImageButton) linearLayoutProgressBar.getChildAt(0);
+            final AppCompatSeekBar appCompatSeekBarProgressBar = (AppCompatSeekBar) linearLayoutProgressBar.getChildAt(1);
+            final TextView textViewDuration = (TextView) linearLayoutProgressBar.getChildAt(2);
 
+            final RelativeLayout soundButtonRelative = (RelativeLayout) relativeLayout.getChildAt(3);
+            final ImageButton soundButton = (ImageButton) soundButtonRelative.getChildAt(0);
 
-            final RelativeLayout relativeLayout= (RelativeLayout) layout1.getChildAt(2);
-            final VideoView imageView =(VideoView)  relativeLayout.getChildAt(0);
-            final FloatingActionButton floatingActionButton= (FloatingActionButton) relativeLayout.getChildAt(1);
-            final LinearLayout linearLayoutProgressBar=(LinearLayout) relativeLayout.getChildAt(2);
-            final AppCompatSeekBar appCompatSeekBarProgressBar=(AppCompatSeekBar) linearLayoutProgressBar.getChildAt(0);
-            final TextView textViewDuration=(TextView) linearLayoutProgressBar.getChildAt(1);
-
-
-            trendingDisplayMedia(trending, imageView,floatingActionButton,appCompatSeekBarProgressBar,textViewDuration,linearLayoutProgressBar);
-
-
+            trendingDisplayMedia(trending, imageView, floatingActionButton, appCompatSeekBarProgressBar, textViewDuration, linearLayoutProgressBar, smallPlayButton, soundButton, soundButtonRelative);
 
 
             LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
@@ -558,12 +557,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
-    private void trendingDisplayMedia(final Trending trending, final VideoView videoView, final FloatingActionButton floatingActionButton, final AppCompatSeekBar appCompatSeekBarProgressBar, final TextView textViewDuration, LinearLayout linearLayoutProgressBar) {
+    private void trendingDisplayMedia(final Trending trending, final VideoView videoView, final FloatingActionButton floatingActionButton, final AppCompatSeekBar appCompatSeekBarProgressBar, final TextView textViewDuration, LinearLayout linearLayoutProgressBar, final ImageButton smallPlayButton, final ImageButton soundButton, final RelativeLayout soundRelativeLayout) {
         if (trending.getDescriptionType() == 1) {
             floatingActionButton.setVisibility(View.INVISIBLE);
             appCompatSeekBarProgressBar.setVisibility(View.INVISIBLE);
             textViewDuration.setVisibility(View.INVISIBLE);
             linearLayoutProgressBar.setBackgroundColor(Color.TRANSPARENT);
+            smallPlayButton.setVisibility(View.INVISIBLE);
+            soundRelativeLayout.setVisibility(View.INVISIBLE);
             try {
 
                 ImageRequest threadMainPic = new ImageRequest(trending.getMainDisplay(),
@@ -654,7 +655,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         videoView.setMediaController(mediaController);
 
 
-                         videoView.requestFocus();
+                        videoView.requestFocus();
                         //we also set an setOnPreparedListener in order to know when the video file is ready for playback
                         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
@@ -671,14 +672,14 @@ public class BottomNavigationIcon extends AppCompatActivity {
 //                                mediaController.setAnchorView(videoView);
 
                                 // TODO Auto-generated method stub
-                                int duration=mediaPlayer.getDuration()/1000;
+                                int duration = mediaPlayer.getDuration() / 1000;
                                 int hours = duration / 3600;
                                 int minutes = (duration / 60) - (hours * 60);
-                                int seconds = duration - (hours * 3600) - (minutes * 60) ;
+                                int seconds = duration - (hours * 3600) - (minutes * 60);
                                 String formatted = String.format("%02d:%02d", minutes, seconds);
                                 //Toast.makeText(getApplicationContext(), "duration is " + formatted ,  Toast.LENGTH_LONG).show();
                                 textViewDuration.setText(formatted);
-                                initComponentVideo(videoView,floatingActionButton,appCompatSeekBarProgressBar, (int) java.util.concurrent.TimeUnit.MINUTES.toSeconds(minutes)+seconds,mediaPlayer,textViewDuration);
+                                initComponentVideo(videoView, floatingActionButton, appCompatSeekBarProgressBar, (int) java.util.concurrent.TimeUnit.MINUTES.toSeconds(minutes) + seconds, mediaPlayer, textViewDuration, smallPlayButton, soundButton);
 
                                 //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
 
@@ -720,21 +721,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     };
 
-//    @Override
-//    public void onSaveInstanceState(Bundle savedInstanceState) {
-//        super.onSaveInstanceState(savedInstanceState);
-//        //we use onSaveInstanceState in order to store the video playback position for orientation change
-////        savedInstanceState.putInt("Position", videoView.getCurrentPosition());
-//        //     videoView.pause();
-//    }
-//
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        //   super.onRestoreInstanceState(savedInstanceState);
-//        //we use onRestoreInstanceState in order to play the video playback from the stored position
-//        //  position = savedInstanceState.getInt("Position");
-//        //  videoView.seekTo(position);
-//    }
 
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -1173,18 +1159,41 @@ public class BottomNavigationIcon extends AppCompatActivity {
     }
 
 
-    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play, final AppCompatSeekBar seek_bar, final int duration, final MediaPlayer player, final TextView timmer) {
+    private void initComponentVideo(final VideoView videoView, final FloatingActionButton bt_play, final AppCompatSeekBar seek_bar, final int duration, final MediaPlayer player, final TextView timmer, final ImageButton smallPlayButton, final ImageButton soundButton) {
         musicUtils = new MusicUtils();
-      //  image = (ImageView) findViewById(R.id.image);
+        //  image = (ImageView) findViewById(R.id.image);
         lyt_progress = (View) findViewById(R.id.lyt_progress);
         tv_duration = (TextView) findViewById(R.id.tv_duration);
-       // seek_bar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+        // seek_bar = (AppCompatSeekBar) findViewById(R.id.seek_bar);
+
+        smallPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleButtonPlay(bt_play, videoView, seek_bar, duration, player, timmer, smallPlayButton);
+            }
+        });
+
+        soundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (soundButton.getTag().equals("1")) {
+                    player.setVolume(0, 0);
+                    soundButton.setTag("2");
+                    soundButton.setImageResource(R.drawable.ic_volume_off);
+                } else {
+                    player.setVolume(1, 1);
+                    soundButton.setImageResource(R.drawable.ic_volume_up);
+                    soundButton.setTag("1");
+                }
+
+            }
+        });
 
 
         bt_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleButtonPlay(bt_play,videoView,seek_bar,duration,player, timmer);
+                toggleButtonPlay(bt_play, videoView, seek_bar, duration, player, timmer, smallPlayButton);
             }
         });
 
@@ -1209,52 +1218,64 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     }
 
-    private void toggleButtonPlay(final FloatingActionButton bt_play, VideoView videoView, final AppCompatSeekBar seek_bar, int duration, final MediaPlayer player, final TextView timmer) {
+    private void toggleButtonPlay(final FloatingActionButton bt_play, VideoView videoView, final AppCompatSeekBar seek_bar, int duration, final MediaPlayer player, final TextView timmer, final ImageButton smallPlayButton) {
 
-            seek_bar.setMax(player.getDuration());
-            seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        seek_bar.setMax(player.getDuration());
+        seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-               @Override
-               public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                   if (b)
-                   player.seekTo(i);
-                   //timmer.setText(player.getDuration()-player.getCurrentPosition());
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (b)
+                    player.seekTo(i);
+                //timmer.setText(player.getDuration()-player.getCurrentPosition());
 
-               }
+            }
 
-               @Override
-               public void onStartTrackingTouch(SeekBar seekBar) {
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
 //                   Toast.makeText(BottomNavigationIcon.this,
 //                           "Seekbar touch started", Toast.LENGTH_SHORT).show();
-               }
+            }
 
-               @Override
-               public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 //                   Toast.makeText(BottomNavigationIcon.this,
 //                           "Seekbar touch stopped", Toast.LENGTH_SHORT).show();
-               }
+            }
 
 
-           });
+        });
 
 
         state_play = !state_play;
         if (state_play) {
-            bt_play.setImageResource(R.drawable.ic_pause);
+            bt_play.setVisibility(View.INVISIBLE);
+            smallPlayButton.setImageResource(R.drawable.ic_pause);
             videoView.start();
 
             new CountDownTimer(player.getDuration(), 1000) {
 
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                 public void onTick(long millisUntilFinished) {
-                    seek_bar.setProgress(player.getCurrentPosition());
+                    try {
+                        seek_bar.setProgress(player.getCurrentPosition());
+                    }
+                    catch (Exception ex){
+                        String df="dsf";
+                    }
                     double timeRemaining = player.getDuration() - player.getCurrentPosition();
                     timmer.setText(String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining), TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining))));
-                    if(TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining)==0 && TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining)==0){
+                    if (TimeUnit.MILLISECONDS.toMinutes((long) timeRemaining) == 0 && TimeUnit.MILLISECONDS.toSeconds((long) timeRemaining) == 0) {
                         bt_play.setImageResource(R.drawable.ic_play_arrow);
                         state_play = false;
                         millisInFuture = player.getDuration();
                         seek_bar.setProgress(0);
+
+                    }
+
+                    if (seek_bar.hasFocus()) {
+                        String wer = "";
                     }
 
                 }
@@ -1270,7 +1291,10 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         } else {
             videoView.pause();
+            bt_play.setVisibility(View.VISIBLE);
             bt_play.setImageResource(R.drawable.ic_play_arrow);
+            smallPlayButton.setImageResource(R.drawable.ic_play_arrow);
+
             if (countDownTimer != null) countDownTimer.cancel();
         }
     }
