@@ -42,6 +42,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -71,6 +72,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.flexbox.FlexboxLayout;
 import com.material.components.R;
 import com.material.components.activity.FullScreenMediaController;
+import com.material.components.activity.bottomsheet.BottomSheetFloating;
 import com.material.components.model.Event;
 import com.material.components.utils.MusicUtils;
 import com.material.components.utils.Tools;
@@ -208,6 +210,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         //////////////////////////
         setContentView(R.layout.activity_bottom_navigation_icon);
+
 
         outter1 = findViewById(R.id.outter1);
         profile = findViewById(R.id.profile);
@@ -471,6 +474,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         }
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     private void mappingTrendngXMLtoCollectedData(List<Trending> trendingList, int a) {
         for (final Trending trending : trendingList) {
 
@@ -538,16 +542,70 @@ public class BottomNavigationIcon extends AppCompatActivity {
             LinearLayout.LayoutParams btwnViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 30);
             LinearLayout.LayoutParams endViewConfig = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
 
-//            LinearLayout layout5 = (LinearLayout) layout1.getChildAt(4);
-//            View endView = (View) layout1.getChildAt(5);
-//            if (trendingList.size() - 1 == a) {
-//                endView.setLayoutParams(endViewConfig);
-//
-//            } else {
-//                endView.setLayoutParams(btwnViewConfig);
-//            }
-//
-//            LinearLayout layout6 = (LinearLayout) layout5.getChildAt(0);
+
+            final LinearLayout linearLayout5 = (LinearLayout) layout1.getChildAt(4);
+            final LinearLayout linearLayout5Inner1 = (LinearLayout) linearLayout5.getChildAt(0);
+            final ImageView voteImage = (ImageView) linearLayout5Inner1.getChildAt(0);
+            //set the ontouch listener
+            voteImage.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            ImageView view = (ImageView) v;
+                            //overlay is black with transparency of 0x77 (119)
+                            view.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                            view.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL: {
+                            ImageView view = (ImageView) v;
+                            //clear the overlay
+                            view.getDrawable().clearColorFilter();
+                            view.invalidate();
+                            Intent intent = new Intent(getApplicationContext(), BottomSheetFloating.class);
+                            startActivity(intent);
+                            break;
+                        }
+                    }
+
+                    return false;
+                }
+            });
+
+
+            final LinearLayout linearLayout7 = (LinearLayout) linearLayout5.getChildAt(2);
+            final ImageView statsImage = (ImageView) linearLayout7.getChildAt(0);
+            //set the ontouch listener
+            statsImage.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            ImageView view = (ImageView) v;
+                            //overlay is black with transparency of 0x77 (119)
+                            view.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                            view.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL: {
+                            ImageView view = (ImageView) v;
+                            //clear the overlay
+                            view.getDrawable().clearColorFilter();
+                            view.invalidate();
+                            break;
+                        }
+                    }
+
+                    return false;
+                }
+            });
 
 
             outter1.addView(cardView);
@@ -595,7 +653,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
 
                         Intent intent = new Intent();
-                        intent.setAction(android.content.Intent.ACTION_VIEW); intent.setDataAndType(Uri.parse(trending.getMainDisplay()),"image/* video/*");
+                        intent.setAction(android.content.Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(trending.getMainDisplay()), "image/* video/*");
 
                         startActivity(intent);
 
@@ -662,8 +721,6 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         mediaController.setVisibility(View.INVISIBLE);
 
 
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -677,8 +734,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.parse(String.valueOf(trending.getMainDisplay())), "video/*");
                         startActivity(intent);
-                    }
-                    catch (Exception exp){
+                    } catch (Exception exp) {
                         //do nothing
                     }
                 }
@@ -1145,6 +1201,8 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 startActivityForResult(chooserIntent, 1);
             }
         });
+
+
     }
 
 
