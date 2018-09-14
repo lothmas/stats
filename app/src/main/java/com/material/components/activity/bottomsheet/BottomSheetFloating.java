@@ -1,6 +1,8 @@
 package com.material.components.activity.bottomsheet;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
@@ -14,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +73,7 @@ public class BottomSheetFloating extends AppCompatActivity {
             @Override
             public void onItemClick(View view, Image obj, int position) {
                 Snackbar.make(parent_view, obj.name + " clicked", Snackbar.LENGTH_SHORT).show();
+                showDialogImageFull(obj);
                 showBottomSheetDialog(obj);
             }
         });
@@ -82,7 +87,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_menu);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Places");
+        actionBar.setTitle("Nominees");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this);
     }
@@ -136,13 +141,27 @@ public class BottomSheetFloating extends AppCompatActivity {
         // set background transparent
         ((View) view.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        mBottomSheetDialog.show();
+     //   mBottomSheetDialog.show();
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 mBottomSheetDialog = null;
             }
         });
+
+    }
+
+    private void showDialogImageFull(Image img) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_image);
+        ImageView imageView=(ImageView) dialog.findViewById(R.id.toFullScreenImage);
+        imageView.setImageDrawable(img.imageDrw);
+        TextView nomineeName=(TextView)dialog.findViewById(R.id.nomineeName);
+        nomineeName.setText(img.name);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
 
     }
 }
