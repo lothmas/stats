@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@android:color/white"
-                    app:srcCompat="@drawable/ic_fullscreen" />
+                    app:srcCompat="@drawable/ic_fullscreen"/>
 
             </LinearLayout>
 

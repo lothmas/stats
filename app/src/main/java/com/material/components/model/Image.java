@@ -10,4 +10,43 @@ public class Image {
     public String brief;
     public Integer counter = null;
 
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public Drawable getImageDrw() {
+        return imageDrw;
+    }
+
+    public void setImageDrw(Drawable imageDrw) {
+        this.imageDrw = imageDrw;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
+    }
+
+    public Integer getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Integer counter) {
+        this.counter = counter;
+    }
 }

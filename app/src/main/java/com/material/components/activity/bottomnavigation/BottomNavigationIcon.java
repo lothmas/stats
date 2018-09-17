@@ -567,6 +567,9 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             view.getDrawable().clearColorFilter();
                             view.invalidate();
                             Intent intent = new Intent(getApplicationContext(), BottomSheetFloating.class);
+                            Bundle b = new Bundle();
+                            b.putInt("key", 1); //Your id
+                            intent.putExtras(b);
                             startActivity(intent);
                             break;
                         }

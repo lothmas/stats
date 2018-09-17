@@ -2,9 +2,14 @@ package com.material.components.activity.bottomsheet;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
@@ -22,16 +27,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.material.components.R;
 import com.material.components.adapter.AdapterGridTwoLineLight;
 import com.material.components.data.DataGenerator;
 import com.material.components.model.Image;
 import com.material.components.utils.Tools;
 import com.material.components.widget.SpacingItemDecoration;
+import com.material.nominees.NomineeMasterObject;
+import com.material.nominees.NomineesEntity;
+import com.material.utility.JsonObjectConversion;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BottomSheetFloating extends AppCompatActivity {
+    RequestQueue queue1;
 
     private View parent_view;
 
@@ -50,7 +73,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         initComponent();
         initToolbar();
-        showBottomSheetDialog(mAdapter.getItem(0));
+        //showBottomSheetDialog();
     }
 
     private void initComponent() {
@@ -59,27 +82,119 @@ public class BottomSheetFloating extends AppCompatActivity {
         recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), true));
         recyclerView.setHasFixedSize(true);
 
-        List<Image> items = DataGenerator.getImageDate(this);
-        items.addAll(DataGenerator.getImageDate(this));
-        items.addAll(DataGenerator.getImageDate(this));
-        items.addAll(DataGenerator.getImageDate(this));
 
-        //set data and list adapter
-        mAdapter = new AdapterGridTwoLineLight(this, items);
-        recyclerView.setAdapter(mAdapter);
+        queue1 = Volley.newRequestQueue(this);
 
-        // on item list clicked
-        mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
+        String url = "http://192.168.1.40:8090/nominees";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        String er="sdsd";
+                       // Log.d("Response", response);
+
+                        JsonObjectConversion jsonConversion = new JsonObjectConversion();
+                        NomineeMasterObject nomineeMasterObject = (NomineeMasterObject) jsonConversion.jsonToObject(response, NomineeMasterObject.class);
+                        List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
+                        final List<Image> items =new ArrayList<>();
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                .permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        int count=0;
+                        for(NomineesEntity nomineesEntity1:nomineesEntityList){
+                            final Image image=new Image();
+                            image.setName(nomineesEntity1.getNomineeName());
+//                            try {
+//
+//// Retrieves an image specified by the URL, displays it in the UI.
+//                                ImageRequest threadProfilePic = new ImageRequest(nomineesEntity1.getNomineeImage(),
+//                                        new Response.Listener<Bitmap>() {
+//                                            @Override
+//                                            public void onResponse(Bitmap bitmap) {
+//                                                Drawable d = new BitmapDrawable(getResources(), bitmap);
+//                                                image.setImageDrw(d);
+//                                                items.add(image);
+//                                            }
+//                                        }, 0, 0, null,
+//                                        new Response.ErrorListener() {
+//                                            public void onErrorResponse(VolleyError error) {
+//                                               // image.setImageDrw(R.drawable.cast3);
+//                                            }
+//                                        });
+//// Access the RequestQueue through your singleton class.
+//                                queue1.add(threadProfilePic);
+//                            } catch (Exception e) {
+//                            //    circularImageView.setImageResource(R.drawable.cast3);
+//                            }
+
+                            try {
+                             //   image.image = drawableFromUrl(nomineesEntity1.getNomineeImage());
+//                                image.name = name_arr[i];
+//                                image.brief = date_arr[randInt(date_arr.length - 1)];
+//                                image.counter = r.nextBoolean() ? randInt(500) : null;
+//                                image.imageDrw = ctx.getResources().getDrawable(obj.image);
+
+
+                                image.imageDrw=(drawableFromUrl(nomineesEntity1.getNomineeImage()));
+                                image.setCounter(count);
+                                image.setBrief("Test");
+                                items.add(image);
+                                count++;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
+
+
+                    //    items.addAll(items);
+
+                        //set data and list adapter
+                        mAdapter = new AdapterGridTwoLineLight(null, items);
+                        recyclerView.setAdapter(mAdapter);
+
+                        // on item list clicked
+                        mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, Image obj, int position) {
+                                Snackbar.make(parent_view, obj + " clicked", Snackbar.LENGTH_SHORT).show();
+                                showDialogImageFull(obj);
+                                //showBottomSheetDialog();
+                            }
+                        });
+
+                        bottom_sheet = findViewById(R.id.bottom_sheet);
+                        mBehavior = BottomSheetBehavior.from(bottom_sheet);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                       // Log.d("Error.Response", response);
+                    }
+                }
+        ) {
             @Override
-            public void onItemClick(View view, Image obj, int position) {
-                Snackbar.make(parent_view, obj.name + " clicked", Snackbar.LENGTH_SHORT).show();
-                showDialogImageFull(obj);
-                showBottomSheetDialog(obj);
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("voteID", String.valueOf(7));
+                return params;
             }
-        });
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(postRequest);
 
-        bottom_sheet = findViewById(R.id.bottom_sheet);
-        mBehavior = BottomSheetBehavior.from(bottom_sheet);
+
+
+
+
     }
 
     private void initToolbar() {
@@ -109,14 +224,14 @@ public class BottomSheetFloating extends AppCompatActivity {
     }
 
 
-    private void showBottomSheetDialog(final Image obj) {
+    private void showBottomSheetDialog() {
         if (mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
         final View view = getLayoutInflater().inflate(R.layout.sheet_floating, null);
-        ((TextView) view.findViewById(R.id.name)).setText(obj.name);
-        ((TextView) view.findViewById(R.id.brief)).setText(obj.brief);
+        ((TextView) view.findViewById(R.id.name)).setText("");
+        ((TextView) view.findViewById(R.id.brief)).setText("");
         ((TextView) view.findViewById(R.id.description)).setText(R.string.middle_lorem_ipsum);
         (view.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,5 +278,17 @@ public class BottomSheetFloating extends AppCompatActivity {
         dialog.setCancelable(true);
         dialog.show();
 
+    }
+
+    public Drawable drawableFromUrl(String url) throws IOException {
+
+        Bitmap x;
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.connect();
+        InputStream input = connection.getInputStream();
+
+        x = BitmapFactory.decodeStream(input);
+        return new BitmapDrawable(x);
     }
 }
