@@ -105,7 +105,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         int count=0;
                         for(NomineesEntity nomineesEntity1:nomineesEntityList){
                             final Image image=new Image();
-                            image.setName(nomineesEntity1.getNomineeName());
+                            image.name=(nomineesEntity1.getNomineeName());
 //                            try {
 //
 //// Retrieves an image specified by the URL, displays it in the UI.
@@ -138,8 +138,8 @@ public class BottomSheetFloating extends AppCompatActivity {
 
 
                                 image.imageDrw=(drawableFromUrl(nomineesEntity1.getNomineeImage()));
-                                image.setCounter(count);
-                                image.setBrief("Test");
+                                image.counter=(count);
+                                image.brief=("Test");
                                 items.add(image);
                                 count++;
                             } catch (IOException e) {
@@ -154,7 +154,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                     //    items.addAll(items);
 
                         //set data and list adapter
-                        mAdapter = new AdapterGridTwoLineLight(null, items);
+                        mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items);
                         recyclerView.setAdapter(mAdapter);
 
                         // on item list clicked
@@ -166,6 +166,8 @@ public class BottomSheetFloating extends AppCompatActivity {
                                 //showBottomSheetDialog();
                             }
                         });
+
+
 
                         bottom_sheet = findViewById(R.id.bottom_sheet);
                         mBehavior = BottomSheetBehavior.from(bottom_sheet);

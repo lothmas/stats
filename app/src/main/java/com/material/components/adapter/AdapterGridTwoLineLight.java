@@ -68,7 +68,10 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             OriginalViewHolder view = (OriginalViewHolder) holder;
             view.name.setText(obj.name);
             view.brief.setText(obj.brief);
-            Tools.displayImageOriginal(ctx, view.image, obj.image);
+          //  image.image = drawableFromUrl(nomineesEntity1.getNomineeImage());
+
+            view.image.setImageDrawable(obj.imageDrw);
+            //Tools.displayImageOriginal(ctx, view.image, obj.image);
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
