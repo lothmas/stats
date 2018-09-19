@@ -20,7 +20,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_verified_user" />
+            app:srcCompat="@drawable/ic_info" />
 
         <TextView
             android:id="@+id/title"
@@ -67,7 +67,7 @@
             android:background="@drawable/btn_rounded_green"
             android:paddingLeft="@dimen/spacing_mlarge"
             android:paddingRight="@dimen/spacing_mlarge"
-            android:text="Get Started"
+            android:text="Start Poll"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

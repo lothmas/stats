@@ -15,9 +15,11 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +38,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
 import com.material.components.adapter.AdapterGridTwoLineLight;
+import com.material.components.adapter.AdapterListDrag;
 import com.material.components.data.DataGenerator;
+import com.material.components.helper.DragItemTouchHelper;
 import com.material.components.model.Image;
 import com.material.components.utils.Tools;
 import com.material.components.widget.SpacingItemDecoration;
@@ -60,6 +64,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private AdapterGridTwoLineLight mAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
     private BottomSheetBehavior mBehavior;
     private BottomSheetDialog mBottomSheetDialog;
@@ -71,15 +76,16 @@ public class BottomSheetFloating extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_sheet_floating);
         parent_view = findViewById(android.R.id.content);
 
+        showCustomDialog("Drag To Nominate","Nominate by making a Long-Press then Dragging & Placing in Order starting with your favourite");
         initComponent();
-        initToolbar();
-        //showBottomSheetDialog();
+        initToolbar("Nominees");
+
     }
 
     private void initComponent() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), true));
+        recyclerView.addItemDecoration(new SpacingItemDecoration(6, Tools.dpToPx(this, 6), true));
         recyclerView.setHasFixedSize(false);
 
 
@@ -87,36 +93,34 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         String url = "http://192.168.1.40:8090/nominees";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        String er="sdsd";
-                       // Log.d("Response", response);
+                        String er = "sdsd";
+                        // Log.d("Response", response);
 
                         JsonObjectConversion jsonConversion = new JsonObjectConversion();
                         NomineeMasterObject nomineeMasterObject = (NomineeMasterObject) jsonConversion.jsonToObject(response, NomineeMasterObject.class);
                         List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
-                        final List<Image> items =new ArrayList<>();
+                        final List<Image> items = new ArrayList<>();
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                 .permitAll().build();
                         StrictMode.setThreadPolicy(policy);
-                        int count=0;
-                        for(NomineesEntity nomineesEntity1:nomineesEntityList){
-                            final Image image=new Image();
-                            image.name=(nomineesEntity1.getNomineeName());
+                        int count = 0;
+                        for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
+                            final Image image = new Image();
+                            image.name = (nomineesEntity1.getNomineeName());
 
-                                try {
-                                    image.imageDrw = (drawableFromUrl(nomineesEntity1.getNomineeImage()));
-                                }
-                                catch (Exception e){
-                                    //do nothing
-                                }
-                                image.counter=(count);
-                                image.brief=nomineesEntity1.getNomineesDescription();
-                                items.add(image);
-                                count++;
+                            try {
+                                image.imageDrw = (drawableFromUrl(nomineesEntity1.getNomineeImage()));
+                            } catch (Exception e) {
+                                //do nothing
+                            }
+                            image.counter = (count);
+                            image.brief = nomineesEntity1.getNomineesDescription();
+                            items.add(image);
+                            count++;
 
                         }
 
@@ -128,31 +132,38 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
-                                Snackbar.make(parent_view, obj.brief , Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(parent_view, obj.brief, Snackbar.LENGTH_SHORT).show();
                                 showDialogImageFull(obj);
                                 //showBottomSheetDialog();
                             }
                         });
 
+                        mAdapter.setDragListener(new AdapterListDrag.OnStartDragListener() {
+                            @Override
+                            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+                                mItemTouchHelper.startDrag(viewHolder);
+                            }
+                        });
 
+                        ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
+                        mItemTouchHelper = new ItemTouchHelper(callback);
+                        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
                         bottom_sheet = findViewById(R.id.bottom_sheet);
                         mBehavior = BottomSheetBehavior.from(bottom_sheet);
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                       // Log.d("Error.Response", response);
+                        // Log.d("Error.Response", response);
                     }
                 }
         ) {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("voteID", String.valueOf(7));
                 return params;
             }
@@ -161,19 +172,16 @@ public class BottomSheetFloating extends AppCompatActivity {
         queue.add(postRequest);
 
 
-
-
-
     }
 
-    private void initToolbar() {
+    private void initToolbar(String pollTitle) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+    // toolbar.setNavigationIcon(R.drawable.ic_menu);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Nominees");
+        actionBar.setTitle(pollTitle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this);
+    //  Tools.setSystemBarColor(this);
     }
 
     @Override
@@ -194,9 +202,9 @@ public class BottomSheetFloating extends AppCompatActivity {
 
 
     private void showBottomSheetDialog() {
-        if (mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        }
+//        if (mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+//            mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//        }
 
         final View view = getLayoutInflater().inflate(R.layout.sheet_floating, null);
         ((TextView) view.findViewById(R.id.name)).setText("");
@@ -225,7 +233,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         // set background transparent
         ((View) view.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-     //   mBottomSheetDialog.show();
+        //   mBottomSheetDialog.show();
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -239,9 +247,9 @@ public class BottomSheetFloating extends AppCompatActivity {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.dialog_image);
-        ImageView imageView=(ImageView) dialog.findViewById(R.id.toFullScreenImage);
+        ImageView imageView = (ImageView) dialog.findViewById(R.id.toFullScreenImage);
         imageView.setImageDrawable(img.imageDrw);
-        TextView nomineeName=(TextView)dialog.findViewById(R.id.nomineeName);
+        TextView nomineeName = (TextView) dialog.findViewById(R.id.nomineeName);
         nomineeName.setText(img.name);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setCancelable(true);
@@ -249,7 +257,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     }
 
-    public Drawable drawableFromUrl(String url) throws IOException ,Exception{
+    public Drawable drawableFromUrl(String url) throws IOException, Exception {
 
         Bitmap x;
 
@@ -259,5 +267,33 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         x = BitmapFactory.decodeStream(input);
         return new BitmapDrawable(x);
+    }
+
+    private void showCustomDialog(String title,String description) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog.setContentView(R.layout.dialog_info);
+        TextView dialogTitle = (TextView) dialog.findViewById(R.id.title);
+        dialogTitle.setText(title);
+        TextView dialogDescription = (TextView) dialog.findViewById(R.id.content);
+        dialogDescription.setText(description);
+        dialog.setCancelable(true);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+
+        ((AppCompatButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(), ((AppCompatButton) v).getText().toString() + " Clicked", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setAttributes(lp);
     }
 }

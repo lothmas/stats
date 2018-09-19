@@ -9,14 +9,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.material.components.R;
+import com.material.components.helper.DragItemTouchHelper;
 import com.material.components.model.Image;
 import com.material.components.utils.ItemAnimation;
 import com.material.components.utils.Tools;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements DragItemTouchHelper.MoveHelperAdapter {
 
     private List<Image> items = new ArrayList<>();
 
@@ -24,9 +26,21 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
 
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
+    private AdapterListDrag.OnStartDragListener mDragStartListener = null;
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(items, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, Image obj, int position);
+    }
+
+    public void setDragListener(AdapterListDrag.OnStartDragListener dragStartListener) {
+        this.mDragStartListener = dragStartListener;
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
