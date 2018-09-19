@@ -80,7 +80,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), true));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
 
         queue1 = Volley.newRequestQueue(this);
@@ -106,52 +106,19 @@ public class BottomSheetFloating extends AppCompatActivity {
                         for(NomineesEntity nomineesEntity1:nomineesEntityList){
                             final Image image=new Image();
                             image.name=(nomineesEntity1.getNomineeName());
-//                            try {
-//
-//// Retrieves an image specified by the URL, displays it in the UI.
-//                                ImageRequest threadProfilePic = new ImageRequest(nomineesEntity1.getNomineeImage(),
-//                                        new Response.Listener<Bitmap>() {
-//                                            @Override
-//                                            public void onResponse(Bitmap bitmap) {
-//                                                Drawable d = new BitmapDrawable(getResources(), bitmap);
-//                                                image.setImageDrw(d);
-//                                                items.add(image);
-//                                            }
-//                                        }, 0, 0, null,
-//                                        new Response.ErrorListener() {
-//                                            public void onErrorResponse(VolleyError error) {
-//                                               // image.setImageDrw(R.drawable.cast3);
-//                                            }
-//                                        });
-//// Access the RequestQueue through your singleton class.
-//                                queue1.add(threadProfilePic);
-//                            } catch (Exception e) {
-//                            //    circularImageView.setImageResource(R.drawable.cast3);
-//                            }
 
-                            try {
-                             //   image.image = drawableFromUrl(nomineesEntity1.getNomineeImage());
-//                                image.name = name_arr[i];
-//                                image.brief = date_arr[randInt(date_arr.length - 1)];
-//                                image.counter = r.nextBoolean() ? randInt(500) : null;
-//                                image.imageDrw = ctx.getResources().getDrawable(obj.image);
-
-
-                                image.imageDrw=(drawableFromUrl(nomineesEntity1.getNomineeImage()));
+                                try {
+                                    image.imageDrw = (drawableFromUrl(nomineesEntity1.getNomineeImage()));
+                                }
+                                catch (Exception e){
+                                    //do nothing
+                                }
                                 image.counter=(count);
-                                image.brief=("Test");
+                                image.brief=nomineesEntity1.getNomineesDescription();
                                 items.add(image);
                                 count++;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
 
                         }
-
-
-
-
-                    //    items.addAll(items);
 
                         //set data and list adapter
                         mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items);
@@ -161,7 +128,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
-                                Snackbar.make(parent_view, obj + " clicked", Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(parent_view, obj.brief , Snackbar.LENGTH_SHORT).show();
                                 showDialogImageFull(obj);
                                 //showBottomSheetDialog();
                             }
@@ -282,7 +249,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     }
 
-    public Drawable drawableFromUrl(String url) throws IOException {
+    public Drawable drawableFromUrl(String url) throws IOException ,Exception{
 
         Bitmap x;
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.material.components.R;
 import com.material.components.model.Image;
+import com.material.components.utils.ItemAnimation;
 import com.material.components.utils.Tools;
 
 import java.util.ArrayList;
@@ -80,9 +81,18 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
                     }
                 }
             });
+            setAnimation(view.itemView, position);
         }
     }
 
+    private int lastPosition = -1;
+    private boolean on_attach = true;
+    private void setAnimation(View view, int position) {
+        if (position > lastPosition) {
+            ItemAnimation.animate(view, on_attach ? position : -1, 4);
+            lastPosition = position;
+        }
+    }
     @Override
     public int getItemCount() {
         return items.size();
