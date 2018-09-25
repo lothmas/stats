@@ -76,9 +76,9 @@ public class BottomSheetFloating extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_sheet_floating);
         parent_view = findViewById(android.R.id.content);
 
-        showCustomDialog("Drag To Nominate","Nominate by making a Long-Press then Dragging & Placing in Order starting with your favourite");
         initComponent();
         initToolbar("Nominees");
+        showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
 
     }
 
@@ -186,7 +186,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_basic, menu);
+        getMenuInflater().inflate(R.menu.menu_nomninee, menu);
         return true;
     }
 
@@ -194,7 +194,12 @@ public class BottomSheetFloating extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
-        } else {
+        }
+        else  if (item.getTitle().equals("polled")) {
+            BottomSheetFloating.super.onBackPressed();
+
+        }
+        else {
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
@@ -223,6 +228,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Submit Rating", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(view);
