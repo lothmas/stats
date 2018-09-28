@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -132,8 +134,21 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
-                                Snackbar.make(parent_view, obj.brief, Snackbar.LENGTH_SHORT).show();
-                                showDialogImageFull(obj);
+                                RecyclerView recyclerView1=recyclerView;
+                                LinearLayout layout = (LinearLayout) view;
+
+
+                                RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
+                                ImageView imageView= (ImageView) relativeLayout.getChildAt(0);
+
+                                LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+                                LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
+                                TextView albumName=(TextView)layout2.getChildAt(1);
+                                TextView nomineeName=(TextView)layout2.getChildAt(0);
+
+                                showDialogImageFull(imageView.getDrawable(),nomineeName);
+                                Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
+
                                 //showBottomSheetDialog();
                             }
                         });
@@ -249,14 +264,14 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     }
 
-    private void showDialogImageFull(Image img) {
+    private void showDialogImageFull(Drawable img,TextView mainText) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.dialog_image);
         ImageView imageView = (ImageView) dialog.findViewById(R.id.toFullScreenImage);
-        imageView.setImageDrawable(img.imageDrw);
+        imageView.setImageDrawable(img);
         TextView nomineeName = (TextView) dialog.findViewById(R.id.nomineeName);
-        nomineeName.setText(img.name);
+        nomineeName.setText(mainText.getText());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.show();
