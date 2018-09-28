@@ -85,7 +85,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         initComponent();
         initToolbar("Nominees");
-       // showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
+        // showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
 
     }
 
@@ -137,14 +137,14 @@ public class BottomSheetFloating extends AppCompatActivity {
                             public void onItemClick(View view, Image obj, int position) {
                                 LinearLayout layout = (LinearLayout) view;
                                 RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
-                                ImageView imageView= (ImageView) relativeLayout.getChildAt(0);
+                                ImageView imageView = (ImageView) relativeLayout.getChildAt(0);
 
                                 LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
                                 LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
-                                TextView albumName=(TextView)layout2.getChildAt(1);
-                                TextView nomineeName=(TextView)layout2.getChildAt(0);
+                                TextView albumName = (TextView) layout2.getChildAt(1);
+                                TextView nomineeName = (TextView) layout2.getChildAt(0);
 
-                                showDialogImageFull(imageView.getDrawable(),nomineeName);
+                                showDialogImageFull(imageView.getDrawable(), nomineeName);
                                 Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
 
                                 //        setContentView(R.layout.item_grid_image_two_line_light);
@@ -154,16 +154,12 @@ public class BottomSheetFloating extends AppCompatActivity {
                             }
                         });
 
-                        mAdapter.setDragListener(new AdapterListDrag.OnStartDragListener() {
-                            @Override
-                            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-                                mItemTouchHelper.startDrag(viewHolder);
-                            }
-                        });
 
                         ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
                         mItemTouchHelper = new ItemTouchHelper(callback);
                         mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+
 
 //                        bottom_sheet = findViewById(R.id.bottom_sheet);
 //                        mBehavior = BottomSheetBehavior.from(bottom_sheet);
@@ -210,21 +206,17 @@ public class BottomSheetFloating extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
-        }
-        else  if (item.getTitle().equals("polled")) {
+        } else if (item.getTitle().equals("polled")) {
             BottomSheetFloating.super.onBackPressed();
 
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-
-
-    private void showDialogImageFull(Drawable img,TextView mainText) {
+    private void showDialogImageFull(Drawable img, TextView mainText) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.dialog_image);
@@ -250,7 +242,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         return new BitmapDrawable(x);
     }
 
-    private void showCustomDialog(String title,String description) {
+    private void showCustomDialog(String title, String description) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
         dialog.setContentView(R.layout.dialog_info);
