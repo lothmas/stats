@@ -57,6 +57,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
         public TextView name;
         public TextView brief;
         public View lyt_parent;
+        private TextView nomineeCounter;
 
         public OriginalViewHolder(View v) {
             super(v);
@@ -64,6 +65,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             name = (TextView) v.findViewById(R.id.name);
             brief = (TextView) v.findViewById(R.id.brief);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+            nomineeCounter = (TextView) v.findViewById(R.id.nomineeCounter);
         }
     }
 
@@ -83,6 +85,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             OriginalViewHolder view = (OriginalViewHolder) holder;
             view.name.setText(obj.name);
             view.brief.setText(obj.brief);
+            view.nomineeCounter.setText(String.valueOf(position+1));
           //  image.image = drawableFromUrl(nomineesEntity1.getNomineeImage());
 
             view.image.setImageDrawable(obj.imageDrw);

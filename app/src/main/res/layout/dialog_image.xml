@@ -65,38 +65,6 @@
 
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/spacing_large"
-            app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="@dimen/spacing_medium"
-            app:cardElevation="1dp">
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="@dimen/spacing_xlarge"-->
-                <!--android:gravity="center"-->
-                <!--android:paddingLeft="@dimen/spacing_large"-->
-                <!--android:paddingRight="@dimen/spacing_large"-->
-                <!--android:text="Little Description It still amazes me how something that seems so easy becomes"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Body2"-->
-                <!--android:textColor="@color/grey_90" />-->
-            <!--<View-->
-                <!--android:layout_width="@dimen/spacing_xxxXlarge"-->
-                <!--android:layout_height="0dp" />-->
-            <!--<ImageButton-->
-                <!--android:id="@+id/bt_toggle_text"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
-                <!--android:tint="@android:color/white"-->
-                <!--app:srcCompat="@drawable/ic_fullscreen"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="15dp"/>-->
-
-        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

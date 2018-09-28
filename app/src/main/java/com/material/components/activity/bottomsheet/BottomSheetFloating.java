@@ -75,20 +75,25 @@ public class BottomSheetFloating extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        setContentView(R.layout.item_grid_image_two_line_light);
+//        TextView nomineeCounter = (TextView) findViewById(R.id.nomineeCounter);
+//        nomineeCounter.setVisibility(View.INVISIBLE);
+
         setContentView(R.layout.activity_bottom_sheet_floating);
         parent_view = findViewById(android.R.id.content);
 
         initComponent();
         initToolbar("Nominees");
-        showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
+       // showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
 
     }
 
     private void initComponent() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.addItemDecoration(new SpacingItemDecoration(6, Tools.dpToPx(this, 6), true));
-        recyclerView.setHasFixedSize(false);
+        recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), false));
+        recyclerView.setHasFixedSize(true);
 
 
         queue1 = Volley.newRequestQueue(this);
@@ -98,10 +103,6 @@ public class BottomSheetFloating extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
-                        String er = "sdsd";
-                        // Log.d("Response", response);
-
                         JsonObjectConversion jsonConversion = new JsonObjectConversion();
                         NomineeMasterObject nomineeMasterObject = (NomineeMasterObject) jsonConversion.jsonToObject(response, NomineeMasterObject.class);
                         List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
@@ -134,10 +135,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
-                                RecyclerView recyclerView1=recyclerView;
                                 LinearLayout layout = (LinearLayout) view;
-
-
                                 RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
                                 ImageView imageView= (ImageView) relativeLayout.getChildAt(0);
 
@@ -149,7 +147,10 @@ public class BottomSheetFloating extends AppCompatActivity {
                                 showDialogImageFull(imageView.getDrawable(),nomineeName);
                                 Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
 
-                                //showBottomSheetDialog();
+                                //        setContentView(R.layout.item_grid_image_two_line_light);
+//        TextView nomineeCounter = (TextView) findViewById(R.id.nomineeCounter);
+//        nomineeCounter.setVisibility(View.INVISIBLE);
+
                             }
                         });
 
@@ -164,8 +165,8 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mItemTouchHelper = new ItemTouchHelper(callback);
                         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
-                        bottom_sheet = findViewById(R.id.bottom_sheet);
-                        mBehavior = BottomSheetBehavior.from(bottom_sheet);
+//                        bottom_sheet = findViewById(R.id.bottom_sheet);
+//                        mBehavior = BottomSheetBehavior.from(bottom_sheet);
                     }
                 },
                 new Response.ErrorListener() {
@@ -191,12 +192,12 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     private void initToolbar(String pollTitle) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    // toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(pollTitle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    //  Tools.setSystemBarColor(this);
+        Tools.setSystemBarColor(this);
     }
 
     @Override
@@ -221,48 +222,7 @@ public class BottomSheetFloating extends AppCompatActivity {
     }
 
 
-    private void showBottomSheetDialog() {
-//        if (mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-//            mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-//        }
 
-        final View view = getLayoutInflater().inflate(R.layout.sheet_floating, null);
-        ((TextView) view.findViewById(R.id.name)).setText("");
-        ((TextView) view.findViewById(R.id.brief)).setText("");
-        ((TextView) view.findViewById(R.id.description)).setText(R.string.middle_lorem_ipsum);
-        (view.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBottomSheetDialog.hide();
-            }
-        });
-
-        (view.findViewById(R.id.submit_rating)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Submit Rating", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        mBottomSheetDialog = new BottomSheetDialog(this);
-        mBottomSheetDialog.setContentView(view);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBottomSheetDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-
-        // set background transparent
-        ((View) view.getParent()).setBackgroundColor(getResources().getColor(android.R.color.transparent));
-
-        //   mBottomSheetDialog.show();
-        mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mBottomSheetDialog = null;
-            }
-        });
-
-    }
 
     private void showDialogImageFull(Drawable img,TextView mainText) {
         final Dialog dialog = new Dialog(this);
