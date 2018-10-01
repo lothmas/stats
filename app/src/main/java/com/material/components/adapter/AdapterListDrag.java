@@ -65,7 +65,7 @@ public class AdapterListDrag extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(ctx.getResources().getColor(R.color.grey_5));
+            itemView.setBackgroundColor(ctx.getResources().getColor(R.color.transparent));
         }
 
         @Override

@@ -4,6 +4,13 @@ import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.balysv.materialripple.MaterialRippleLayout;
 
 public class DragItemTouchHelper extends ItemTouchHelper.Callback {
 
@@ -92,6 +99,18 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
             TouchViewHolder itemViewHolder = (TouchViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
+        for(int count=1;count==recyclerView.getChildCount();count++){
+        View view =(View)recyclerView.getChildAt(0);
+        MaterialRippleLayout materialRippleLayout=(MaterialRippleLayout)view;
+        LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
+        LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+        TextView counter = (TextView) layout1.getChildAt(2);
+        counter.setText(count+1);
+        }
+
+//        for (int counter = 0; counter < items.size(); counter++) {
+//            items.get(counter).counter=counter+1;
+//        }
     }
 
     public interface MoveHelperAdapter {

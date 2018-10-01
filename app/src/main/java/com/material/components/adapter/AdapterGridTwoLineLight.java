@@ -31,9 +31,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(items, fromPosition, toPosition);
-        for (int counter = 0; counter < items.size(); counter++) {
-            items.get(counter).counter=counter+1;
-        }
+
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
