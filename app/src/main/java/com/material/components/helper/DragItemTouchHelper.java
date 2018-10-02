@@ -51,8 +51,8 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
         if (source.getItemViewType() != target.getItemViewType()) {
             return false;
         }
-        int sourcer =source.getAdapterPosition();
-        int des=target.getAdapterPosition();
+        int sourcer = source.getAdapterPosition();
+        int des = target.getAdapterPosition();
         // Notify the adapter of the move
         mAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
         return true;
@@ -92,6 +92,15 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
+        for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
+             View view = (View) recyclerView.getChildAt(count);
+             MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view;
+             LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
+             LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+             TextView counter = (TextView) layout1.getChildAt(2);
+            counter.setText(String.valueOf(count + 1));
+        }
+
         viewHolder.itemView.setAlpha(ALPHA_FULL);
 
         if (viewHolder instanceof TouchViewHolder) {
@@ -99,18 +108,7 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
             TouchViewHolder itemViewHolder = (TouchViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
-        for(int count=1;count==recyclerView.getChildCount();count++){
-        View view =(View)recyclerView.getChildAt(0);
-        MaterialRippleLayout materialRippleLayout=(MaterialRippleLayout)view;
-        LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
-        LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
-        TextView counter = (TextView) layout1.getChildAt(2);
-        counter.setText(count+1);
-        }
 
-//        for (int counter = 0; counter < items.size(); counter++) {
-//            items.get(counter).counter=counter+1;
-//        }
     }
 
     public interface MoveHelperAdapter {
