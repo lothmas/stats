@@ -1,18 +1,14 @@
 package com.material.components.activity.bottomsheet;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,13 +32,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
 import com.material.components.adapter.AdapterGridTwoLineLight;
-import com.material.components.adapter.AdapterListDrag;
-import com.material.components.data.DataGenerator;
 import com.material.components.helper.DragItemTouchHelper;
 import com.material.components.model.Image;
 import com.material.components.utils.Tools;
@@ -61,17 +54,12 @@ import java.util.List;
 import java.util.Map;
 
 public class BottomSheetFloating extends AppCompatActivity {
-    RequestQueue queue1;
 
     private View parent_view;
 
     private RecyclerView recyclerView;
     private AdapterGridTwoLineLight mAdapter;
     private ItemTouchHelper mItemTouchHelper;
-
-    private BottomSheetBehavior mBehavior;
-    private BottomSheetDialog mBottomSheetDialog;
-    private View bottom_sheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +81,6 @@ public class BottomSheetFloating extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
 
-        queue1 = Volley.newRequestQueue(this);
 
         String url = "http://192.168.1.40:8090/nominees";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -104,21 +91,19 @@ public class BottomSheetFloating extends AppCompatActivity {
                         NomineeMasterObject nomineeMasterObject = (NomineeMasterObject) jsonConversion.jsonToObject(response, NomineeMasterObject.class);
                         List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
                         final List<Image> items = new ArrayList<>();
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                .permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
                         int count = 0;
+
                         for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
                             final Image image = new Image();
                             image.name = (nomineesEntity1.getNomineeName());
-
-                            try {
-                                image.imageDrw = (drawableFromUrl(nomineesEntity1.getNomineeImage()));
-                            } catch (Exception e) {
-                                //do nothing
-                            }
+                            image.url=nomineesEntity1.getNomineeImage();
                             image.counter = (count);
                             image.brief = nomineesEntity1.getNomineesDescription();
                             items.add(image);
                             count++;
-
                         }
 
                         //set data and list adapter
@@ -144,14 +129,9 @@ public class BottomSheetFloating extends AppCompatActivity {
                             }
                         });
 
-
                         ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
                         mItemTouchHelper = new ItemTouchHelper(callback);
                         mItemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-//                        bottom_sheet = findViewById(R.id.bottom_sheet);
-//                        mBehavior = BottomSheetBehavior.from(bottom_sheet);
                     }
                 },
                 new Response.ErrorListener() {
@@ -218,18 +198,6 @@ public class BottomSheetFloating extends AppCompatActivity {
         dialog.setCancelable(true);
         dialog.show();
 
-    }
-
-    public Drawable drawableFromUrl(String url) throws IOException, Exception {
-
-        Bitmap x;
-
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.connect();
-        InputStream input = connection.getInputStream();
-
-        x = BitmapFactory.decodeStream(input);
-        return new BitmapDrawable(x);
     }
 
     private void showCustomDialog(String title, String description) {
