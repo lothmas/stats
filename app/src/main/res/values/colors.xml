@@ -172,7 +172,7 @@
 
     <color name="cyan_50">#E0F7FA</color>
     <color name="cyan_100">#B2EBF2</color>
-    <color name="cyan_200">#80DEEA</color>
+    <color name="cyan_200">#80deea</color>
     <color name="cyan_300">#4DD0E1</color>
     <color name="cyan_400">#26C6DA</color>
     <color name="cyan_500">#00BCD4</color>
@@ -184,7 +184,7 @@
     <color name="cyan_A200">#18FFFF</color>
     <color name="cyan_A400">#00E5FF</color>
     <color name="cyan_A700">#00B8D4</color>
-    <color name="cyan_800_overlay">#E600838F</color>
+    <color name="cyan_800_overlay">#e600838f</color>
 
     <color name="light_green_50">#F1F8E9</color>
     <color name="light_green_100">#DCEDC8</color>
@@ -278,8 +278,8 @@
     <color name="lime_300">#DCE775</color>
     <color name="lime_400">#D4E157</color>
     <color name="lime_500">#CDDC39</color>
-    <color name="lime_600">#C0CA33</color>
-    <color name="lime_700">#AFB42B</color>
+    <color name="lime_600">#c0ca33</color>
+    <color name="lime_700">#afb42b</color>
     <color name="lime_800">#9E9D24</color>
     <color name="lime_900">#827717</color>
     <color name="lime_A100">#F4FF81</color>

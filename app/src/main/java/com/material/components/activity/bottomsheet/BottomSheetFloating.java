@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -76,16 +77,12 @@ public class BottomSheetFloating extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        setContentView(R.layout.item_grid_image_two_line_light);
-//        TextView nomineeCounter = (TextView) findViewById(R.id.nomineeCounter);
-//        nomineeCounter.setVisibility(View.INVISIBLE);
-
         setContentView(R.layout.activity_bottom_sheet_floating);
         parent_view = findViewById(android.R.id.content);
 
         initComponent();
         initToolbar("Nominees");
-        // showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
+        showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
 
     }
 
@@ -107,9 +104,6 @@ public class BottomSheetFloating extends AppCompatActivity {
                         NomineeMasterObject nomineeMasterObject = (NomineeMasterObject) jsonConversion.jsonToObject(response, NomineeMasterObject.class);
                         List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
                         final List<Image> items = new ArrayList<>();
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                                .permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
                         int count = 0;
                         for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
                             final Image image = new Image();
@@ -147,10 +141,6 @@ public class BottomSheetFloating extends AppCompatActivity {
                                 showDialogImageFull(imageView.getDrawable(), nomineeName);
                                 Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
 
-                                //        setContentView(R.layout.item_grid_image_two_line_light);
-//        TextView nomineeCounter = (TextView) findViewById(R.id.nomineeCounter);
-//        nomineeCounter.setVisibility(View.INVISIBLE);
-
                             }
                         });
 
@@ -158,7 +148,6 @@ public class BottomSheetFloating extends AppCompatActivity {
                         ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
                         mItemTouchHelper = new ItemTouchHelper(callback);
                         mItemTouchHelper.attachToRecyclerView(recyclerView);
-
 
 
 //                        bottom_sheet = findViewById(R.id.bottom_sheet);
@@ -188,12 +177,13 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     private void initToolbar(String pollTitle) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(pollTitle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        Tools.setSystemBarColor(this, R.color.grey_20);
     }
 
     @Override
