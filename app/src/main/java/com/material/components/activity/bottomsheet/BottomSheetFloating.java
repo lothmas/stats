@@ -70,7 +70,19 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         initComponent();
         initToolbar("Nominees");
-        showCustomDialog("Drag To Nominate","Long-Press then Drag & Place in Favoured Order");
+        Bundle b = getIntent().getExtras();
+        int voteType = -1; // or other values
+            voteType = b.getInt("voteType");
+            if(voteType==1){
+                showCustomDialog("Order By Dragging To Nominate","Long-Press -> Drag & Place in Favoured Order");
+            }
+            else  if(voteType==2){
+                showCustomDialog("Select one To Nominate","Long-Press to Select Favourite");
+            }
+            else  if(voteType==3){
+                showCustomDialog("Select One / Multiple To Nominate","Long-Press to Select Favourite");
+            }
+
 
     }
 

@@ -90,7 +90,6 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        super.clearView(recyclerView, viewHolder);
 
         for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
              View view = (View) recyclerView.getChildAt(count);
@@ -98,8 +97,10 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
              LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
              LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
              TextView counter = (TextView) layout1.getChildAt(2);
-            counter.setText(String.valueOf(count + 1));
+             counter.setText(String.valueOf(count + 1));
+
         }
+        super.clearView(recyclerView, viewHolder);
 
         viewHolder.itemView.setAlpha(ALPHA_FULL);
 

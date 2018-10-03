@@ -8,6 +8,10 @@ public class Trending {
     private int descriptionType;
     private String time;
     private String mainDisplay;
+    private int voteType;
+    private int voteBy;
+    private int voteId;
+
 
 
     public String getProfilePic() {
@@ -64,5 +68,29 @@ public class Trending {
 
     public void setMainDisplay(String mainDisplay) {
         this.mainDisplay = mainDisplay;
+    }
+
+    public int getVoteType() {
+        return voteType;
+    }
+
+    public void setVoteType(int voteType) {
+        this.voteType = voteType;
+    }
+
+    public int getVoteBy() {
+        return voteBy;
+    }
+
+    public void setVoteBy(int voteBy) {
+        this.voteBy = voteBy;
+    }
+
+    public int getVoteId() {
+        return voteId;
+    }
+
+    public void setVoteId(int voteId) {
+        this.voteId = voteId;
     }
 }

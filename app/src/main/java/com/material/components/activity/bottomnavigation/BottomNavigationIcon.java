@@ -566,9 +566,11 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             //clear the overlay
                             view.getDrawable().clearColorFilter();
                             view.invalidate();
-                            Intent intent = new Intent(getApplicationContext(), BottomSheetFloating.class);
+                            Intent intent = new Intent(BottomNavigationIcon.this, BottomSheetFloating.class);
                             Bundle b = new Bundle();
-                            b.putInt("key", 1); //Your id
+                            b.putInt("voteId", trending.getVoteId()); //Your id
+                            b.putInt("voteBy",trending.getVoteBy());
+                            b.putInt("voteType",trending.getVoteType());
                             intent.putExtras(b);
                             startActivity(intent);
                             break;

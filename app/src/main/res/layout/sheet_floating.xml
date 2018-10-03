@@ -51,8 +51,8 @@
 
                 <ImageButton
                     android:id="@+id/bt_close"
-                    android:layout_width="@dimen/spacing_mxlarge"
-                    android:layout_height="@dimen/spacing_mxlarge"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/grey_60"
                     app:srcCompat="@drawable/ic_close" />
