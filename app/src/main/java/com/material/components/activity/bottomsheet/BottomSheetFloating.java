@@ -143,6 +143,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                                 if(voteType==2){
                                     int viewSize=recyclerView.getChildCount();
                                     for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
+                                        ((RecyclerView)((OriginalViewHolder)view).mOwnerRecyclerView).mLastTouchDownIndex
                                         View view1 = (View) recyclerView.getChildAt(count);
                                         MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
                                         LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
@@ -150,11 +151,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                                         TextView counter = (TextView) layout1.getChildAt(2);
                                         Drawable[] dd= counter.getCompoundDrawables();
                                         int actualValue=((position-2)%viewSize)-1;
-                                        MaterialRippleLayout materialRippleLayout1= (MaterialRippleLayout) view.itemView;
-                                        LinearLayout layoutb = (LinearLayout) materialRippleLayout1.getChildAt(0);
-                                        LinearLayout layout1b = (LinearLayout) layoutb.getChildAt(1);
-                                        TextView counterb = (TextView) layout1b.getChildAt(2);
-                                        if(dd[0]==null &&counter.getId()==counterb.getId()) {
+                                        if(dd[0]==null) {
 //                                            dd[0].setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
 
                                             counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
