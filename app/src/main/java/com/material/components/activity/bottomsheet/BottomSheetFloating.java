@@ -77,13 +77,13 @@ public class BottomSheetFloating extends AppCompatActivity {
         int voteType = -1; // or other values
             voteType = b.getInt("voteType");
             if(voteType==1){
-                showCustomDialog("Order By Dragging To Nominate","Long-Press -> Drag & Place in Favoured Order");
+                showCustomDialog("Order By Dragging","Long-Press -> Drag & Place in Favoured Order");
             }
             else  if(voteType==2){
-                showCustomDialog("Select one To Nominate","Long-Press to Select Favourite");
+                showCustomDialog("Single Selection","Long-Press to Select Favourite");
             }
             else  if(voteType==3){
-                showCustomDialog("Select One / Multiple To Nominate","Long-Press to Select Favourite");
+                showCustomDialog("Multiple Selection","Long-Press to Select Favourite");
             }
         initComponent(voteType);
 
@@ -146,16 +146,39 @@ public class BottomSheetFloating extends AppCompatActivity {
 
                             @Override
                             public void onLongItemClick(RecyclerView.ViewHolder view, Image obj, int position) {
-                                if(voteType==3){
+
+                                if(voteType==2){
+                                    for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
+                                        View view1 = (View) recyclerView.getChildAt(count);
+                                        MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
+                                        LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
+                                        LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+                                        TextView counter = (TextView) layout1.getChildAt(2);
+                                        Drawable[] dd= counter.getCompoundDrawables();
+                                        if(dd[0]==null && count==position) {
+                                            counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+                                        }
+                                        else{
+                                            counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                        }
+
+                                    }
+                                }
+                                else if(voteType==3){
 //                                    for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
                                         View view1 = (View) recyclerView.getChildAt(view.getPosition());
                                         MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
                                         LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
                                         LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
                                         TextView counter = (TextView) layout1.getChildAt(2);
-                                        counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+                                        Drawable[] dd= counter.getCompoundDrawables();
+                                       if(dd[0]==null) {
+                                           counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+                                       }
+                                       else{
+                                           counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                       }
 
-                                //    }
                                 }
                             }
                         });
@@ -168,12 +191,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                             mItemTouchHelper.attachToRecyclerView(recyclerView);
 
                         }
-                        else if(voteType==2){
 
-                        }
-                        else if(voteType==3){
-
-                        }
 
 
                     }
