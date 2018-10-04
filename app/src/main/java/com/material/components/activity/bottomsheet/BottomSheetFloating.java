@@ -139,8 +139,9 @@ public class BottomSheetFloating extends AppCompatActivity {
 
                             @Override
                             public void onLongItemClick(RecyclerView.ViewHolder view, Image obj, int position) {
-
+                                RecyclerView fgv=recyclerView;
                                 if(voteType==2){
+                                    int viewSize=recyclerView.getChildCount();
                                     for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
                                         View view1 = (View) recyclerView.getChildAt(count);
                                         MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
@@ -148,8 +149,16 @@ public class BottomSheetFloating extends AppCompatActivity {
                                         LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
                                         TextView counter = (TextView) layout1.getChildAt(2);
                                         Drawable[] dd= counter.getCompoundDrawables();
-                                        if(dd[0]==null && count==position) {
+                                        int actualValue=((position-2)%viewSize)-1;
+                                        MaterialRippleLayout materialRippleLayout1= (MaterialRippleLayout) view.itemView;
+                                        LinearLayout layoutb = (LinearLayout) materialRippleLayout1.getChildAt(0);
+                                        LinearLayout layout1b = (LinearLayout) layoutb.getChildAt(1);
+                                        TextView counterb = (TextView) layout1b.getChildAt(2);
+                                        if(dd[0]==null &&counter.getId()==counterb.getId()) {
+//                                            dd[0].setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
+
                                             counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+
                                         }
                                         else{
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
