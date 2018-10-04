@@ -47,6 +47,8 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
 
     public interface OnItemClickListener {
         void onItemClick(View view, Image obj, int position);
+        void onLongItemClick(RecyclerView.ViewHolder view, Image obj, int position);
+
     }
 
     public void setDragListener(AdapterListDrag.OnStartDragListener dragStartListener) {
@@ -76,6 +78,8 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             brief = (TextView) v.findViewById(R.id.brief);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
             nomineeCounter = (TextView) v.findViewById(R.id.nomineeCounter);
+
+
         }
     }
 
@@ -89,7 +93,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         queue1 = Volley.newRequestQueue(ctx);
 
         final Image obj = items.get(position);
@@ -127,6 +131,14 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onItemClick(view, items.get(position), position);
                     }
+                }
+            });
+
+            view.lyt_parent.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onLongItemClick(holder, items.get(position), position);
+                    return true;
                 }
             });
             setAnimation(view.itemView, position);

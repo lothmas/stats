@@ -34,9 +34,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.material.components.R;
+import com.material.components.activity.list.ListMultiSelection;
 import com.material.components.adapter.AdapterGridTwoLineLight;
 import com.material.components.helper.DragItemTouchHelper;
+import com.material.components.helper.MultipleSelectorHelper;
 import com.material.components.model.Image;
 import com.material.components.utils.Tools;
 import com.material.components.widget.SpacingItemDecoration;
@@ -68,7 +71,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_sheet_floating);
         parent_view = findViewById(android.R.id.content);
 
-        initComponent();
+
         initToolbar("Nominees");
         Bundle b = getIntent().getExtras();
         int voteType = -1; // or other values
@@ -82,11 +85,11 @@ public class BottomSheetFloating extends AppCompatActivity {
             else  if(voteType==3){
                 showCustomDialog("Select One / Multiple To Nominate","Long-Press to Select Favourite");
             }
-
+        initComponent(voteType);
 
     }
 
-    private void initComponent() {
+    private void initComponent(final int voteType) {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), false));
@@ -126,6 +129,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
+
                                 LinearLayout layout = (LinearLayout) view;
                                 RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
                                 ImageView imageView = (ImageView) relativeLayout.getChildAt(0);
@@ -139,11 +143,39 @@ public class BottomSheetFloating extends AppCompatActivity {
                                 Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
 
                             }
+
+                            @Override
+                            public void onLongItemClick(RecyclerView.ViewHolder view, Image obj, int position) {
+                                if(voteType==3){
+//                                    for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
+                                        View view1 = (View) recyclerView.getChildAt(view.getPosition());
+                                        MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
+                                        LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
+                                        LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+                                        TextView counter = (TextView) layout1.getChildAt(2);
+                                        counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+
+                                //    }
+                                }
+                            }
                         });
 
-                        ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
-                        mItemTouchHelper = new ItemTouchHelper(callback);
-                        mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+                        if(voteType==1){
+                            ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
+                            mItemTouchHelper = new ItemTouchHelper(callback);
+                            mItemTouchHelper.attachToRecyclerView(recyclerView);
+
+                        }
+                        else if(voteType==2){
+
+                        }
+                        else if(voteType==3){
+
+                        }
+
+
                     }
                 },
                 new Response.ErrorListener() {
