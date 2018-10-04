@@ -36,21 +36,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.material.components.R;
-import com.material.components.activity.list.ListMultiSelection;
 import com.material.components.adapter.AdapterGridTwoLineLight;
 import com.material.components.helper.DragItemTouchHelper;
-import com.material.components.helper.MultipleSelectorHelper;
 import com.material.components.model.Image;
 import com.material.components.utils.Tools;
 import com.material.components.widget.SpacingItemDecoration;
 import com.material.nominees.NomineeMasterObject;
 import com.material.nominees.NomineesEntity;
 import com.material.utility.JsonObjectConversion;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,13 +70,13 @@ public class BottomSheetFloating extends AppCompatActivity {
         int voteType = -1; // or other values
             voteType = b.getInt("voteType");
             if(voteType==1){
-                showCustomDialog("Order By Dragging","Long-Press -> Drag & Place in Favoured Order");
+                showCustomDialog("ORDER BY DRAGGING","Long-Press -> Drag & Place in Favoured Order");
             }
             else  if(voteType==2){
-                showCustomDialog("Single Selection","Long-Press to Select Favourite");
+                showCustomDialog("SINGLE SELECTION","Long-Press to Select Favourite");
             }
             else  if(voteType==3){
-                showCustomDialog("Multiple Selection","Long-Press to Select Favourite");
+                showCustomDialog("MULTIPLE SELECTION","Long-Press to Select Favourite");
             }
         initComponent(voteType);
 
