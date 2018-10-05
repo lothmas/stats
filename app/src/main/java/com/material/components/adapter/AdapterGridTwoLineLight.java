@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.material.components.R;
+import com.material.components.activity.bottomsheet.BottomSheetFloating;
 import com.material.components.helper.DragItemTouchHelper;
 import com.material.components.model.Image;
 import com.material.components.utils.ItemAnimation;
@@ -36,6 +37,9 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
     private Context ctx;
     private OnItemClickListener mOnItemClickListener;
     private AdapterListDrag.OnStartDragListener mDragStartListener = null;
+
+    public AdapterGridTwoLineLight(BottomSheetFloating bottomSheetFloating, RecyclerView recyclerView, OnItemClickListener onItemClickListener) {
+    }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
@@ -102,6 +106,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             view.name.setText(obj.name);
             view.brief.setText(obj.brief);
             view.nomineeCounter.setText(String.valueOf(position + 1));
+
             try {
 
 // Retrieves an image specified by the URL, displays it in the UI.
@@ -138,10 +143,11 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public boolean onLongClick(View v) {
                     mOnItemClickListener.onLongItemClick(holder, items.get(position), position);
+
                     return true;
                 }
             });
-            setAnimation(view.itemView, position);
+          //  setAnimation(view.itemView, position);
         }
     }
 

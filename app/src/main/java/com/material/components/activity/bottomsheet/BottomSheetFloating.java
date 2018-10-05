@@ -56,8 +56,8 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     private View parent_view;
 
-    private RecyclerView recyclerView;
-    private AdapterGridTwoLineLight mAdapter;
+    private static volatile RecyclerView recyclerView;
+    private static volatile AdapterGridTwoLineLight mAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
     @Override
@@ -118,6 +118,9 @@ public class BottomSheetFloating extends AppCompatActivity {
                         mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items);
                         recyclerView.setAdapter(mAdapter);
 
+
+
+
                         // on item list clicked
                         mAdapter.setOnItemClickListener(new AdapterGridTwoLineLight.OnItemClickListener() {
                             @Override
@@ -139,6 +142,9 @@ public class BottomSheetFloating extends AppCompatActivity {
 
                             @Override
                             public void onLongItemClick(final RecyclerView.ViewHolder view, Image obj, int position) {
+
+
+                                RecyclerView manager=recyclerView;
                                 RecyclerViewPositionHelper mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
                                 int a, b, c, d;
                                 a = mRecyclerViewHelper.findFirstCompletelyVisibleItemPosition();
@@ -147,7 +153,6 @@ public class BottomSheetFloating extends AppCompatActivity {
                                 d = mRecyclerViewHelper.findLastVisibleItemPosition();
                                 int selectedCurrentPosition = position - b;
                                 if (voteType == 2 | voteType == 3) {
-                                    int viewSize = recyclerView.getChildCount();
                                     for (int count = 0; count <= recyclerView.getChildCount() - 1; count++) {
                                         View view1 = (View) recyclerView.getChildAt(count);
                                         MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
@@ -157,6 +162,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                                         Drawable[] dd = counter.getCompoundDrawables();
                                         if (dd[0] == null && selectedCurrentPosition == count) {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+                                        counter.setText("test:"+position);
                                         }
                                         else  if(voteType==2)  {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -165,6 +171,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
                                         }
+                                        String dds="34";
                                     }
                                 }
 

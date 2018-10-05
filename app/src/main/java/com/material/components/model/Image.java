@@ -10,6 +10,7 @@ public class Image {
     public String brief;
     public Integer counter = null;
     public String url;
+    public Integer selected;
 
 
     public int getImage() {
@@ -58,5 +59,13 @@ public class Image {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Integer selected) {
+        this.selected = selected;
     }
 }
