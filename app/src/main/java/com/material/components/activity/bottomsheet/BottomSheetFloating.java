@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -44,6 +45,8 @@ import com.material.components.widget.SpacingItemDecoration;
 import com.material.nominees.NomineeMasterObject;
 import com.material.nominees.NomineesEntity;
 import com.material.utility.JsonObjectConversion;
+import com.material.utility.RecyclerViewPositionHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,16 +71,14 @@ public class BottomSheetFloating extends AppCompatActivity {
         initToolbar("Nominees");
         Bundle b = getIntent().getExtras();
         int voteType = -1; // or other values
-            voteType = b.getInt("voteType");
-            if(voteType==1){
-                showCustomDialog("ORDER BY DRAGGING","Long-Press -> Drag & Place in Favoured Order");
-            }
-            else  if(voteType==2){
-                showCustomDialog("SINGLE SELECTION","Long-Press to Select Favourite");
-            }
-            else  if(voteType==3){
-                showCustomDialog("MULTIPLE SELECTION","Long-Press to Select Favourite");
-            }
+        voteType = b.getInt("voteType");
+        if (voteType == 1) {
+            showCustomDialog("ORDER BY DRAGGING", "Long-Press -> Drag & Place in Favoured Order");
+        } else if (voteType == 2) {
+            showCustomDialog("SINGLE SELECTION", "Long-Press to Select Favourite");
+        } else if (voteType == 3) {
+            showCustomDialog("MULTIPLE SELECTION", "Long-Press to Select Favourite");
+        }
         initComponent(voteType);
 
     }
@@ -87,7 +88,6 @@ public class BottomSheetFloating extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), false));
         recyclerView.setHasFixedSize(true);
-
 
 
         String url = "http://192.168.1.40:8090/nominees";
@@ -107,7 +107,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
                             final Image image = new Image();
                             image.name = (nomineesEntity1.getNomineeName());
-                            image.url=nomineesEntity1.getNomineeImage();
+                            image.url = nomineesEntity1.getNomineeImage();
                             image.counter = (count);
                             image.brief = nomineesEntity1.getNomineesDescription();
                             items.add(image);
@@ -138,59 +138,72 @@ public class BottomSheetFloating extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onLongItemClick(RecyclerView.ViewHolder view, Image obj, int position) {
-                                RecyclerView fgv=recyclerView;
-                                if(voteType==2){
-                                    int viewSize=recyclerView.getChildCount();
-                                    for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
-                                        ((RecyclerView)((OriginalViewHolder)view).mOwnerRecyclerView).mLastTouchDownIndex
+                            public void onLongItemClick(final RecyclerView.ViewHolder view, Image obj, int position) {
+                                RecyclerViewPositionHelper mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
+                                int a, b, c, d;
+                                a = mRecyclerViewHelper.findFirstCompletelyVisibleItemPosition();
+                                b = mRecyclerViewHelper.findFirstVisibleItemPosition();
+                                c = mRecyclerViewHelper.findLastCompletelyVisibleItemPosition();
+                                d = mRecyclerViewHelper.findLastVisibleItemPosition();
+                                int selectedCurrentPosition = position - b;
+                                if (voteType == 2 | voteType == 3) {
+                                    int viewSize = recyclerView.getChildCount();
+                                    for (int count = 0; count <= recyclerView.getChildCount() - 1; count++) {
                                         View view1 = (View) recyclerView.getChildAt(count);
                                         MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
                                         LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
                                         LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
-                                        TextView counter = (TextView) layout1.getChildAt(2);
-                                        Drawable[] dd= counter.getCompoundDrawables();
-                                        int actualValue=((position-2)%viewSize)-1;
-                                        if(dd[0]==null) {
-//                                            dd[0].setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
-
+                                        final  TextView counter = (TextView) layout1.getChildAt(2);
+                                        Drawable[] dd = counter.getCompoundDrawables();
+                                        if (dd[0] == null && selectedCurrentPosition == count) {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
-
                                         }
-                                        else{
+                                        else  if(voteType==2)  {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                         }
+                                        else  if(voteType==3 && counter.getCompoundDrawables()[0]!=null && selectedCurrentPosition == count)  {
+                                            counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
+                                        }
                                     }
                                 }
-                                else if(voteType==3){
-//                                    for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
-                                        View view1 = (View) recyclerView.getChildAt(view.getPosition());
-                                        MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
-                                        LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
-                                        LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
-                                        TextView counter = (TextView) layout1.getChildAt(2);
-                                        Drawable[] dd= counter.getCompoundDrawables();
-                                       if(dd[0]==null) {
-                                           counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
-                                       }
-                                       else{
-                                           counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                                       }
 
-                                }
+//                                else if (voteType == 3) {
+//                                    View view1 = (View) recyclerView.getChildAt(view.getPosition());
+//                                    MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
+//                                    LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
+//                                    LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+//                                    final TextView counter = (TextView) layout1.getChildAt(2);
+//                                    Drawable[] dd = counter.getCompoundDrawables();
+//                                    if (dd[0] == null) {
+//                                        counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+//                                    } else {
+//                                        counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+//                                    }
+//
+//                                }
                             }
                         });
 
 
-
-                        if(voteType==1){
+                        if (voteType == 1) {
                             ItemTouchHelper.Callback callback = new DragItemTouchHelper(mAdapter);
                             mItemTouchHelper = new ItemTouchHelper(callback);
                             mItemTouchHelper.attachToRecyclerView(recyclerView);
 
                         }
+                        final int[] overallXScroll = new int[1];
+                        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                            @Override
+                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                super.onScrolled(recyclerView, dx, dy);
 
+                                overallXScroll[0] = overallXScroll[0] + dx;
+                                String sad = "sd";
+
+
+                            }
+                        });
 
 
                     }
