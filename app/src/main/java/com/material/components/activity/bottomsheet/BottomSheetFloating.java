@@ -16,6 +16,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
@@ -87,8 +88,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), false));
-        recyclerView.setHasFixedSize(true);
-
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         String url = "http://192.168.1.40:8090/nominees";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -99,11 +99,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         NomineeMasterObject nomineeMasterObject = (NomineeMasterObject) jsonConversion.jsonToObject(response, NomineeMasterObject.class);
                         List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
                         final List<Image> items = new ArrayList<>();
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                                .permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
                         int count = 0;
-
                         for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
                             final Image image = new Image();
                             image.name = (nomineesEntity1.getNomineeName());
@@ -117,8 +113,36 @@ public class BottomSheetFloating extends AppCompatActivity {
                         //set data and list adapter
                         mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items);
                         recyclerView.setAdapter(mAdapter);
+                        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                            @Override
+                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                int asad = dx;
+                                super.onScrolled(recyclerView, dx, dy);
+                                if (dy > 0) {
+                                    int asads = dx;
+                                    // Scrolling up
+                                } else {
+                                    int assad = dx;
+                                    // Scrolling down
+                                }
 
 
+                            }
+
+                            @Override
+                            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                                super.onScrollStateChanged(recyclerView, newState);
+
+//                                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+//                                    // Do something
+//                                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+//                                    // Do something
+//                                } else {
+//                                    // Do something
+//                                }
+                            }
+                        });
 
 
                         // on item list clicked
@@ -141,10 +165,8 @@ public class BottomSheetFloating extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onLongItemClick(final RecyclerView.ViewHolder view, Image obj, int position) {
-
-
-                                RecyclerView manager=recyclerView;
+                            public List<Image> onLongItemClick(final RecyclerView.ViewHolder view, List<Image> obj, int position) {
+                                List<Image> images = obj;
                                 RecyclerViewPositionHelper mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
                                 int a, b, c, d;
                                 a = mRecyclerViewHelper.findFirstCompletelyVisibleItemPosition();
@@ -158,23 +180,36 @@ public class BottomSheetFloating extends AppCompatActivity {
                                         MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
                                         LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
                                         LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
-                                        final  TextView counter = (TextView) layout1.getChildAt(2);
+                                        final TextView counter = (TextView) layout1.getChildAt(2);
                                         Drawable[] dd = counter.getCompoundDrawables();
+
+
                                         if (dd[0] == null && selectedCurrentPosition == count) {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
-                                        counter.setText("test:"+position);
-                                        }
-                                        else  if(voteType==2)  {
+                                            obj.get(position).selected = 1;
+                                            obj.get(position).voteType=2;
+                                            if (voteType == 2) {
+                                                for (int da = 0; da < items.size() ; da++) {
+                                                    if (da != position) {
+                                                        obj.get(da).selected = 0;
+                                                          //counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                                    }
+                                                }
+                                            }
+
+                                        } else if (voteType == 3 && counter.getCompoundDrawables()[0] != null && selectedCurrentPosition == count) {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                                        }
-                                        else  if(voteType==3 && counter.getCompoundDrawables()[0]!=null && selectedCurrentPosition == count)  {
-                                            counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                            obj.get(position).selected = 0;
 
                                         }
-                                        String dds="34";
+                                        else if(voteType == 2 && counter.getCompoundDrawables()[0] != null) {
+                                            counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                        }
+                                       // obj.get(position).counter = count;
+
                                     }
                                 }
-
+                                String sdf = "df";
 //                                else if (voteType == 3) {
 //                                    View view1 = (View) recyclerView.getChildAt(view.getPosition());
 //                                    MaterialRippleLayout materialRippleLayout = (MaterialRippleLayout) view1;
@@ -189,6 +224,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 //                                    }
 //
 //                                }
+                                return obj;
                             }
                         });
 

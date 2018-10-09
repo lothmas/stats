@@ -10,7 +10,8 @@ public class Image {
     public String brief;
     public Integer counter = null;
     public String url;
-    public Integer selected;
+    public int selected;
+    public int voteType;
 
 
     public int getImage() {
@@ -61,11 +62,19 @@ public class Image {
         this.url = url;
     }
 
-    public Integer getSelected() {
+    public int getSelected() {
         return selected;
     }
 
-    public void setSelected(Integer selected) {
+    public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public int getVoteType() {
+        return voteType;
+    }
+
+    public void setVoteType(int voteType) {
+        this.voteType = voteType;
     }
 }

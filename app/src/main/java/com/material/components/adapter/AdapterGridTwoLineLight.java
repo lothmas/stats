@@ -51,7 +51,8 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
 
     public interface OnItemClickListener {
         void onItemClick(View view, Image obj, int position);
-        void onLongItemClick(RecyclerView.ViewHolder view, Image obj, int position);
+
+        List<Image> onLongItemClick(RecyclerView.ViewHolder view, List<Image> obj, int position);
 
     }
 
@@ -63,7 +64,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
         this.mOnItemClickListener = mItemClickListener;
     }
 
-    public AdapterGridTwoLineLight(Context context, List<Image> items) {
+    public AdapterGridTwoLineLight(Context context, final List<Image> items) {
         this.items = items;
         ctx = context;
     }
@@ -75,6 +76,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
         public View lyt_parent;
         private TextView nomineeCounter;
 
+
         public OriginalViewHolder(View v) {
             super(v);
             image = (ImageView) v.findViewById(R.id.image);
@@ -82,6 +84,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             brief = (TextView) v.findViewById(R.id.brief);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
             nomineeCounter = (TextView) v.findViewById(R.id.nomineeCounter);
+            //    nomineeCounter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
 
 
         }
@@ -106,6 +109,11 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             view.name.setText(obj.name);
             view.brief.setText(obj.brief);
             view.nomineeCounter.setText(String.valueOf(position + 1));
+            if (obj.selected == 1) {
+                view.nomineeCounter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+            } else {
+                view.nomineeCounter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
 
             try {
 
@@ -142,12 +150,12 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             view.lyt_parent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    mOnItemClickListener.onLongItemClick(holder, items.get(position), position);
+                    items = mOnItemClickListener.onLongItemClick(holder, items, position);
 
                     return true;
                 }
             });
-          //  setAnimation(view.itemView, position);
+            //  setAnimation(view.itemView, position);
         }
     }
 
