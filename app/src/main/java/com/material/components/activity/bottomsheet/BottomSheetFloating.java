@@ -71,8 +71,9 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         initToolbar("Nominees");
         Bundle b = getIntent().getExtras();
-        int voteType = -1; // or other values
+        int voteType ,voteBy; // or other values
         voteType = b.getInt("voteType");
+        voteBy=b.getInt("voteBy");
         if (voteType == 1) {
             showCustomDialog("ORDER BY DRAGGING", "Long-Press -> Drag & Place in Favoured Order");
         } else if (voteType == 2) {
@@ -80,15 +81,19 @@ public class BottomSheetFloating extends AppCompatActivity {
         } else if (voteType == 3) {
             showCustomDialog("MULTIPLE SELECTION", "Long-Press to Select Favourite");
         }
-        initComponent(voteType);
+        initComponent(voteType,voteBy);
 
     }
 
-    private void initComponent(final int voteType) {
+    private void initComponent(final int voteType, final int voteBy) {
+        int gridColumnsPerRow=2;
+        if(voteBy==1){
+        //    gridColumnsPerRow=1;
+        }
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, gridColumnsPerRow));
         recyclerView.addItemDecoration(new SpacingItemDecoration(2, Tools.dpToPx(this, 4), false));
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+//        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         String url = "http://192.168.1.40:8090/nominees";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -111,7 +116,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         }
 
                         //set data and list adapter
-                        mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items);
+                        mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items,voteBy);
                         recyclerView.setAdapter(mAdapter);
                         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -150,17 +155,18 @@ public class BottomSheetFloating extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
 
-                                LinearLayout layout = (LinearLayout) view;
-                                RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
-                                ImageView imageView = (ImageView) relativeLayout.getChildAt(0);
+                                    LinearLayout layout = (LinearLayout) view;
+                                    RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
+                                    ImageView imageView = (ImageView) relativeLayout.getChildAt(0);
 
-                                LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
-                                LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
-                                TextView albumName = (TextView) layout2.getChildAt(1);
-                                TextView nomineeName = (TextView) layout2.getChildAt(0);
-
-                                showDialogImageFull(imageView.getDrawable(), nomineeName);
-                                Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
+                                    LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+                                    LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
+                                    TextView albumName = (TextView) layout2.getChildAt(1);
+                                    TextView nomineeName = (TextView) layout2.getChildAt(0);
+//                                    if(voteBy==2) {
+                                        showDialogImageFull(imageView.getDrawable(), nomineeName);
+                                  //  }
+                                    Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
 
                             }
 

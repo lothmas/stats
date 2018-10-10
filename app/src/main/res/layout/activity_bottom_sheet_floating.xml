@@ -23,7 +23,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey_10"
+            android:background="@color/white_transparency"
             android:scrollbars="vertical"
             android:scrollingCache="true" />
 
