@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.material.utility.RecyclerViewPositionHelper;
 
 public class DragItemTouchHelper extends ItemTouchHelper.Callback {
 
@@ -90,6 +91,8 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        RecyclerViewPositionHelper mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
+        int b = mRecyclerViewHelper.findFirstVisibleItemPosition();
 
         for (int count = 0; count < recyclerView.getChildCount()-1; count++) {
              View view = (View) recyclerView.getChildAt(count);
@@ -97,11 +100,11 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
              LinearLayout layout = (LinearLayout) materialRippleLayout.getChildAt(0);
              LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
              TextView counter = (TextView) layout1.getChildAt(2);
-             counter.setText(String.valueOf(count + 1));
-
+             counter.setText(String.valueOf(b+1));
+             b++;
         }
-        super.clearView(recyclerView, viewHolder);
 
+        super.clearView(recyclerView, viewHolder);
         viewHolder.itemView.setAlpha(ALPHA_FULL);
 
         if (viewHolder instanceof TouchViewHolder) {
@@ -109,6 +112,7 @@ public class DragItemTouchHelper extends ItemTouchHelper.Callback {
             TouchViewHolder itemViewHolder = (TouchViewHolder) viewHolder;
             itemViewHolder.onItemClear();
         }
+        recyclerView.getAdapter().notifyDataSetChanged();
 
     }
 
