@@ -1,5 +1,6 @@
 package com.material.components.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -23,6 +24,9 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.material.components.R;
+import com.material.components.activity.FullScreenMediaController;
+import com.material.components.activity.MediaController;
+import com.material.components.activity.bottomnavigation.BottomNavigationIcon;
 import com.material.components.activity.bottomsheet.BottomSheetFloating;
 import com.material.components.helper.DragItemTouchHelper;
 import com.material.components.model.Image;
@@ -162,37 +166,49 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
 
 
             if (voteBy == 3) {
-                Thread thread = new Thread(new Runnable() {
+                try {
 
-                    @Override
-                    public void run() {
 
-                        try {
-                            final Uri videoUri = Uri.parse(obj.url);
-                            view.video.setVideoURI(videoUri);
-                            view.video.requestFocus();
-                            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
-                            view.video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    final Uri videoUri = Uri.parse(obj.url);
 
-                                public void onPrepared(MediaPlayer mediaPlayer) {
-                                    // close the progress bar and play the video
-                                    //if we have a position on savedInstanceState, the video playback should start from here
-                                    view.video.seekTo(position);
-                                    if (position == 8) {
-                                    } else {
-                                        //if we come from a resumed activity, video playback will be paused
-                                        //  view.image.pause();
-                                    }
-                                    //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
-                                }
+                    view.video.setVideoURI(videoUri);
 
-                            });
+                    MediaController mediaController = new MediaController();
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
+
+                    view.video.requestFocus();
+                    //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+                    view.video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            // close the progress bar and play the video
+                            //if we have a position on savedInstanceState, the video playback should start from here
+                            view.video.seekTo(6);
+                            if (position == 0) {
+                            } else {
+                                //if we come from a resumed activity, video playback will be paused
+                                view.video.pause();
+                            }
+//                                mediaController.setAnchorView(videoView);
+
+                            // TODO Auto-generated method stub
+                            int duration = mediaPlayer.getDuration() / 1000;
+                            int hours = duration / 3600;
+                            int minutes = (duration / 60) - (hours * 60);
+                            int seconds = duration - (hours * 3600) - (minutes * 60);
+                            String formatted = String.format("%02d:%02d", minutes, seconds);
+                            //Toast.makeText(getApplicationContext(), "duration is " + formatted ,  Toast.LENGTH_LONG).show();
+
+                            //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
+
                         }
-                    }
-                });
+
+                    });
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             //Tools.displayImageOriginal(ctx, view.image, obj.image);
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
