@@ -25,6 +25,15 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/image_2" />
 
+            <VideoView
+                android:id="@+id/nomineeVideo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+
         </RelativeLayout>
 
         <LinearLayout

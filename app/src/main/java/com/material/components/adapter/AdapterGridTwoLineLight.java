@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -81,12 +84,13 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
         public TextView brief;
         public View lyt_parent;
         private TextView nomineeCounter;
+        public VideoView video;
 
 
         public OriginalViewHolder(View v) {
             super(v);
             image = (ImageView) v.findViewById(R.id.image);
-
+            video=(VideoView) v.findViewById(R.id.nomineeVideo);
             name = (TextView) v.findViewById(R.id.name);
             brief = (TextView) v.findViewById(R.id.brief);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
@@ -99,6 +103,11 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
                 lyt_parent.getLayoutParams().height=230;
                 name.setTextSize(13);
             }
+
+            if (voteBy!=3){
+                video.getLayoutParams().height=0;
+            }
+
         }
     }
 
@@ -149,6 +158,41 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
                 } catch (Exception e) {
                     //    circularImageView.setImageResource(R.drawable.cast3);
                 }
+            }
+
+
+            if (voteBy == 3) {
+                Thread thread = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        try {
+                            final Uri videoUri = Uri.parse(obj.url);
+                            view.video.setVideoURI(videoUri);
+                            view.video.requestFocus();
+                            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
+                            view.video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                                public void onPrepared(MediaPlayer mediaPlayer) {
+                                    // close the progress bar and play the video
+                                    //if we have a position on savedInstanceState, the video playback should start from here
+                                    view.video.seekTo(position);
+                                    if (position == 8) {
+                                    } else {
+                                        //if we come from a resumed activity, video playback will be paused
+                                        //  view.image.pause();
+                                    }
+                                    //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
+                                }
+
+                            });
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
             //Tools.displayImageOriginal(ctx, view.image, obj.image);
             view.lyt_parent.setOnClickListener(new View.OnClickListener() {
