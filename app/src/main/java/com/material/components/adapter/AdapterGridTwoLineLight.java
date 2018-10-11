@@ -139,7 +139,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             } else {
                 view.nomineeCounter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
-            if(voteBy==2) {
+            if(voteBy==2||voteBy==3) {
                 try {
 
 // Retrieves an image specified by the URL, displays it in the UI.
@@ -165,7 +165,7 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
             }
 
 
-            if (voteBy == 3) {
+            if (voteBy == 4) {
                 try {
 
 
@@ -179,28 +179,16 @@ public class AdapterGridTwoLineLight extends RecyclerView.Adapter<RecyclerView.V
                     view.video.requestFocus();
                     //we also set an setOnPreparedListener in order to know when the video file is ready for playback
                     view.video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
                         public void onPrepared(MediaPlayer mediaPlayer) {
                             // close the progress bar and play the video
                             //if we have a position on savedInstanceState, the video playback should start from here
                             view.video.seekTo(6);
-                            if (position == 0) {
-                            } else {
-                                //if we come from a resumed activity, video playback will be paused
-                                view.video.pause();
-                            }
-//                                mediaController.setAnchorView(videoView);
-
-                            // TODO Auto-generated method stub
-                            int duration = mediaPlayer.getDuration() / 1000;
-                            int hours = duration / 3600;
-                            int minutes = (duration / 60) - (hours * 60);
-                            int seconds = duration - (hours * 3600) - (minutes * 60);
-                            String formatted = String.format("%02d:%02d", minutes, seconds);
-                            //Toast.makeText(getApplicationContext(), "duration is " + formatted ,  Toast.LENGTH_LONG).show();
-
-                            //   appCompatSeekBarProgressBar.setProgress(videoView.getDuration());
-
+                            view.video.pause();
+//                            if (position == 0) {
+//                            } else {
+//                                //if we come from a resumed activity, video playback will be paused
+//
+//                            }
                         }
 
                     });

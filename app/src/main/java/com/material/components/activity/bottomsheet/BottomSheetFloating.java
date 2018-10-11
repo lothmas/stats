@@ -60,6 +60,7 @@ public class BottomSheetFloating extends AppCompatActivity {
     private static volatile RecyclerView recyclerView;
     private static volatile AdapterGridTwoLineLight mAdapter;
     private ItemTouchHelper mItemTouchHelper;
+    private int voteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +72,10 @@ public class BottomSheetFloating extends AppCompatActivity {
 
         initToolbar("Nominees");
         Bundle b = getIntent().getExtras();
-        int voteType ,voteBy; // or other values
+        int voteType, voteBy; // or other values
         voteType = b.getInt("voteType");
-        voteBy=b.getInt("voteBy");
+        voteId = b.getInt("voteId");
+        voteBy = b.getInt("voteBy");
         if (voteType == 1) {
             showCustomDialog("ORDER BY DRAGGING", "Long-Press -> Drag & Place in Favoured Order");
         } else if (voteType == 2) {
@@ -81,14 +83,14 @@ public class BottomSheetFloating extends AppCompatActivity {
         } else if (voteType == 3) {
             showCustomDialog("MULTIPLE SELECTION", "Long-Press to Select Favourite");
         }
-        initComponent(voteType,voteBy);
+        initComponent(voteType, voteBy);
 
     }
 
     private void initComponent(final int voteType, final int voteBy) {
-        int gridColumnsPerRow=2;
-        if(voteBy==1){
-        //    gridColumnsPerRow=1;
+        int gridColumnsPerRow = 2;
+        if (voteBy == 1) {
+            //    gridColumnsPerRow=1;
         }
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, gridColumnsPerRow));
@@ -105,6 +107,11 @@ public class BottomSheetFloating extends AppCompatActivity {
                         List<NomineesEntity> nomineesEntityList = nomineeMasterObject.getNomineesEntityList();
                         final List<Image> items = new ArrayList<>();
                         int count = 0;
+                        if (null == nomineesEntityList) {
+                            Snackbar.make(parent_view, "No Nominees Set for this Poll", Snackbar.LENGTH_LONG).show();
+                            showCustomDialog("No Nominees Set for this Poll", null);
+                            return;
+                        }
                         for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
                             final Image image = new Image();
                             image.name = (nomineesEntity1.getNomineeName());
@@ -116,7 +123,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         }
 
                         //set data and list adapter
-                        mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items,voteBy);
+                        mAdapter = new AdapterGridTwoLineLight(BottomSheetFloating.this, items, voteBy);
                         recyclerView.setAdapter(mAdapter);
                         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -155,18 +162,18 @@ public class BottomSheetFloating extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, Image obj, int position) {
 
-                                    LinearLayout layout = (LinearLayout) view;
-                                    RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
-                                    ImageView imageView = (ImageView) relativeLayout.getChildAt(0);
+                                LinearLayout layout = (LinearLayout) view;
+                                RelativeLayout relativeLayout = (RelativeLayout) layout.getChildAt(0);
+                                ImageView imageView = (ImageView) relativeLayout.getChildAt(0);
 
-                                    LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
-                                    LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
-                                    TextView albumName = (TextView) layout2.getChildAt(1);
-                                    TextView nomineeName = (TextView) layout2.getChildAt(0);
+                                LinearLayout layout1 = (LinearLayout) layout.getChildAt(1);
+                                LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
+                                TextView albumName = (TextView) layout2.getChildAt(1);
+                                TextView nomineeName = (TextView) layout2.getChildAt(0);
 //                                    if(voteBy==2) {
-                                        showDialogImageFull(imageView.getDrawable(), nomineeName);
-                                  //  }
-                                    Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
+                                showDialogImageFull(imageView.getDrawable(), nomineeName);
+                                //  }
+                                Snackbar.make(parent_view, albumName.getText(), Snackbar.LENGTH_LONG).show();
 
                             }
 
@@ -193,12 +200,12 @@ public class BottomSheetFloating extends AppCompatActivity {
                                         if (dd[0] == null && selectedCurrentPosition == count) {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
                                             obj.get(position).selected = 1;
-                                            obj.get(position).voteType=2;
+                                            obj.get(position).voteType = 2;
                                             if (voteType == 2) {
-                                                for (int da = 0; da < items.size() ; da++) {
+                                                for (int da = 0; da < items.size(); da++) {
                                                     if (da != position) {
                                                         obj.get(da).selected = 0;
-                                                          //counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                                                        //counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                                     }
                                                 }
                                             }
@@ -207,11 +214,10 @@ public class BottomSheetFloating extends AppCompatActivity {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                             obj.get(position).selected = 0;
 
-                                        }
-                                        else if(voteType == 2 && counter.getCompoundDrawables()[0] != null) {
+                                        } else if (voteType == 2 && counter.getCompoundDrawables()[0] != null) {
                                             counter.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                         }
-                                       // obj.get(position).counter = count;
+                                        // obj.get(position).counter = count;
 
                                     }
                                 }
@@ -268,7 +274,7 @@ public class BottomSheetFloating extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("voteID", String.valueOf(7));
+                params.put("voteID", String.valueOf(voteId));
                 return params;
             }
         };
