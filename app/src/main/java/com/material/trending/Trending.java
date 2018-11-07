@@ -11,6 +11,8 @@ public class Trending {
     private int voteType;
     private int voteBy;
     private int voteId;
+    private int votesCasted;
+    private int allowedVoteNumber;
 
 
 
@@ -92,5 +94,21 @@ public class Trending {
 
     public void setVoteId(int voteId) {
         this.voteId = voteId;
+    }
+
+    public int getVotesCasted() {
+        return votesCasted;
+    }
+
+    public void setVotesCasted(int votesCasted) {
+        this.votesCasted = votesCasted;
+    }
+
+    public int getAllowedVoteNumber() {
+        return allowedVoteNumber;
+    }
+
+    public void setAllowedVoteNumber(int allowedVoteNumber) {
+        this.allowedVoteNumber = allowedVoteNumber;
     }
 }

@@ -83,6 +83,7 @@ import com.material.utility.JsonMessageSender;
 import com.material.utility.JsonObjectConversion;
 import com.material.utility.SetConnection;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.readystatesoftware.viewbadger.BadgeView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -508,8 +509,21 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
             LinearLayout layout3 = (LinearLayout) layout2.getChildAt(2);
 
-            TextView textView1 = (TextView) layout3.getChildAt(0);
+            LinearLayout layout3a = (LinearLayout) layout3.getChildAt(0);
+            TextView textView1 = (TextView) layout3a.getChildAt(0);
             textView1.setText(trending.getTitle());
+
+            ImageButton votedNotifier= (ImageButton) layout3a.getChildAt(2);
+            BadgeView badge1 = new BadgeView(this, votedNotifier);
+            badge1.setText(String.valueOf(trending.getVotesCasted()));
+            badge1.setBadgePosition(20);
+            badge1.show();
+
+            ImageButton allowedVotes= (ImageButton) layout3a.getChildAt(3);
+            BadgeView badge = new BadgeView(this, allowedVotes);
+            badge.setText(String.valueOf(trending.getAllowedVoteNumber()-trending.getVotesCasted()));
+
+            badge.show();
 
             LinearLayout layout4 = (LinearLayout) layout3.getChildAt(1);
             TextView textView2 = (TextView) layout4.getChildAt(0);
