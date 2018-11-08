@@ -290,13 +290,13 @@
                     android:layout_marginEnd="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
 
-                    app:srcCompat="@drawable/logo" />
+                    app:srcCompat="@drawable/stats" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="statistics"
+                    android:text="report"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="@color/grey_40" />
 
@@ -320,8 +320,7 @@
                     android:layout_marginEnd="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
                     android:background="@null"
-                    android:tint="@color/red_200"
-                    app:srcCompat="@drawable/ic_person_add" />
+                    app:srcCompat="@drawable/invite" />
 
                 <TextView
                     android:layout_width="wrap_content"

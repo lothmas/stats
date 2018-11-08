@@ -303,18 +303,18 @@ public class BottomNavigationIcon extends AppCompatActivity {
         tab_layout = (TabLayout) findViewById(R.id.tab_layout);
 
 
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending1), 0);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_search), 1);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_add_box), 2);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending), 3);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_person), 4);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending2), 0);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.find_male), 1);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.add1), 2);
+//        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending), 3);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.profile), 3);
 
         // set icon color pre-selected
         tab_layout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.deep_orange_500), PorterDuff.Mode.SRC_IN);
         tab_layout.getTabAt(1).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
         tab_layout.getTabAt(2).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
+//        tab_layout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
         tab_layout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
-        tab_layout.getTabAt(4).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
 
         tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -401,7 +401,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 videoViewFullScreen.setVisibility(View.INVISIBLE);
 
                 break;
-            case 3:
+            case 9:
                 actionBar.setTitle("History");
                 outter1.setVisibility(View.GONE);
                 profile.setVisibility(View.INVISIBLE);
@@ -410,7 +410,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 videoViewFullScreen.setVisibility(View.INVISIBLE);
 
                 break;
-            case 4:
+            case 3:
                 actionBar.setTitle("Profile");
                 outter1.setVisibility(View.INVISIBLE);
                 profile.setVisibility(View.VISIBLE);

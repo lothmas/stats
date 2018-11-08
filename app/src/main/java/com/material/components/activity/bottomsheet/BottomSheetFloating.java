@@ -286,7 +286,7 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     private void initToolbar(String pollTitle) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setNavigationIcon(R.drawable.ic_assignment);
         toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

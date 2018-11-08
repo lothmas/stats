@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/nomineeMenu"
-        android:icon="@drawable/ic_thumb_up"
+        android:icon="@drawable/vote"
         android:orderInCategory="100"
         android:title="polled"
         app:showAsAction="always" />
