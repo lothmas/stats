@@ -8,6 +8,14 @@
     tools:showIn="@layout/activity_bottom_navigation_icon">
 
 
+    <ImageButton
+        android:layout_width="355dp"
+        android:layout_height="55dp"
+        android:background="@null"
+        android:visibility="gone"
+        android:tint="@color/light_green_100"
+        app:srcCompat="@drawable/ic_check_circle" />
+
     <!--layout1-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +53,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
                     <!--TextView1-->
@@ -58,27 +66,14 @@
                         android:textColor="@color/grey_90"
                         android:textStyle="normal|bold" />
 
-                    <View
-                        android:layout_width="40dp"
-                        android:layout_height="0dp" />
 
-                    <ImageButton
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_marginEnd="@dimen/spacing_middle"
-                        android:layout_marginRight="@dimen/spacing_middle"
-                        android:background="@null"
-                        android:tint="@color/light_green_100"
-                        app:srcCompat="@drawable/ic_check_circle" />
 
-                    <ImageButton
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:layout_marginEnd="@dimen/spacing_middle"
-                        android:layout_marginRight="@dimen/spacing_middle"
-                        android:background="@null"
-                        android:tint="@color/light_green_100"
-                        app:srcCompat="@drawable/ic_play_arrow" />
+                    <!--<ImageButton-->
+                        <!--android:layout_width="55dp"-->
+                        <!--android:layout_height="55dp"-->
+                        <!--android:background="@null"-->
+                        <!--android:tint="@color/light_green_100"-->
+                        <!--app:srcCompat="@drawable/ic_notifications" />-->
 
                 </LinearLayout>
 

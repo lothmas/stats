@@ -480,7 +480,16 @@ public class BottomNavigationIcon extends AppCompatActivity {
         for (final Trending trending : trendingList) {
 
             CardView cardView = (CardView) inflater.inflate(R.layout.card_view, null);
-            final LinearLayout layout1 = (LinearLayout) cardView.getChildAt(0);
+
+            ImageButton votedNotifier= (ImageButton) cardView.getChildAt(0);
+            BadgeView badge1 = new BadgeView(this, votedNotifier);
+            badge1.setText(String.valueOf(trending.getVotesCasted()+" | "+trending.getAllowedVoteNumber()) );
+            badge1.setBadgeBackgroundColor(Color.parseColor("#D0F5A9"));
+            badge1.setTextColor(Color.GRAY);
+            //badge1.setBadgePosition(20);
+            badge1.show();
+
+            final LinearLayout layout1 = (LinearLayout) cardView.getChildAt(1);
             LinearLayout layout2 = (LinearLayout) layout1.getChildAt(0);
 
             final CircularImageView circularImageView = (CircularImageView) layout2.getChildAt(0);
@@ -513,17 +522,13 @@ public class BottomNavigationIcon extends AppCompatActivity {
             TextView textView1 = (TextView) layout3a.getChildAt(0);
             textView1.setText(trending.getTitle());
 
-            ImageButton votedNotifier= (ImageButton) layout3a.getChildAt(2);
-            BadgeView badge1 = new BadgeView(this, votedNotifier);
-            badge1.setText(String.valueOf(trending.getVotesCasted()));
-            badge1.setBadgePosition(20);
-            badge1.show();
 
-            ImageButton allowedVotes= (ImageButton) layout3a.getChildAt(3);
-            BadgeView badge = new BadgeView(this, allowedVotes);
-            badge.setText(String.valueOf(trending.getAllowedVoteNumber()-trending.getVotesCasted()));
 
-            badge.show();
+//            ImageButton allowedVotes= (ImageButton) layout3a.getChildAt(3);
+//            BadgeView badge = new BadgeView(this, allowedVotes);
+//            badge.setText(String.valueOf(trending.getAllowedVoteNumber()-trending.getVotesCasted()));
+//            badge.setBadgeBackgroundColor(Color.LTGRAY);
+//            badge.show();
 
             LinearLayout layout4 = (LinearLayout) layout3.getChildAt(1);
             TextView textView2 = (TextView) layout4.getChildAt(0);
