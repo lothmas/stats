@@ -292,7 +292,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(pollTitle);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this, R.color.grey_20);
+        Tools.setSystemBarColor(this, R.color.transparent);
     }
 
     @Override

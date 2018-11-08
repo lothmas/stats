@@ -90,7 +90,9 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BottomNavigationIcon extends AppCompatActivity {
@@ -450,10 +452,17 @@ public class BottomNavigationIcon extends AppCompatActivity {
         //home 192.168.88.223 , work 192.168.1.40
         String requestUrl = "http://192.168.1.40:8090/trending";
         StringRequest request = new StringRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                 requestUrl,
                 trendingGetData,
-                errorListener);
+                errorListener){
+
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("memberID", "MMM111");
+                return params;
+            };
+        };
         RequestQueue queue = Volley.newRequestQueue(this);
         queue1 = Volley.newRequestQueue(this);
         queue2 = Volley.newRequestQueue(this);
