@@ -259,7 +259,7 @@
                     android:layout_marginRight="@dimen/spacing_middle"
                     android:clickable="true"
                     android:tint="@android:color/transparent"
-                    app:srcCompat="@drawable/cast1" />
+                    app:srcCompat="@drawable/cast5" />
 
                 <!--TextView5-->
                 <TextView
@@ -372,7 +372,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="@dimen/spacing_medium"
-            android:background="@color/grey_20"
+            android:background="@color/grey_3"
             android:elevation="50dp" />
 
 
