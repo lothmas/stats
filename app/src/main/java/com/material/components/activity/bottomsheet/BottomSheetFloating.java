@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +57,7 @@ import java.util.Map;
 public class BottomSheetFloating extends AppCompatActivity {
 
     private View parent_view;
-
+    private ActionBar actionBar;
     private static volatile RecyclerView recyclerView;
     private static volatile AdapterGridTwoLineLight mAdapter;
     private ItemTouchHelper mItemTouchHelper;
@@ -286,13 +287,23 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     private void initToolbar(String pollTitle) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_assignment);
-        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.blue_900), PorterDuff.Mode.SRC_ATOP);
+        toolbar.setNavigationIcon(R.drawable.menu);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.transparent), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(pollTitle);
+         actionBar = getSupportActionBar();
+
+
+      //  actionBar.setTitle(pollTitle);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this, R.color.transparent);
+        Tools.setSystemBarColor(this, R.color.grey_20);
+
+         getSupportActionBar().setTitle(Html.fromHtml("<font color='#f7f7f7'>"+pollTitle+"</font>"));
+
+  //     ActionBar actionBar=getSupportActionBar();
+     //  actionBar.setTitle(pollTitle);
+      //  actionBar.setDisplayHomeAsUpEnabled(true);
+      //  Tools.setSystemBarColor(this, R.color.grey_20);
+
     }
 
     @Override
