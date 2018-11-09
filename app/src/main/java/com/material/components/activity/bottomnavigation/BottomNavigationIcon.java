@@ -250,7 +250,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         actionBar.setTitle("Trending");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this, R.color.grey_20);
+        Tools.setSystemBarColor(this, R.color.green_900);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

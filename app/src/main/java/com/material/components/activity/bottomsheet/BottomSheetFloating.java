@@ -297,7 +297,7 @@ public class BottomSheetFloating extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         Tools.setSystemBarColor(this, R.color.grey_20);
 
-         getSupportActionBar().setTitle(Html.fromHtml("<font color='#f7f7f7'>"+pollTitle+"</font>"));
+         getSupportActionBar().setTitle(Html.fromHtml("<font color='#000000'>"+pollTitle+"</font>"));
 
   //     ActionBar actionBar=getSupportActionBar();
      //  actionBar.setTitle(pollTitle);
