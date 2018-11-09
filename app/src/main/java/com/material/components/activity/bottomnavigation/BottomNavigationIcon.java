@@ -493,8 +493,10 @@ public class BottomNavigationIcon extends AppCompatActivity {
             ImageButton votedNotifier= (ImageButton) cardView.getChildAt(0);
             BadgeView badge1 = new BadgeView(this, votedNotifier);
             badge1.setText(String.valueOf(trending.getVotesCasted()+" | "+trending.getAllowedVoteNumber()) );
-            badge1.setBadgeBackgroundColor(Color.parseColor("#D0F5A9"));
+            badge1.setBadgeBackgroundColor(Color.parseColor("#f2f2f2"));
             badge1.setTextColor(Color.GRAY);
+         //   badge1.setBadgeMargin(4);
+
             //badge1.setBadgePosition(20);
             badge1.show();
 
