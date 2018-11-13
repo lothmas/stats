@@ -250,7 +250,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
 
         actionBar.setTitle("Trending");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Tools.setSystemBarColor(this, R.color.grey_20);
+        Tools.setSystemBarColor(this, R.color.green_900);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -350,7 +350,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         Tools.displayImageOriginal(this, (ImageView) findViewById(R.id.image_6), R.drawable.image_2);
         Tools.displayImageOriginal(this, (ImageView) findViewById(R.id.image_7), R.drawable.image_5);
 
-        Tools.setSystemBarColor(this, R.color.grey_5);
+        Tools.setSystemBarColor(this, R.color.green_900);
         Tools.setSystemBarLight(this);
 
 
@@ -576,6 +576,42 @@ public class BottomNavigationIcon extends AppCompatActivity {
             final LinearLayout linearLayout5 = (LinearLayout) layout1.getChildAt(4);
             final LinearLayout linearLayout5Inner1 = (LinearLayout) linearLayout5.getChildAt(0);
             final ImageView voteImage = (ImageView) linearLayout5Inner1.getChildAt(0);
+
+            linearLayout5Inner1.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_BUTTON_PRESS: {
+//                            ImageView view = (ImageView) v;
+                            //overlay is black with transparency of 0x77 (119)
+                            voteImage.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                            voteImage.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+
+                            voteImage.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+
+                            //clear the overlay
+                            voteImage.invalidate();
+                            Intent intent = new Intent(BottomNavigationIcon.this, BottomSheetFloating.class);
+                            Bundle b = new Bundle();
+                            b.putInt("voteId", trending.getVoteId()); //Your id
+                            b.putInt("voteBy",trending.getVoteBy());
+                            b.putInt("voteType",trending.getVoteType());
+                            intent.putExtras(b);
+                            startActivity(intent);
+                            voteImage.getDrawable().clearColorFilter();
+
+                            break;
+                        }
+                    }
+
+                    return false;
+                }
+            });
             //set the ontouch listener
             voteImage.setOnTouchListener(new View.OnTouchListener() {
 
@@ -590,8 +626,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             view.invalidate();
                             break;
                         }
-                        case MotionEvent.ACTION_UP:
-                        case MotionEvent.ACTION_CANCEL: {
+                        case MotionEvent.ACTION_UP: {
                             ImageView view = (ImageView) v;
                             //clear the overlay
                             view.getDrawable().clearColorFilter();
@@ -615,6 +650,43 @@ public class BottomNavigationIcon extends AppCompatActivity {
             final LinearLayout linearLayout7 = (LinearLayout) linearLayout5.getChildAt(2);
             final ImageView statsImage = (ImageView) linearLayout7.getChildAt(0);
             //set the ontouch listener
+
+            linearLayout7.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_BUTTON_PRESS: {
+//                            ImageView view = (ImageView) v;
+                            //overlay is black with transparency of 0x77 (119)
+                            voteImage.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                            voteImage.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+
+                            voteImage.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+
+                            //clear the overlay
+                            voteImage.invalidate();
+                            Intent intent = new Intent(BottomNavigationIcon.this, BottomSheetFloating.class);
+                            Bundle b = new Bundle();
+                            b.putInt("voteId", trending.getVoteId()); //Your id
+                            b.putInt("voteBy",trending.getVoteBy());
+                            b.putInt("voteType",trending.getVoteType());
+                            intent.putExtras(b);
+                            startActivity(intent);
+                            voteImage.getDrawable().clearColorFilter();
+
+                            break;
+                        }
+                    }
+
+                    return false;
+                }
+            });
+
             statsImage.setOnTouchListener(new View.OnTouchListener() {
 
                 @Override
@@ -628,12 +700,61 @@ public class BottomNavigationIcon extends AppCompatActivity {
                             view.invalidate();
                             break;
                         }
-                        case MotionEvent.ACTION_UP:
-                        case MotionEvent.ACTION_CANCEL: {
+                        case MotionEvent.ACTION_UP: {
                             ImageView view = (ImageView) v;
                             //clear the overlay
                             view.getDrawable().clearColorFilter();
                             view.invalidate();
+                            Intent intent = new Intent(BottomNavigationIcon.this, BottomSheetFloating.class);
+                            Bundle b = new Bundle();
+                            b.putInt("voteId", trending.getVoteId()); //Your id
+                            b.putInt("voteBy",trending.getVoteBy());
+                            b.putInt("voteType",trending.getVoteType());
+                            intent.putExtras(b);
+                            startActivity(intent);
+                            break;
+                        }
+                        case MotionEvent.ACTION_BUTTON_RELEASE: {
+                          String sdf="sf";
+                        }
+                    }
+
+                    return false;
+                }
+            });
+
+            final LinearLayout linearLayout8 = (LinearLayout) linearLayout5.getChildAt(4);
+            final ImageView invite = (ImageView) linearLayout8.getChildAt(0);
+            //set the ontouch listener
+
+            linearLayout7.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_BUTTON_PRESS: {
+//                            ImageView view = (ImageView) v;
+                            //overlay is black with transparency of 0x77 (119)
+                            voteImage.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                            voteImage.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+
+                            voteImage.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+
+                            //clear the overlay
+                            voteImage.invalidate();
+                            Intent intent = new Intent(BottomNavigationIcon.this, BottomSheetFloating.class);
+                            Bundle b = new Bundle();
+                            b.putInt("voteId", trending.getVoteId()); //Your id
+                            b.putInt("voteBy",trending.getVoteBy());
+                            b.putInt("voteType",trending.getVoteType());
+                            intent.putExtras(b);
+                            startActivity(intent);
+                            voteImage.getDrawable().clearColorFilter();
+
                             break;
                         }
                     }
@@ -642,6 +763,41 @@ public class BottomNavigationIcon extends AppCompatActivity {
                 }
             });
 
+            invite.setOnTouchListener(new View.OnTouchListener() {
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            ImageView view = (ImageView) v;
+                            //overlay is black with transparency of 0x77 (119)
+                            view.getDrawable().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                            view.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            ImageView view = (ImageView) v;
+                            //clear the overlay
+                            view.getDrawable().clearColorFilter();
+                            view.invalidate();
+                            Intent intent = new Intent(BottomNavigationIcon.this, BottomSheetFloating.class);
+                            Bundle b = new Bundle();
+                            b.putInt("voteId", trending.getVoteId()); //Your id
+                            b.putInt("voteBy",trending.getVoteBy());
+                            b.putInt("voteType",trending.getVoteType());
+                            intent.putExtras(b);
+                            startActivity(intent);
+                            break;
+                        }
+                        case MotionEvent.ACTION_BUTTON_RELEASE: {
+                            String sdf="sf";
+                        }
+                    }
+
+                    return false;
+                }
+            });
 
             outter1.addView(cardView);
 

@@ -100,10 +100,10 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white"
+            android:background="@android:color/darker_gray"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:theme="@style/Toolbar.Light" />
 
     </LinearLayout>

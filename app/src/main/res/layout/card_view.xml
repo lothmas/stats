@@ -249,7 +249,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:clickable="true">
 
                 <!--ImageButton1  voteImage-->
                 <ImageView
@@ -278,20 +279,23 @@
 
             <!--layout7-->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:clickable="true">
 
+                <!--ImageButton1  voteImage-->
                 <ImageView
                     android:layout_width="@dimen/spacing_mlarge"
                     android:layout_height="@dimen/spacing_mlarge"
                     android:layout_marginEnd="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
-
+                    android:clickable="true"
+                    android:tint="@android:color/transparent"
                     app:srcCompat="@drawable/stats" />
 
+                <!--TextView5-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -308,20 +312,23 @@
 
             <!--layout7-->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:clickable="true">
 
+                <!--ImageButton1  voteImage-->
                 <ImageView
                     android:layout_width="@dimen/spacing_mlarge"
                     android:layout_height="@dimen/spacing_mlarge"
                     android:layout_marginEnd="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
-                    android:background="@null"
+                    android:clickable="true"
+                    android:tint="@android:color/transparent"
                     app:srcCompat="@drawable/invite" />
 
+                <!--TextView5-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
