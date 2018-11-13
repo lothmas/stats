@@ -727,7 +727,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
             final ImageView invite = (ImageView) linearLayout8.getChildAt(0);
             //set the ontouch listener
 
-            linearLayout7.setOnTouchListener(new View.OnTouchListener() {
+            linearLayout8.setOnTouchListener(new View.OnTouchListener() {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
