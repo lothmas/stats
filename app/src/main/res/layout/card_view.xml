@@ -260,7 +260,7 @@
                     android:layout_marginRight="@dimen/spacing_middle"
                     android:clickable="true"
                     android:tint="@android:color/transparent"
-                    app:srcCompat="@drawable/cast5" />
+                    app:srcCompat="@drawable/cast1" />
 
                 <!--TextView5-->
                 <TextView

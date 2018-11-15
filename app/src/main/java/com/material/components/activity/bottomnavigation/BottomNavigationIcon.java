@@ -303,23 +303,23 @@ public class BottomNavigationIcon extends AppCompatActivity {
         tab_layout = (TabLayout) findViewById(R.id.tab_layout);
 
 
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending2), 0);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.find_male), 1);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.add1), 2);
-//        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending), 3);
-        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.profile), 3);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending1), 0);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_search), 1);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_add_box), 2);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.trending), 3);
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_person), 4);
 
         // set icon color pre-selected
-        tab_layout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.deep_purple_600), PorterDuff.Mode.SRC_IN);
-        tab_layout.getTabAt(1).getIcon().setColorFilter(getResources().getColor(R.color.grey_1000), PorterDuff.Mode.SRC_IN);
-        tab_layout.getTabAt(2).getIcon().setColorFilter(getResources().getColor(R.color.grey_1000), PorterDuff.Mode.SRC_IN);
-//        tab_layout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
-        tab_layout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(R.color.grey_1000), PorterDuff.Mode.SRC_IN);
+        tab_layout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.deep_orange_500), PorterDuff.Mode.SRC_IN);
+        tab_layout.getTabAt(1).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
+        tab_layout.getTabAt(2).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
+        tab_layout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
+        tab_layout.getTabAt(4).getIcon().setColorFilter(getResources().getColor(R.color.grey_60), PorterDuff.Mode.SRC_IN);
 
         tab_layout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(getResources().getColor(R.color.deep_purple_600), PorterDuff.Mode.SRC_IN);
+                tab.getIcon().setColorFilter(getResources().getColor(R.color.deep_orange_500), PorterDuff.Mode.SRC_IN);
 
                 if (!noConnection) {
                     noInternet.setVisibility(View.VISIBLE);
@@ -350,7 +350,7 @@ public class BottomNavigationIcon extends AppCompatActivity {
         Tools.displayImageOriginal(this, (ImageView) findViewById(R.id.image_6), R.drawable.image_2);
         Tools.displayImageOriginal(this, (ImageView) findViewById(R.id.image_7), R.drawable.image_5);
 
-        Tools.setSystemBarColor(this, R.color.green_900);
+        Tools.setSystemBarColor(this, R.color.grey_5);
         Tools.setSystemBarLight(this);
 
 
