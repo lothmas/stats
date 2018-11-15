@@ -6,6 +6,11 @@
         \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam efficitur ipsum in placerat molestie.  Fusce quis mauris a enim sollicitudin
     </string>
 
+    <string name="gdpr_privacy_policy">
+        By using this App, you agree to the <a href="http://dream-space.web.id/">Terms-Conditions</a>,
+        <a href="http://dream-space.web.id/">Cookies-Policy</a> and <a href="http://dream-space.web.id/">Privacy-Policy</a>
+        and consent to having your personal data, behavior transferred and processed outside EU.
+    </string>
     <string name="short_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
 
     <string name="owner_title">owner </string>

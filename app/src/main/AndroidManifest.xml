@@ -597,6 +597,9 @@
             android:name=".activity.dialog.DialogImage"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.dialog.DialogGDPRBasic"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.zfdang.multiple_images_selector.ImagesSelectorActivity"
             android:configChanges="orientation|screenSize"/>
     </application>

@@ -20,11 +20,13 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -78,11 +80,11 @@ public class BottomSheetFloating extends AppCompatActivity {
         voteId = b.getInt("voteId");
         voteBy = b.getInt("voteBy");
         if (voteType == 1) {
-            showCustomDialog("ORDER BY DRAGGING", "Long-Press -> Drag & Place in Favoured Order");
+            showCustomDialog("ORDER BY DRAGGING", "Long-Press -> Drag & Place in Favoured Order",0);
         } else if (voteType == 2) {
-            showCustomDialog("SINGLE SELECTION", "Long-Press to Select Favourite");
+            showCustomDialog("SINGLE SELECTION", "Long-Press to Select Favourite",0);
         } else if (voteType == 3) {
-            showCustomDialog("MULTIPLE SELECTION", "Long-Press to Select Favourite");
+            showCustomDialog("MULTIPLE SELECTION", "Long-Press to Select Favourite",0);
         }
         initComponent(voteType, voteBy);
 
@@ -110,7 +112,7 @@ public class BottomSheetFloating extends AppCompatActivity {
                         int count = 0;
                         if (null == nomineesEntityList) {
                             Snackbar.make(parent_view, "No Nominees Set for this Poll", Snackbar.LENGTH_LONG).show();
-                            showCustomDialog("No Nominees Set for this Poll", null);
+                            showCustomDialog("No Nominees Set for this Poll", null,0);
                             return;
                         }
                         for (NomineesEntity nomineesEntity1 : nomineesEntityList) {
@@ -317,7 +319,8 @@ public class BottomSheetFloating extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getTitle().equals("polled")) {
-            BottomSheetFloating.super.onBackPressed();
+//            BottomSheetFloating.super.onBackPressed();
+            showCustomDialog("Confirm Cast Submission","You can't undo / unvote once you submit your cast",1);
 
         } else {
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -340,29 +343,87 @@ public class BottomSheetFloating extends AppCompatActivity {
 
     }
 
-    private void showCustomDialog(String title, String description) {
+//    private void showCustomDialog(String title, String description) {
+//        final Dialog dialog = new Dialog(this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+//        dialog.setContentView(R.layout.dialog_info);
+//        TextView dialogTitle = (TextView) dialog.findViewById(R.id.title);
+//        dialogTitle.setText(title);
+//        TextView dialogDescription = (TextView) dialog.findViewById(R.id.content);
+//        dialogDescription.setText(description);
+//        dialog.setCancelable(true);
+//
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(dialog.getWindow().getAttributes());
+//        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//
+//
+//        ((AppCompatButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Toast.makeText(getApplicationContext(), ((AppCompatButton) v).getText().toString() + " Clicked", Toast.LENGTH_SHORT).show();
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
+//        dialog.getWindow().setAttributes(lp);
+//    }
+
+
+    private void showCustomDialog(String title, String description, final int status) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        dialog.setContentView(R.layout.dialog_info);
-        TextView dialogTitle = (TextView) dialog.findViewById(R.id.title);
-        dialogTitle.setText(title);
-        TextView dialogDescription = (TextView) dialog.findViewById(R.id.content);
-        dialogDescription.setText(description);
-        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_gdpr_basic);
 
+        dialog.setCancelable(true);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
+        TextView dialogTitle = (TextView) dialog.findViewById(R.id.dialogTitle);
+        dialogTitle.setText(title);
 
-        ((AppCompatButton) dialog.findViewById(R.id.bt_close)).setOnClickListener(new View.OnClickListener() {
+
+        TextView dialogDescription = (TextView) dialog.findViewById(R.id.tv_content);
+        dialogDescription.setText(description);
+        final Button decline=dialog.findViewById(R.id.bt_decline);
+        Button accept=dialog.findViewById(R.id.bt_accept);
+
+
+        ((Button) dialog.findViewById(R.id.bt_accept)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), ((AppCompatButton) v).getText().toString() + " Clicked", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getApplicationContext(), "Button Accept Clicked", Toast.LENGTH_SHORT).show();
+                if(status==0) {
+                    dialog.dismiss();
+                }
+                else{
+                    BottomSheetFloating.super.onBackPressed();
+                }
+            }
+        });
+
+
+        if(status==0) {
+            decline.setVisibility(View.INVISIBLE);
+
+        }
+        else{
+            decline.setVisibility(View.VISIBLE);
+            decline.setText("DECLINE");
+            accept.setText("ACCEPT");
+        }
+        ((Button) dialog.findViewById(R.id.bt_decline)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //    Toast.makeText(getApplicationContext(), "Button Decline Clicked", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
+
 
         dialog.show();
         dialog.getWindow().setAttributes(lp);
